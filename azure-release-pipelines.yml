@@ -1,0 +1,22 @@
+trigger:
+  branches:
+    include:
+    - main
+  
+variables:
+  vmImageName: 'ubuntu-latest'
+  azureSubscription: 'Demo Account'
+  region: 'eastus'
+
+stages:
+- template: azure-release-pipelines-stage-template.yml
+  parameters:
+    stageName: 'CI'
+    environment: 'API'
+    azureSubscription: ${{ variables.azureSubscription }}
+    resourceGroupName: 'rutzsco-demo-logic-app'
+    region: ${{ variables.region }}
+    logicAppName: 'rutzsco-messaging-patterns-sb-processor'
+    logicAppStorageName: 'rutzscoazfsnpapi'
+    templateFile: 'Infrastructure/main.bicep'
+
