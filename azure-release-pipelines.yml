@@ -1,7 +1,5 @@
 trigger:
-  branches:
-    include:
-    - main
+- main
   
 variables:
   azureSubscription: 'Demo Account'
