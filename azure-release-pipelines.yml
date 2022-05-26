@@ -16,7 +16,7 @@ stages:
     azureSubscription: ${{ variables.azureSubscription }}
     resourceGroupName: 'rutzsco-demo-logic-app'
     region: ${{ variables.region }}
-    logicAppName: 'rutzsco-messaging-patterns-sb-processor'
-    logicAppStorageName: 'rutzscoazfsnpapi'
+    logicAppName: 'rutzsco-demo-logic-app'
+    logicAppStorageName: 'rutzscodla'
     templateFile: 'Infrastructure/main.bicep'
 
