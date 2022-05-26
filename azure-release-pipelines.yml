@@ -4,15 +4,20 @@ trigger:
 variables:
   azureSubscription: 'Demo Account'
   region: 'eastus'
+  logicAppName: 'rutzsco-demo-logic-app'
+  logicAppStorageName: 'rutzscodla'
+  templateFile: 'Infrastructure/main.bicep'
 
-stages:
-- template: azure-release-pipelines-stage-template.yml
-  parameters:
-    stageName: 'CI'
-    environment: 'API'
-    azureSubscription: ${{ variables.azureSubscription }}
-    resourceGroupName: 'rutzsco-demo-logic-app'
-    region: ${{ variables.region }}
-    logicAppName: 'rutzsco-demo-logic-app'
-    logicAppStorageName: 'rutzscodla'
-    templateFile: 'Infrastructure/main.bicep'
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: $(azureServiceConnection)
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+      az --version
+      az group create --name $(resourceGroupName) --location $(location)
+      az deployment group create --resource-group $(resourceGroupName) --template-file $(templateFile) --parameters logicAppServiceName=$(logicAppName) storageAccountName=$(logicAppStorageName) > outputs.json
