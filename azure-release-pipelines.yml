@@ -4,7 +4,6 @@ trigger:
     - main
   
 variables:
-  vmImageName: 'ubuntu-latest'
   azureSubscription: 'Demo Account'
   region: 'eastus'
 
