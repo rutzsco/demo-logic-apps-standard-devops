@@ -16,4 +16,3 @@ stages:
     logicAppName: 'rutzsco-demo-logic-app'
     logicAppStorageName: 'rutzscodla'
     templateFile: 'Infrastructure/main.bicep'
-

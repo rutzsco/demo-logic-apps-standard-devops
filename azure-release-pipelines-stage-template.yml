@@ -39,5 +39,3 @@ stages:
                 scriptLocation: inlineScript
                 inlineScript: |
                   ls
-                  az group create --name ${{ parameters.resourceGroupName }} --location ${{ parameters.region }} 
-                  az deployment group create --resource-group ${{ parameters.resourceGroupName }} --template-file ${{ parameters.templateFile }} --parameters logicAppServiceName=${{ parameters.logicAppName }} storageAccountName=${{ parameters.logicAppStorageName }} > outputs.json
