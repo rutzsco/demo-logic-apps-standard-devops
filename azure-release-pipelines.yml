@@ -4,6 +4,7 @@ trigger:
 variables:
   azureServiceConnection: 'Demo Account'
   region: 'eastus'
+  resourceGroupName: 'rutzsco-demo-logic-app'
   logicAppName: 'rutzsco-demo-logic-app'
   logicAppStorageName: 'rutzscodla'
   templateFile: 'Infrastructure/main.bicep'
