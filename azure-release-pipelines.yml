@@ -2,7 +2,7 @@ trigger:
 - main
   
 variables:
-  azureSubscription: 'Demo Account'
+  azureServiceConnection: 'Demo Account'
   region: 'eastus'
   logicAppName: 'rutzsco-demo-logic-app'
   logicAppStorageName: 'rutzscodla'
