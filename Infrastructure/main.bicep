@@ -4,7 +4,9 @@ param logicAppServiceName string = 'rutzsco-demo-logic-app'
 param storageAccountName string = 'rutzscodemologicapp'
 param logAnalyticsWorkspaceName string = 'rutzsco-demo-logic-app'
 
-// Service Bus
+
+
+// Log Analytics
 module logAnalytics 'log-analytics.bicep' = {
   name: 'logAnalytics' 
   params: {
@@ -13,7 +15,7 @@ module logAnalytics 'log-analytics.bicep' = {
   }
 }
 
-// Service Bus
+// Logic Apps Service
 module sb 'logic-app-service.bicep' = {
   name: 'sb'
   params: {
