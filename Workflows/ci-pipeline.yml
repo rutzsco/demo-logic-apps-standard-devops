@@ -5,7 +5,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  logicAppCIArtifactName: 'logicapp_publish_artifact'
+  logicAppCIArtifactName: 'App'
 
 jobs:
 - job: logic_app_build
