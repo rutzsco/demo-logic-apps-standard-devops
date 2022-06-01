@@ -52,6 +52,7 @@ resource blobStorageConnection 'Microsoft.Web/connections@2016-06-01' = {
     }
     customParameterValues: {}
     displayName: '${storageAccountName}-blobconnection'
+    parameterValueType: 'Alternative'
   }
 }
 
