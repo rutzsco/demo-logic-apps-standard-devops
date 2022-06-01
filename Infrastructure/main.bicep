@@ -55,14 +55,3 @@ resource blobStorageConnection 'Microsoft.Web/connections@2016-06-01' = {
     parameterValueType: 'Alternative'
   }
 }
-
-
-resource logicAppStorageAccountRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
-  scope: storageAccount
-  name: guid('ra-logicapp-${roleDefinitionId}')
-  properties: {
-    principalType: 'ServicePrincipal'
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefinitionId)
-    principalId: la.outputs.managedIdentityPrincipalId
-  }
-}
