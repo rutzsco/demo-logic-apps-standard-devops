@@ -7,7 +7,7 @@ variables:
   resourceGroupName: 'rutzsco-demo-logic-app'
   logicAppName: 'rutzsco-demo-logic-app'
   logicAppStorageName: 'rutzscodla'
-  templateFile: 'Infrastructure/main.bicep'
+  templateFile: 'Infrastructure/main-vnet.bicep'
 
 pool:
   vmImage: 'ubuntu-latest'
