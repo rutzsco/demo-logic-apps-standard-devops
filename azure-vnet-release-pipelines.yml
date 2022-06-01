@@ -5,8 +5,7 @@ variables:
   azureServiceConnection: 'Demo Account'
   region: 'eastus'
   resourceGroupName: 'rutzsco-demo-logic-app'
-  logicAppName: 'rutzsco-demo-logic-app'
-  logicAppStorageName: 'rutzscodla'
+  virtualNetworkName: 'rutzsco-demo-logic-app-vnet'
   templateFile: 'Infrastructure/main-vnet.bicep'
 
 pool:
@@ -21,4 +20,4 @@ steps:
     inlineScript: |
       az --version
       az group create --name $(resourceGroupName) --location $(location)
-      az deployment group create --resource-group $(resourceGroupName) --template-file $(templateFile) --parameters logicAppServiceName=$(logicAppName) storageAccountName=$(logicAppStorageName) > outputs.json
+      az deployment group create --resource-group $(resourceGroupName) --template-file $(templateFile) --parameters virtualNetworkName=$(virtualNetworkName) > outputs.json
