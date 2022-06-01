@@ -25,12 +25,12 @@ jobs:
       rootFolderOrFile: '$(System.DefaultWorkingDirectory)/project_output/Workflows'
       includeRootFolder: false
       archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/LA.zip'
       replaceExistingArchive: true
 
   - task: PublishPipelineArtifact@1
     displayName: 'Publish project zip artifact'
     inputs:
-      targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      targetPath: '$(Build.ArtifactStagingDirectory)/LA.zip'
       artifact: '$(logicAppCIArtifactName)'
       publishLocation: 'pipeline'

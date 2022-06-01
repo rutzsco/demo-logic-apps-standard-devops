@@ -29,5 +29,5 @@ stages:
               azureSubscription: '$(azureSubscription)'
               appType: 'functionApp'
               appName: '$(logicAppName)'
-              package: '$(Pipeline.Workspace)/build/App/$(resources.pipeline.cipipeline.runID).zip'
+              package: '$(Pipeline.Workspace)/build/App/LA.zip'
               deploymentMethod: 'zipDeploy'
