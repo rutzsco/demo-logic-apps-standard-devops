@@ -1,0 +1,24 @@
+trigger:
+- main
+  
+variables:
+  azureServiceConnection: 'Demo Account'
+  region: 'eastus'
+  resourceGroupName: 'rutzsco-demo-logic-app'
+  logicAppName: 'rutzsco-demo-logic-app'
+  logicAppStorageName: 'rutzscodla'
+  templateFile: 'Infrastructure/main.bicep'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: $(azureServiceConnection)
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+      az --version
+      az group create --name $(resourceGroupName) --location $(location)
+      az deployment group create --resource-group $(resourceGroupName) --template-file $(templateFile) --parameters logicAppServiceName=$(logicAppName) storageAccountName=$(logicAppStorageName) > outputs.json
