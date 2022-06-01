@@ -124,3 +124,4 @@ properties: {
 // Return the Logic App service name and farm name
 output app string = site.name
 output plan string = plan.name
+output managedIdentityPrincipalId string = site.identity.principalId
