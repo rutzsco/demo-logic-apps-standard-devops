@@ -43,15 +43,16 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
   }
 }
 
+var blobStorageConnectionName = '${storageAccountName}-blobconnection'
 resource blobStorageConnection 'Microsoft.Web/connections@2016-06-01' = {
-  name: 'blobConnectionName'
+  name: blobStorageConnectionName
   location: location
   properties: {
     api: {
       id: 'subscriptions/${subscription().subscriptionId}/providers/Microsoft.Web/locations/${location}/managedApis/azureblob'
     }
     customParameterValues: {}
-    displayName: '${storageAccountName}-blobconnection'
+    displayName: blobStorageConnectionName
     parameterValueSet: {
       name: 'managedIdentityAuth'
       values: {}

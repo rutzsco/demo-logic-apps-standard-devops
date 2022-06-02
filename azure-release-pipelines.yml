@@ -20,5 +20,5 @@ steps:
     scriptLocation: inlineScript
     inlineScript: |
       az --version
-      az group create --name $(resourceGroupName) --location $(location)
+      az group create --name $(resourceGroupName) --location $(region)
       az deployment group create --resource-group $(resourceGroupName) --template-file $(templateFile) --parameters logicAppServiceName=$(logicAppName) storageAccountName=$(logicAppStorageName) > outputs.json
