@@ -16,6 +16,24 @@ module logAnalytics 'log-analytics.bicep' = {
   }
 }
 
+var blobStorageConnectionName = '${storageAccountName}-blobconnection'
+resource blobStorageConnection 'Microsoft.Web/connections@2016-06-01' = {
+  name: blobStorageConnectionName
+  kind: 'V2'
+  location: location
+  properties: {
+    api: {
+      id: 'subscriptions/${subscription().subscriptionId}/providers/Microsoft.Web/locations/${location}/managedApis/azureblob'
+    }
+    customParameterValues: {}
+    displayName: blobStorageConnectionName
+    parameterValueSet: {
+      name: 'managedIdentityAuth'
+      values: {}
+    }
+  }
+}
+var connectionRuntimeUrl = reference(blobStorageConnection.id, blobStorageConnection.apiVersion, 'full').properties.connectionRuntimeUrl
 // Logic Apps Service
 module la 'logic-app-service.bicep' = {
   name: 'la'
@@ -24,6 +42,7 @@ module la 'logic-app-service.bicep' = {
     name: logicAppServiceName
     storageAccountName: storageAccountName
     logwsid: logAnalytics.outputs.id
+    blobStorageConnectionRuntimeUrl: connectionRuntimeUrl
   }
 }
 
@@ -40,23 +59,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
     allowBlobPublicAccess: true
     supportsHttpsTrafficOnly: true
     minimumTlsVersion: 'TLS1_2'
-  }
-}
-
-var blobStorageConnectionName = '${storageAccountName}-blobconnection'
-resource blobStorageConnection 'Microsoft.Web/connections@2016-06-01' = {
-  name: blobStorageConnectionName
-  location: location
-  properties: {
-    api: {
-      id: 'subscriptions/${subscription().subscriptionId}/providers/Microsoft.Web/locations/${location}/managedApis/azureblob'
-    }
-    customParameterValues: {}
-    displayName: blobStorageConnectionName
-    parameterValueSet: {
-      name: 'managedIdentityAuth'
-      values: {}
-    }
   }
 }
 

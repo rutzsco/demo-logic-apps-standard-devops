@@ -7,8 +7,7 @@
         "connection": {
           "id": "/subscriptions/@appsetting('WORKFLOWS_SUBSCRIPTION_ID')/resourceGroups/@appsetting('WORKFLOWS_RESOURCE_GROUP_NAME')/providers/Microsoft.Web/connections/azureblob"
         },
-        "connectionRuntimeUrl": "@appsetting('BLOB_CONNECTION_RUNTIMEURL')",
-        "authentication": "@parameters('blob_auth')"
+        "connectionRuntimeUrl": "@appsetting('BLOB_CONNECTION_RUNTIMEURL')"
       }
     }
   }

@@ -1,5 +1,6 @@
 param name string
 param storageAccountName string
+param blobStorageConnectionRuntimeUrl string
 param environment string = 'ci'
 param logwsid string
 param minimumElasticSize int = 1
@@ -113,6 +114,10 @@ properties: {
         name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
         value: appi.properties.ConnectionString
       }
+      {
+        name: 'BLOB_CONNECTION_RUNTIMEURL'
+        value: blobStorageConnectionRuntimeUrl
+      }
     ]
     use32BitWorkerProcess: true
   }
@@ -125,3 +130,4 @@ properties: {
 output app string = site.name
 output plan string = plan.name
 output managedIdentityPrincipalId string = site.identity.principalId
+

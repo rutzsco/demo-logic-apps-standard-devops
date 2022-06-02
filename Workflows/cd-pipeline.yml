@@ -7,9 +7,10 @@ resources:
 
 variables:
   azureSubscription: 'Demo Account'
+  azureSubscriptionId: '164a84cf-b099-4567-a527-c2a8143a32c7'
   region: 'eastus'
   logicAppName: 'logic-rutzsco-demo-logic-app-ci'
-
+  
 stages:
 - stage: CI
   displayName: 'CI'
@@ -31,3 +32,4 @@ stages:
               appName: '$(logicAppName)'
               package: '$(Pipeline.Workspace)/build/App/LA.zip'
               deploymentMethod: 'zipDeploy'
+              AppSettings: '-WORKFLOWS_SUBSCRIPTION_ID $(azureSubscriptionId) -WORKFLOWS_LOCATION_NAME $(region)'
