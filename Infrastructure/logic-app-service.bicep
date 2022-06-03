@@ -32,9 +32,8 @@ sku: {
 properties: {
   targetWorkerCount: minimumElasticSize
   maximumElasticWorkerCount: 20
-  elasticScaleEnabled: true
   isSpot: false
-  zoneRedundant: true
+  zoneRedundant: false
 }
 }
 
@@ -76,7 +75,7 @@ properties: {
       }
       {
         name: 'WEBSITE_NODE_DEFAULT_VERSION'
-        value: '~12'
+        value: '~14'
       }
       {
         name: 'AzureWebJobsStorage'
