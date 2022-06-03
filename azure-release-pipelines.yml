@@ -6,7 +6,7 @@ variables:
   region: 'eastus'
   resourceGroupName: 'rutzsco-demo-logic-app'
   logicAppName: 'rutzsco-demo-logic-app'
-  logicAppStorageName: 'rutzscodla'
+  logicAppStorageName: 'rutzscodemola'
   templateFile: 'Infrastructure/main.bicep'
 
 pool:
@@ -21,4 +21,4 @@ steps:
     inlineScript: |
       az --version
       az group create --name $(resourceGroupName) --location $(region)
-      az deployment group create --resource-group $(resourceGroupName) --template-file $(templateFile) --parameters logicAppServiceName=$(logicAppName) storageAccountName=$(logicAppStorageName) > outputs.json
+      az deployment group create --resource-group $(resourceGroupName) --template-file $(templateFile) --parameters logicAppServiceName=$(logicAppName) logicAppStorageAccountName=$(logicAppStorageName) > outputs.json
