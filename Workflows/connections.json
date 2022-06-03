@@ -7,7 +7,10 @@
         "connection": {
           "id": "/subscriptions/@appsetting('WORKFLOWS_SUBSCRIPTION_ID')/resourceGroups/@appsetting('WORKFLOWS_RESOURCE_GROUP_NAME')/providers/Microsoft.Web/connections/rutzscodemolablobs-blobconnection-ci"
         },
-        "connectionRuntimeUrl": "@appsetting('BLOB_CONNECTION_RUNTIMEURL')"
+        "connectionRuntimeUrl": "@appsetting('BLOB_CONNECTION_RUNTIMEURL')",
+        "authentication": {
+          "type": "ManagedServiceIdentity"
+       }
       }
     }
   }
