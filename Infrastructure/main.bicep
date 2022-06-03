@@ -70,7 +70,6 @@ resource storageAccountContainer 'Microsoft.Storage/storageAccounts/blobServices
   properties: {}
 }
 
-
 resource logicAppStorageAccountRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
   scope: storageAccount
   name: guid('rutzsco-logicapp-${roleDefinitionId}-${environment}-ra')
@@ -78,5 +77,19 @@ resource logicAppStorageAccountRoleAssignment 'Microsoft.Authorization/roleAssig
     principalType: 'ServicePrincipal'
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefinitionId)
     principalId: la.outputs.managedIdentityPrincipalId
+  }
+}
+
+resource connectionAccessPolicy 'Microsoft.Web/connections/accessPolicies@2016-06-01' = {
+  name: '${blobStorageConnection.name}/${la.name}'
+  location: location
+  properties: {
+    principal: {
+      type: 'ActiveDirectory'
+      identity: {
+        tenantId: subscription().tenantId
+        objectId: la.outputs.managedIdentityPrincipalId
+      }
+    }
   }
 }
