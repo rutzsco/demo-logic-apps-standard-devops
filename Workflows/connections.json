@@ -13,6 +13,9 @@
           "audience": "https://storage.azure.com/",
           "type": "ManagedServiceIdentity"
         }
+      },
+      "authentication": {
+        "type": "ManagedServiceIdentity"
       }
     }
   }
