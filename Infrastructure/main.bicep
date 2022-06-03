@@ -49,7 +49,7 @@ module la 'logic-app-service.bicep' = {
 
 // Workflow Storage Account
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
-  name: '${workflowStorageAccountName}-${environment}'
+  name: '${workflowStorageAccountName}${environment}'
   location: location
   sku: {
     name: 'Standard_LRS'
