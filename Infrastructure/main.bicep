@@ -2,10 +2,11 @@ param location string = 'eastus'
 param roleDefinitionId string = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe' //Default as Storage Blob Data Contributor role
 
 param logicAppServiceName string = 'rutzsco-demo-logic-app'
-param storageAccountName string = 'rutzscodemologicapp'
+param logicAppStorageAccountName string = 'rutzscodemola'
+param workflowStorageAccountName string = 'rutzscodemolablobs'
+param environment string = 'ci'
+
 param logAnalyticsWorkspaceName string = 'rutzsco-demo-logic-app'
-
-
 
 // Log Analytics
 module logAnalytics 'log-analytics.bicep' = {
@@ -16,7 +17,7 @@ module logAnalytics 'log-analytics.bicep' = {
   }
 }
 
-var blobStorageConnectionName = '${storageAccountName}-blobconnection'
+var blobStorageConnectionName = '${workflowStorageAccountName}-blobconnection-${environment}'
 resource blobStorageConnection 'Microsoft.Web/connections@2016-06-01' = {
   name: blobStorageConnectionName
   kind: 'V2'
@@ -40,15 +41,15 @@ module la 'logic-app-service.bicep' = {
   params: {
     location: location
     name: logicAppServiceName
-    storageAccountName: storageAccountName
+    storageAccountName: logicAppStorageAccountName
     logwsid: logAnalytics.outputs.id
     blobStorageConnectionRuntimeUrl: connectionRuntimeUrl
   }
 }
 
-// Connections SA
+// Workflow Storage Account
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
-  name: storageAccountName
+  name: '${workflowStorageAccountName}-${environment}'
   location: location
   sku: {
     name: 'Standard_LRS'
@@ -62,9 +63,14 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
   }
 }
 
+resource storageAccountContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-04-01' = {
+  name: '${storageAccount.name}/default/myBlobs'
+  properties: {}
+}
+
 resource logicAppStorageAccountRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
   scope: storageAccount
-  name: guid('ra-logicapp-${roleDefinitionId}')
+  name: guid('rutzsco-logicapp-${roleDefinitionId}-${environment}-ra')
   properties: {
     principalType: 'ServicePrincipal'
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefinitionId)
