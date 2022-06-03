@@ -3,7 +3,7 @@ trigger:
   
 variables:
   azureServiceConnection: 'Demo Account'
-  region: 'eastus'
+  region: 'eastus2'
   resourceGroupName: 'rutzsco-demo-logic-app'
   virtualNetworkName: 'rutzsco-demo-logic-app-vnet'
   templateFile: 'Infrastructure/main-vnet.bicep'
