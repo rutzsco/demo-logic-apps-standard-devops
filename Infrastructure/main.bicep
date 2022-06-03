@@ -35,6 +35,7 @@ resource blobStorageConnection 'Microsoft.Web/connections@2016-06-01' = {
   }
 }
 var connectionRuntimeUrl = reference(blobStorageConnection.id, blobStorageConnection.apiVersion, 'full').properties.connectionRuntimeUrl
+
 // Logic Apps Service
 module la 'logic-app-service.bicep' = {
   name: 'la'
@@ -62,11 +63,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
     supportsHttpsTrafficOnly: true
     minimumTlsVersion: 'TLS1_2'
   }
-}
-
-resource storageAccountContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-04-01' = {
-  name: '${storageAccount.name}/default/myblobs'
-  properties: {}
 }
 
 resource logicAppStorageAccountRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
