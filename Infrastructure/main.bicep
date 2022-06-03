@@ -1,4 +1,4 @@
-param location string = 'eastus2'
+param location string = 'eastus'
 param roleDefinitionId string = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe' //Default as Storage Blob Data Contributor role
 
 param logicAppServiceName string = 'rutzsco-demo-logic-app'
