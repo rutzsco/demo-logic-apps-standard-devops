@@ -13,7 +13,7 @@ module logAnalytics 'log-analytics.bicep' = {
   name: 'logAnalytics' 
   params: {
     location: location
-    name: logAnalyticsWorkspaceName
+    name: '${logAnalyticsWorkspaceName}-${environment}'
   }
 }
 
@@ -44,6 +44,7 @@ module la 'logic-app-service.bicep' = {
     storageAccountName: logicAppStorageAccountName
     logwsid: logAnalytics.outputs.id
     blobStorageConnectionRuntimeUrl: connectionRuntimeUrl
+    environment: environment
   }
 }
 
