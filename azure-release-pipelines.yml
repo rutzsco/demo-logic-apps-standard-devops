@@ -2,7 +2,7 @@ trigger:
 - main
   
 variables:
-  azureServiceConnection: 'Demo Account'
+  azureServiceConnection: 'jmasengesho-internal-subscription'
   region: 'centralus'
   resourceGroupName: 'demo-logic-apps-standard-devops'
   logicAppName: 'demo-logic-apps-standard-devops'
