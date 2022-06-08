@@ -3,10 +3,10 @@ trigger:
   
 variables:
   azureServiceConnection: 'Demo Account'
-  region: 'eastus'
-  resourceGroupName: 'rutzsco-demo-logic-app'
-  logicAppName: 'rutzsco-demo-logic-app'
-  logicAppStorageName: 'rutzscodemola'
+  region: 'centralus'
+  resourceGroupName: 'demo-logic-apps-standard-devops'
+  logicAppName: 'demo-logic-apps-standard-devops'
+  logicAppStorageName: 'jmdemolastr'
   templateFile: 'Infrastructure/main.bicep'
 
 pool:
