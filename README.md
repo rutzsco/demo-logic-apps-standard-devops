@@ -1,6 +1,8 @@
 # Logic Apps Standard - Accelerator 
 
-### Development Environment Prerequisites
+## Prerequisites
+
+### 1. Development Tools 
 
 Follow the prerequisite guid here:
 
@@ -12,16 +14,21 @@ Unless you are familiar with the other deployment options we recommend installin
 
 - https://marketplace.visualstudio.com/items?itemName=Azurite.azurite
 
+### 2. Azure Environment
 
-### Azure Environment Prerequisites
+A Service Principal is required with Contributor RBAC to a Resource Group in Azure. The following resoureces will be created as part of the IaC.
 
 - Storage Account
 - Logic App
 - Log Analytics
 
 
-The Infrastructure as Code(IaC) has been implemented with bicep in the [Infrastructure](Infrastructure) folder.
+### 3. Azure Devops Project
 
-### Azure Devops Project
+An Azure DevOps project is required for running CICD pipelines. A service connection needs to be created for the piplines to deploy into the Azure sandbox resrouce group:
+
+https://docs.microsoft.com/en-us/azure/devops/pipelines/library/connect-to-azure?view=azure-devops#create-an-azure-resource-manager-service-connection-with-an-existing-service-principal
 
 The CICD pipelines have been implemented with YAML in the  [Infrastructure](Infrastructure) folder.
+
+
