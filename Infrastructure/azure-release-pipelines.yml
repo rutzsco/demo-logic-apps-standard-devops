@@ -1,11 +1,15 @@
-trigger:
-- main
-  
+trigger: none
+
+resources:
+  pipelines:
+  - pipeline: build
+    source: 'Infra - Build'
+
 variables:
   azureServiceConnection: 'Demo Account'
   region: 'eastus'
   logicAppStorageName: 'rutzscodemola'
-  templateFile: '$(System.DefaultWorkingDirectory)/Infrastructure/main.bicep'
+  templateFile: '$(Pipeline.Workspace)/Infrastructure/main.bicep'
 
 pool:
   vmImage: 'ubuntu-latest'

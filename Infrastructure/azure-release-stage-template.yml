@@ -38,8 +38,6 @@ stages:
                 scriptType: bash
                 scriptLocation: inlineScript
                 inlineScript: |
-                  cd $(System.DefaultWorkingDirectory)
                   ls
-                  pwd
                   az group create --name ${{ parameters.resourceGroupName }} --location ${{ parameters.region }}
                   az deployment group create --resource-group ${{ parameters.resourceGroupName }} --template-file ${{ parameters.templateFile }} --parameters logicAppServiceName=${{ parameters.logicAppName }} logicAppStorageAccountName=${{ parameters.logicAppStorageName }} > outputs.json

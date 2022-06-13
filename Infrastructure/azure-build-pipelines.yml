@@ -1,0 +1,20 @@
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    Include:
+    - Infrastructure
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: 'Infrastructure'
+    artifact: 'Infrastructure'
+    publishLocation: 'pipeline'
