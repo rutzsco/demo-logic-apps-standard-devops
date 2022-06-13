@@ -40,4 +40,4 @@ stages:
                 inlineScript: |
                   ls
                   az group create --name ${{ parameters.resourceGroupName }} --location ${{ parameters.region }}
-                  az deployment group create --resource-group ${{ parameters.resourceGroupName }} --template-file ${{ parameters.templateFile }} --parameters logicAppServiceName=${{ parameters.logicAppName }} logicAppStorageAccountName=${{ parameters.logicAppStorageName }} > outputs.json
+                  az deployment group create --resource-group ${{ parameters.resourceGroupName }} --template-file ${{ parameters.templateFile }} --parameters logicAppServiceName=${{ parameters.logicAppName }} logicAppStorageAccountName=${{ parameters.logicAppStorageName }} environment=${{ lower(parameters.stageName) }} > outputs.json
