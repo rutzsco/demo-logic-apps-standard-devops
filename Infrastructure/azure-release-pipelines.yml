@@ -9,6 +9,7 @@ variables:
   azureServiceConnection: 'Demo Account'
   region: 'eastus'
   logicAppStorageName: 'rutzscodemola'
+  logicAppName: 'rutzsco-demo-logic-app'
   templateFile: '$(Pipeline.Workspace)/build/Infrastructure/main.bicep'
 
 pool:
@@ -22,7 +23,7 @@ stages:
     azureSubscription: $(azureSubscription)
     resourceGroupName: 'rutzsco-demo-logic-app-ci'
     region: $(region)
-    logicAppName: 'rutzsco-demo-logic-app-ci'
+    logicAppName: $(logicAppName)
     logicAppStorageName: $(logicAppStorageName)
     templateFile: $(templateFile)
 - template: azure-release-stage-template.yml
@@ -32,6 +33,6 @@ stages:
     azureSubscription: $(azureSubscription)
     resourceGroupName: 'rutzsco-demo-logic-app-qa'
     region: $(region)
-    logicAppName: 'rutzsco-demo-logic-app-qa'
+    logicAppName: $(logicAppName)
     logicAppStorageName: $(logicAppStorageName)
     templateFile: $(templateFile)
