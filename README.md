@@ -18,9 +18,11 @@ Unless you are familiar with the other deployment options we recommend installin
 
 A Service Principal is required with Owner RBAC to a Resource Group in Azure. The following resoureces will be created as part of the IaC.
 
-- Storage Account
-- Logic App
+- Storage Account for Logic App
+- Logic App Service
 - Log Analytics
+- Application Insights
+- Storage Account for Integration
 
 
 ### 3. Azure Devops Project
