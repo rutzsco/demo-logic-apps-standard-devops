@@ -75,7 +75,7 @@ module la 'logic-app-service.bicep' = {
 // Logic Apps - RBAC Contributor Access to Ingrgration Storage Account
 resource logicAppStorageAccountRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
   scope: storageAccount
-  name: guid('rutzsco-logicapp-${roleDefinitionId}-${environment}-ra')
+  name: guid('${logicAppServiceName}-${roleDefinitionId}-${environment}-ra')
   properties: {
     principalType: 'ServicePrincipal'
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefinitionId)
