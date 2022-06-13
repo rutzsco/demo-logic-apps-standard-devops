@@ -16,7 +16,7 @@ Unless you are familiar with the other deployment options we recommend installin
 
 ### 2. Azure Environment
 
-A Service Principal is required with Contributor RBAC to a Resource Group in Azure. The following resoureces will be created as part of the IaC.
+A Service Principal is required with Owner RBAC to a Resource Group in Azure. The following resoureces will be created as part of the IaC.
 
 - Storage Account
 - Logic App
