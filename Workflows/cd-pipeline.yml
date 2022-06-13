@@ -9,28 +9,23 @@ variables:
   azureSubscription: 'Demo Account'
   azureSubscriptionId: '164a84cf-b099-4567-a527-c2a8143a32c7'
   region: 'eastus'
-  resourceGroup: 'rutzsco-demo-logic-app'
-  logicAppName: 'rutzsco-demo-logic-app-ci'
-  
+
 stages:
-- stage: CI
-  displayName: 'CI'
-  jobs:
-  - deployment: Deploy
-    displayName: Deploy
-    pool:
-      vmImage: ubuntu-latest
-    environment: LA-CI
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureFunctionApp@1
-            displayName: 'Deploy logic app workflows'
-            inputs:
-              azureSubscription: '$(azureSubscription)'
-              appType: 'functionApp'
-              appName: '$(logicAppName)'
-              package: '$(Pipeline.Workspace)/build/App/LA.zip'
-              deploymentMethod: 'zipDeploy'
-              AppSettings: '-WORKFLOWS_SUBSCRIPTION_ID $(azureSubscriptionId) -WORKFLOWS_LOCATION_NAME $(region) -WORKFLOWS_RESOURCE_GROUP_NAME $(resourceGroup)'
+- template: cd-stage-template.yml
+  parameters:
+    stageName: 'CI'
+    environment: 'LA-CI'
+    azureSubscription: $(azureSubscription)
+    azureSubscriptionId: $(azureSubscriptionId)
+    resourceGroupName: 'rutzsco-demo-logic-app-ci'
+    region: $(region)
+    logicAppName: 'rutzsco-demo-logic-app-ci'
+- template: cd-stage-template.yml
+  parameters:
+    stageName: 'QA'
+    environment: 'LA-QA'
+    azureSubscription: $(azureSubscription)
+    azureSubscriptionId: $(azureSubscriptionId)
+    resourceGroupName: 'rutzsco-demo-logic-app-qa'
+    region: $(region)
+    logicAppName: 'rutzsco-demo-logic-app-qa'
