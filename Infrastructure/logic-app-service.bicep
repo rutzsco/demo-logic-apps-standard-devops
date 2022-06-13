@@ -23,7 +23,7 @@ properties: {
 
 // Dedicated app plan for the service
 resource plan 'Microsoft.Web/serverfarms@2021-02-01' = {
-name: '${name}-logic-${environment}'
+name: '${name}-${environment}'
 location: location
 sku: {
   tier: 'WorkflowStandard'
@@ -39,7 +39,7 @@ properties: {
 
 // Create application insights
 resource appi 'Microsoft.Insights/components@2020-02-02' = {
-name: '${name}-logic-${environment}'
+name: '${name}-${environment}'
 location: location
 kind: 'web'
 properties: {
