@@ -3,8 +3,8 @@ trigger:
     include:
     - main
   paths:
-    Include:
-    - Infrastructure
+    include:
+    - Infrastructure/*
 
 pool:
   vmImage: 'ubuntu-latest'
