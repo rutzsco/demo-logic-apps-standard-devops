@@ -5,7 +5,7 @@ variables:
   azureServiceConnection: 'Demo Account'
   region: 'eastus'
   logicAppStorageName: 'rutzscodemola'
-  templateFile: '$(Pipeline.Workspace)/Infrastructure/main.bicep'
+  templateFile: '$(Build.SourcesDirectory)/Infrastructure/main.bicep'
 
 pool:
   vmImage: 'ubuntu-latest'
