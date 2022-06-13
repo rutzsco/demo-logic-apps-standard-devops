@@ -24,3 +24,4 @@ The Infrastructure as Code(IaC) has been implemented with bicep in the [Infrastr
 
 ### Azure Devops Project
 
+The CICD pipelines have been implemented with YAML in the  [Infrastructure](Infrastructure) folder.
