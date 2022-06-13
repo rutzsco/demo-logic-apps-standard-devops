@@ -27,7 +27,7 @@
                     "headers": {
                         "ReadFileMetadataFromServer": true
                     },
-                    "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('rutzscodemolablobsci'))}/files",
+                    "path": "/v2/datasets/default/files",
                     "queries": {
                         "folderPath": "/myblobs",
                         "name": "@{utcNow()}",
