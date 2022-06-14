@@ -38,8 +38,8 @@ The CICD pipelines have been implemented with YAML in the  [Infrastructure](Infr
 ![Deployment Pipelines](https://docs.microsoft.com/en-us/azure/logic-apps/media/devops-deployment-single-tenant/deployment-pipelines-logic-apps.png)
 
 
-### Reference
+##  Reference
 
-https://docs.microsoft.com/en-us/azure/logic-apps/devops-deployment-single-tenant-azure-logic-apps#separate-concerns
+- https://docs.microsoft.com/en-us/azure/logic-apps/devops-deployment-single-tenant-azure-logic-apps
 
 
