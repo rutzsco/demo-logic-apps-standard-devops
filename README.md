@@ -35,6 +35,8 @@ The CICD pipelines have been implemented with YAML in the  [Infrastructure](Infr
 
 ## Solution Structure
 
+The following diagram shows the dependencies between the demo logic app solution and the infrastructure resources:
+
 ![Deployment Pipelines](Design/design-structure.png)
 
 ## CICD Design
