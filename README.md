@@ -33,6 +33,10 @@ https://docs.microsoft.com/en-us/azure/devops/pipelines/library/connect-to-azure
 
 The CICD pipelines have been implemented with YAML in the  [Infrastructure](Infrastructure) folder.
 
+## Solution Structure
+
+![Deployment Pipelines](Design/design-structure.png)
+
 ## CICD Design
 
 ![Deployment Pipelines](https://docs.microsoft.com/en-us/azure/logic-apps/media/devops-deployment-single-tenant/deployment-pipelines-logic-apps.png)
