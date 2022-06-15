@@ -43,7 +43,7 @@ The following diagram shows the dependencies between the demo logic app solution
 
 ***Aligns with CI/CD Delivery Model***
 
-![Pipeline Design](Design/design-cicd-detail.png)
+![Pipeline Design](Design/developer-delivery.png)
 
 ***Separation of Concerns***
 ![Deployment Pipelines](https://docs.microsoft.com/en-us/azure/logic-apps/media/devops-deployment-single-tenant/deployment-pipelines-logic-apps.png)
