@@ -21,6 +21,7 @@ stages:
     region: $(region)
     logicAppName: 'rutzsco-demo-logic-app-ci'
     storageAccountName: 'rutzscodemolablobsci'
+    triggerFrequency: 'Minute'
 - template: cd-stage-template.yml
   parameters:
     stageName: 'QA'
@@ -31,3 +32,4 @@ stages:
     region: $(region)
     logicAppName: 'rutzsco-demo-logic-app-qa'
     storageAccountName: 'rutzscodemolablobsqa'
+    triggerFrequency: 'Day'
