@@ -59,5 +59,6 @@ The single-tenant model gives you the capability to separate the concerns betwee
 
 - https://docs.microsoft.com/en-us/azure/logic-apps/devops-deployment-single-tenant-azure-logic-apps
 - https://docs.microsoft.com/en-us/azure/logic-apps/set-up-devops-deployment-single-tenant-azure-logic-apps?tabs=github
+- https://mattruma.com/adventures-with-logic-apps-using-bicep-to-deploy-logic-apps/
 
 
