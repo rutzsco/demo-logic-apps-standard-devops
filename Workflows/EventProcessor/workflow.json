@@ -27,7 +27,7 @@
                     "headers": {
                         "ReadFileMetadataFromServer": true
                     },
-                    "path": "/v2/datasets/default/files",
+                    "path": "/v2/datasets/@appsetting('storageAccountName')/files",
                     "queries": {
                         "folderPath": "/myblobs",
                         "name": "@{utcNow()}",

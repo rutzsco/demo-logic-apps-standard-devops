@@ -13,6 +13,8 @@ parameters:
   default: ''
 - name: logicAppName
   default: ''
+- name: storageAccountName
+  default: ''
 
 stages:
   - stage: ${{ parameters.stageName }}
@@ -38,4 +40,4 @@ stages:
                 appName: ${{ parameters.logicAppName }}
                 package: '$(Pipeline.Workspace)/build/App/LA.zip'
                 deploymentMethod: 'zipDeploy'
-                AppSettings: '-WORKFLOWS_SUBSCRIPTION_ID ${{ parameters.azureSubscriptionId }} -WORKFLOWS_LOCATION_NAME ${{ parameters.region }} -WORKFLOWS_RESOURCE_GROUP_NAME ${{ parameters.resourceGroupName }}'
+                AppSettings: '-WORKFLOWS_SUBSCRIPTION_ID ${{ parameters.azureSubscriptionId }} -WORKFLOWS_LOCATION_NAME ${{ parameters.region }} -WORKFLOWS_RESOURCE_GROUP_NAME ${{ parameters.resourceGroupName }} -STORAGE_ACCOUNT_NAME  ${{ parameters.storageAccountName }}'
