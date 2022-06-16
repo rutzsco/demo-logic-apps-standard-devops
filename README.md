@@ -10,9 +10,12 @@ https://docs.microsoft.com/en-us/azure/logic-apps/create-single-tenant-workflows
 
 ***NOTE***
 
-Unless you are familiar with the other deployment options we recommend installing Azurite via the VSCode extension:
+There is a bug with Azurite 3.17 so currently the best way to isntall Azureite is via NPM:
 
-- https://marketplace.visualstudio.com/items?itemName=Azurite.azurite
+``` bash
+npm uninstall -g azurite
+npm install -g azurite@3.16.0
+```
 
 ### 2. Azure Environment
 
