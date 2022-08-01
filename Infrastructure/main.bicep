@@ -4,6 +4,7 @@ param roleDefinitionId string = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe' //Default
 param logicAppServiceName string = 'rutzsco-demo-logic-app'
 param logicAppStorageAccountName string = 'rutzscodemola'
 param workflowStorageAccountName string = 'rutzscodemolablobs'
+param keyVaultName string = 'rutzscodemologicapp'
 param environment string = 'ci'
 
 param logAnalyticsWorkspaceName string = 'rutzsco-demo-logic-app'
@@ -103,7 +104,7 @@ module keyVault 'key-vault.bicep' = {
   name: 'kv'
   params: {
     location: location
-    keyVaultName: '${logicAppServiceName}-${environment}'
+    keyVaultName: '${keyVaultName}${environment}'
     objectId: la.outputs.managedIdentityPrincipalId
     secretName: 'BlobStorageConnectionString'
     secretValue: storageAccount.listKeys().keys[0].value
