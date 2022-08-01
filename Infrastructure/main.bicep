@@ -98,12 +98,12 @@ resource connectionAccessPolicy 'Microsoft.Web/connections/accessPolicies@2016-0
   }
 }
 
-// Key Vault - Service
+// Key Vault
 module keyVault 'key-vault.bicep' = {
   name: 'kv'
   params: {
-    location: '${logicAppServiceName}-${environment}'
-    keyVaultName: logicAppServiceName
+    location: location
+    keyVaultName: '${logicAppServiceName}-${environment}'
     objectId: la.outputs.managedIdentityPrincipalId
     secretName: 'BlobStorageConnectionString'
     secretValue: storageAccount.listKeys().keys[0].value
