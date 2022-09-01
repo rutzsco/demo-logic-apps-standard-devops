@@ -31,8 +31,6 @@ jobs:
       script: |
         rm parameters.json
         mv azure.parameters.json parameters.json
-        rm connections.json
-        mv azure.connections.json connections.json
   - task: ArchiveFiles@2
     displayName: 'Create project zip'
     inputs:
