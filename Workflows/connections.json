@@ -2,10 +2,10 @@
   "managedApiConnections": {
     "azureblob": {
       "api": {
-        "id": "/subscriptions/@appsetting('WORKFLOWS_SUBSCRIPTION_ID')/providers/Microsoft.Web/locations/@appsetting('WORKFLOWS_LOCATION_NAME')/managedApis/azureblob"
+        "id": "/subscriptions/164a84cf-b099-4567-a527-c2a8143a32c7/providers/Microsoft.Web/locations/eastus/managedApis/azureblob"
       },
       "connection": {
-        "id": "/subscriptions/@appsetting('WORKFLOWS_SUBSCRIPTION_ID')/resourceGroups/@appsetting('WORKFLOWS_RESOURCE_GROUP_NAME')/providers/Microsoft.Web/connections/rutzscodemolablobs-blobconnection-ci"
+        "id": "/subscriptions/164a84cf-b099-4567-a527-c2a8143a32c7/resourceGroups/rutzsco-demo-logic-app-ci/providers/Microsoft.Web/connections/rutzscodemolablobs-blobconnection-ci"
       },
       "connectionRuntimeUrl": "@appsetting('BLOB_CONNECTION_RUNTIMEURL')",
       "connectionProperties": {
