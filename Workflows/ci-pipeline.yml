@@ -23,7 +23,16 @@ jobs:
       Contents: |
         Workflows/**
       TargetFolder: 'project_output'
-
+  - task: Bash@3
+    displayName: 'Swap local settings files with Azure versions'
+    inputs:
+      targetType: 'inline'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/project_output/Workflows'
+      script: |
+        rm parameters.json
+        mv azure.parameters.json parameters.json
+        rm connections.json
+        mv azure.connections.json connections.json
   - task: ArchiveFiles@2
     displayName: 'Create project zip'
     inputs:

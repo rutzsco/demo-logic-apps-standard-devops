@@ -1,0 +1,22 @@
+{
+  "managedApiConnections": {
+    "azureblob": {
+      "api": {
+        "id": "/subscriptions/164a84cf-b099-4567-a527-c2a8143a32c7/providers/Microsoft.Web/locations/eastus/managedApis/azureblob"
+      },
+      "connection": {
+        "id": "/subscriptions/164a84cf-b099-4567-a527-c2a8143a32c7/resourceGroups/rutzsco-demo-logic-app-ci/providers/Microsoft.Web/connections/rutzscodemolablobs-blobconnection-ci"
+      },
+      "connectionRuntimeUrl": "@appsetting('BLOB_CONNECTION_RUNTIMEURL')",
+      "connectionProperties": {
+        "authentication": {
+          "audience": "https://storage.azure.com/",
+          "type": "ManagedServiceIdentity"
+        }
+      },
+      "authentication": {
+        "type": "ManagedServiceIdentity"
+      }
+    }
+  }
+}
