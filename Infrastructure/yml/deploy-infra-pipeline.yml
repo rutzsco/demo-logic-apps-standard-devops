@@ -14,8 +14,9 @@ trigger:
     include:
     - main
   paths:
-    include:
-    - Infrastructure/*
+    include: 
+      - '**/*.yml'
+      - '**/*.bicep'
 
 # ----------------------------------------------------------------------------------------------------
 variables:

@@ -1,10 +1,29 @@
-trigger: none
+# ------------------------------------------------------------------------------------------------------------------------
+# Pipeline to deploy Logic Application to existing Function App
+# ------------------------------------------------------------------------------------------------------------------------
+# Note: This pipeline needs a variable group "LogicAppDemo-<env>" -> one for EACH environment being deployed.
+#  See ../Docs/VariableGroups.md for details
+# ------------------------------------------------------------------------------------------------------------------------
+name: $(date:yyyy).$(date:MM).$(date:dd)$(rev:.r)
+pool:
+  vmImage: 'ubuntu-latest'
 
+# ----------------------------------------------------------------------------------------------------
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+      - Workflows/*
+
+# ----------------------------------------------------------------------------------------------------
 variables:
   - group: LogicAppDemo
   - name: artifactName
     value: 'LA.zip'
 
+# ----------------------------------------------------------------------------------------------------
 stages:
 - template: templates\build-logic-std-template.yml
   parameters:
@@ -12,6 +31,7 @@ stages:
     stageDisplayName: Build Application
     artifactName: $(artifactName)
 
+# ----------------------------------------------------------------------------------------------------
 - template: templates\deploy-logic-std-template.yml
   parameters:
     stageName: DeployDEV

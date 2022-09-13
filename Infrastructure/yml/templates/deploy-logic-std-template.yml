@@ -16,7 +16,7 @@ stages:
     displayName: ${{ parameters.stageDisplayName }}
 
     jobs:
-    - job: logic_app_deploy
+    - deployment: logic_app_deploy
       displayName: 'Deploy Logic App'
       environment: ${{ parameters.environment }}
 
