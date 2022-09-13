@@ -8,16 +8,16 @@ variables:
 stages:
 - template: templates\build-app-template.yml
   parameters:
-    stageName: BuildArtifacts
-    stageDisplayName: Build Artifacts
+    stageName: BuildApplication
+    stageDisplayName: Build Application
     artifactName: $(artifactName)
 
 - template: templates\deploy-app-template.yml
   parameters:
     stageName: DeployDEV
     stageDisplayName: Deploy App DEV
-    variableGroupName: 'LogicAppDemo-Dev1'
-    resourceGroupName: $(resourceGroupNameDev)
+    variableGroupName: LogicAppDemo-Dev1
+    azureSubscription: $(azureSubscription)
     environment: 'DEV'
     triggerFrequency: 'Minute'
     artifactName: $(artifactName)
@@ -26,8 +26,8 @@ stages:
   parameters:
     stageName: DeployQA
     stageDisplayName: Deploy App QA
-    variableGroupName: 'LogicAppDemo-QA1'
-    resourceGroupName: $(resourceGroupNameQA)
+    variableGroupName: LogicAppDemo-QA1
+    azureSubscription: $(azureSubscription)
     environment: 'QA'
     triggerFrequency: 'Day'
     artifactName: $(artifactName)

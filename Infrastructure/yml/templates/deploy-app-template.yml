@@ -1,18 +1,11 @@
 parameters: 
-- name: variableGroupName
-  default: 'LogicAppDemoDev'
-- name: resourceGroupName
-  default: ''
-- name: stageName
-  default: ''
-- name: stageDisplayName
-  default: ''
-- name: environment
-  default: ''
-- name: triggerFrequency
-  default: ''
-- name: artifactName
-  default: 'LA.zip'
+  stageName: ''
+  stageDisplayName: ''
+  variableGroupName: ''
+  azureSubscription: ''
+  environment: ''
+  triggerFrequency: ''
+  artifactName: ''
 
 stages:
   - stage: ${{ parameters.stageName }}
@@ -27,8 +20,6 @@ stages:
   
       variables:
       - group: ${{ parameters.variableGroupName }}
-      - name: resourceGroupName
-        value: ${{ parameters.resourceGroupName }}        
       - name: stageName
         value: ${{ parameters.stageName }}
       - name: environment
