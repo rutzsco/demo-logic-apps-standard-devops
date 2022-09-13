@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------------------------------
-# Template to deploy infrastructure
+# Template to create Azure resources
 # ----------------------------------------------------------------------------------------------------
 parameters: 
   variableGroupName:  'myVariableGroup'
@@ -21,7 +21,7 @@ jobs:
   - name: environmentLower
     value: ${{ lower(parameters.environment) }}
   - name: templateFile
-    value: '$(Pipeline.Workspace)/s/Infrastructure/main.bicep'
+    value: '$(Pipeline.Workspace)/s/Infrastructure/bicep/main.bicep'
 
   steps:
   - bash: |

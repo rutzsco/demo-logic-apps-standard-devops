@@ -1,7 +1,7 @@
 trigger: none
 
 variables:
-  - group: 'LogicAppDemo'
+  - group: 'LogicAppDemo1'
   - name: artifactName
     value: 'LA.zip'
 
@@ -16,7 +16,7 @@ stages:
   parameters:
     stageName: 'DeployDEV'
     stageDisplayName: 'Deploy App DEV'
-    variableGroupName: 'LogicAppDemoDev'
+    variableGroupName: 'LogicAppDemo-Dev1'
     resourceGroupName: $(resourceGroupNameDev)
     environment: 'DEV'
     triggerFrequency: 'Minute'
@@ -26,7 +26,7 @@ stages:
   parameters:
     stageName: 'DeployQA'
     stageDisplayName: 'Deploy App QA'
-    variableGroupName: 'LogicAppDemoQA'
+    variableGroupName: 'LogicAppDemo-QA1'
     resourceGroupName: $(resourceGroupNameQA)
     environment: 'QA'
     triggerFrequency: 'Day'

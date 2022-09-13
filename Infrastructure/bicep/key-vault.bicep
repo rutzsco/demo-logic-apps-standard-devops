@@ -70,7 +70,6 @@ resource keyvaultResource 'Microsoft.KeyVault/vaults@2021-04-01-preview' = {
     enabledForDiskEncryption: enabledForDiskEncryption
     enabledForTemplateDeployment: enabledForTemplateDeployment
     enableRbacAuthorization: true
-    enablePurgeProtection: false
     enableSoftDelete: false
     tenantId: tenantId
 
