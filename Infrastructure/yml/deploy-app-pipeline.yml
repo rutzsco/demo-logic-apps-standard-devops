@@ -1,32 +1,32 @@
 trigger: none
 
 variables:
-  - group: LogicAppDemo1
+  - group: LogicAppDemo
   - name: artifactName
     value: 'LA.zip'
 
 stages:
-- template: templates\build-app-template.yml
+- template: templates\build-logic-std-template.yml
   parameters:
     stageName: BuildApplication
     stageDisplayName: Build Application
     artifactName: $(artifactName)
 
-- template: templates\deploy-app-template.yml
+- template: templates\deploy-logic-std-template.yml
   parameters:
     stageName: DeployDEV
     stageDisplayName: Deploy App DEV
-    variableGroupName: LogicAppDemo-Dev1
+    variableGroupName: LogicAppDemo-Dev
     azureSubscription: $(azureSubscription)
     environment: 'DEV'
     triggerFrequency: 'Minute'
     artifactName: $(artifactName)
 
-- template: templates\deploy-app-template.yml
+- template: templates\deploy-logic-std-template.yml
   parameters:
     stageName: DeployQA
     stageDisplayName: Deploy App QA
-    variableGroupName: LogicAppDemo-QA1
+    variableGroupName: LogicAppDemo-QA
     azureSubscription: $(azureSubscription)
     environment: 'QA'
     triggerFrequency: 'Day'

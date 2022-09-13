@@ -19,7 +19,7 @@ trigger:
 
 # ----------------------------------------------------------------------------------------------------
 variables:
-  - group: 'LogicAppDemo1'
+  - group: LogicAppDemo
 
 # ----------------------------------------------------------------------------------------------------
 stages:
@@ -29,7 +29,7 @@ stages:
     - template: templates\create-infra-template.yml
       parameters:
         environment: 'DEV'
-        variableGroupName: 'LogicAppDemo-Dev1'
+        variableGroupName: LogicAppDemo-Dev
         azureSubscription: $(azureSubscription)
 
   - stage: DeployQAResources
@@ -38,5 +38,5 @@ stages:
     - template: templates\create-infra-template.yml
       parameters:
         environment: 'QA'
-        variableGroupName: 'LogicAppDemo-QA1'
+        variableGroupName: LogicAppDemo-QA
         azureSubscription: $(azureSubscription)

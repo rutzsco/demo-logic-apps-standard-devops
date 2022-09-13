@@ -1,3 +1,6 @@
+# ----------------------------------------------------------------------------------------------------
+# Template to build logic app standard artifacts
+# ----------------------------------------------------------------------------------------------------
 parameters: 
 - name: stageName
   default: ''
@@ -6,6 +9,7 @@ parameters:
 - name: artifactName
   default: 'LA.zip'
 
+# ----------------------------------------------------------------------------------------------------
 stages:
   - stage: ${{ parameters.stageName }}
     displayName: ${{ parameters.stageDisplayName }}
@@ -15,7 +19,7 @@ stages:
       displayName: 'Build and publish logic app'
 
       variables:
-        logicAppCIArtifactName: 'App'
+        artifactFolderName: 'App'
 
       steps:
       - task: CopyFiles@2
@@ -25,6 +29,7 @@ stages:
           Contents: |
             Workflows/**
           TargetFolder: 'project_output'
+
       - task: Bash@3
         displayName: 'Swap local settings files with Azure versions'
         inputs:
@@ -33,6 +38,7 @@ stages:
           script: |
             mv azure.parameters.json parameters.json
             mv azure.connections.json connections.json
+
       - task: ArchiveFiles@2
         displayName: 'Create project zip'
         inputs:
@@ -46,5 +52,5 @@ stages:
         displayName: 'Publish project zip artifact'
         inputs:
           targetPath: '$(Build.ArtifactStagingDirectory)/$(artifactName)'
-          artifact: '$(logicAppCIArtifactName)'
+          artifact: '$(artifactFolderName)'
           publishLocation: 'pipeline'
