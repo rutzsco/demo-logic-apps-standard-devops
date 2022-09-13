@@ -48,7 +48,7 @@ stages:
         continueOnError: true
 
       - task: AzureFunctionApp@1
-        displayName: 'Deploy logic app workflows'
+        displayName: 'Deploy Logic App Zip'
         retryCountOnTaskFailure: 2
         inputs:
           azureSubscription: $(azureSubscription)

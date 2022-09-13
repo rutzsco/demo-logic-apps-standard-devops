@@ -16,7 +16,7 @@ stages:
 
     jobs:
     - job: logic_app_build
-      displayName: 'Build and publish logic app'
+      displayName: 'Build and Publish'
 
       variables:
         artifactFolderName: 'App'

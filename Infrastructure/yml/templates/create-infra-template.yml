@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------------------------------
-# Template to create Azure resources
+# Template to Deploy Azure resources
 # ----------------------------------------------------------------------------------------------------
 parameters: 
   variableGroupName:  'myVariableGroup'
@@ -8,12 +8,12 @@ parameters:
 
 # ----------------------------------------------------------------------------------------------------
 jobs:
-- deployment: CreateInfra
-  displayName: Initialize Create Infra
+- deployment: DeployResources
+  displayName: Initialize Deploy Resources
   environment: ${{ parameters.environment }}
 
-- job: CreateInfraJob
-  displayName: Create Infrastructure
+- job: DeployResourcesJob
+  displayName: Deploy Resources
   variables:
   - group: ${{ parameters.variableGroupName }}
   - name: environment
@@ -37,6 +37,7 @@ jobs:
     continueOnError: true
 
   - task: AzureCLI@2
+    displayName: 'Run Deploy Scripts'
     inputs:
       azureSubscription: $(azureSubscription)
       scriptType: bash
