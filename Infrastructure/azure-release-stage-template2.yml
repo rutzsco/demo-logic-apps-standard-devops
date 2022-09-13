@@ -38,7 +38,7 @@ jobs:
 
   - task: AzureCLI@2
     inputs:
-      azureSubscription: 'Lyles Azure Sandbox'
+      azureSubscription: 'Lyle Luppes Sandbox'
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
