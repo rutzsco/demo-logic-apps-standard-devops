@@ -1,8 +1,6 @@
 // --------------------------------------------------------------------------------
 // FYI: to delete an existing/deleted Key Vault, run this command in an Azure Cloud Shell:
 //  > az keyvault purge --name keyvaultname
-//  > az keyvault purge --name <appPrefix>demolavaultdev
-//  > az keyvault purge --name <appPrefix>demolavaultqa
 // --------------------------------------------------------------------------------
 
 @description('Specifies the name of the key vault.')
@@ -64,7 +62,7 @@ param secretName string
 @secure()
 param secretValue string
 
-resource kv 'Microsoft.KeyVault/vaults@2021-04-01-preview' = {
+resource keyvaultResource 'Microsoft.KeyVault/vaults@2021-04-01-preview' = {
   name: keyVaultName
   location: location
   properties: {
@@ -72,6 +70,8 @@ resource kv 'Microsoft.KeyVault/vaults@2021-04-01-preview' = {
     enabledForDiskEncryption: enabledForDiskEncryption
     enabledForTemplateDeployment: enabledForTemplateDeployment
     enableRbacAuthorization: true
+    enablePurgeProtection: false
+    enableSoftDelete: false
     tenantId: tenantId
 
     sku: {
@@ -86,7 +86,7 @@ resource kv 'Microsoft.KeyVault/vaults@2021-04-01-preview' = {
 }
 
 resource secret 'Microsoft.KeyVault/vaults/secrets@2021-04-01-preview' = {
-  parent: kv
+  parent: keyvaultResource
   name: secretName
   properties: {
     value: secretValue
@@ -94,8 +94,8 @@ resource secret 'Microsoft.KeyVault/vaults/secrets@2021-04-01-preview' = {
 }
 
 resource kvRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(roleIdMapping[roleName],objectId,kv.id)
-  scope: kv
+  name: guid(roleIdMapping[roleName],objectId,keyvaultResource.id)
+  scope: keyvaultResource
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleIdMapping[roleName])
     principalId: objectId
@@ -103,4 +103,6 @@ resource kvRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-pr
   }
 }
 
+output keyVaultName string = keyvaultResource.name
+output keyVaultId string = keyvaultResource.id
 output secretUri string = secret.properties.secretUriWithVersion

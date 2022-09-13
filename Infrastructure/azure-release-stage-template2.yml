@@ -1,0 +1,50 @@
+# ----------------------------------------------------------------------------------------------------
+# Template to deploy infrastructure
+# ----------------------------------------------------------------------------------------------------
+parameters: 
+- name: variableGroupName
+  default:  'myVariableGroup'
+- name: environment
+  default:  'DEV'
+- name: templateFile
+  default: ''
+
+# ----------------------------------------------------------------------------------------------------
+jobs:
+- deployment: CreateInfra
+  displayName: Initialize Create Infra
+  environment: ${{ parameters.environment }}
+
+- job: CreateInfraJob
+  displayName: Create Infrastructure
+  variables:
+  - group: ${{ parameters.variableGroupName }}
+  - name: environment
+    value: ${{ parameters.environment }}
+  - name: environmentLower
+    value: ${{ lower(parameters.environment) }}
+  - name: templateFile
+    value: ${{ parameters.templateFile }}
+
+    steps:
+    - bash: |
+        echo "azureSubscription=$(azureSubscription)"
+        echo "resourceGroupName=$(resourceGroupName)"
+        echo "region=$(region)"
+        echo "environment=$(environment)"
+        echo "environmentLower=$(environmentLower)"
+        echo "appPrefix=$(appPrefix)"
+        echo "templateFile=$(templateFile)"
+        tree $(Pipeline.Workspace)
+      displayName: 'Display Variables'
+      continueOnError: true
+
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: $(azureSubscription)
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          ls
+          az group create --name $(resourceGroupName) --location $(region)
+          az deployment group create --resource-group $(resourceGroupName) --template-file $(templateFile) --parameters appPrefix=$(appPrefix) environment=$(environmentLower) blobStorageContributorId=$(blobStorageContributorId) > outputs.json

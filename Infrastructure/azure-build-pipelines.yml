@@ -1,3 +1,14 @@
+# ------------------------------------------------------------------------------------------------------------------------
+# Pipeline to deploy Azure Resources for All Environments
+# ------------------------------------------------------------------------------------------------------------------------
+# Note: This pipeline needs a variable group "LogicAppDemo-<env>" -> one for EACH environment being deployed.
+#  See ../Docs/VariableGroups.md for details
+# ------------------------------------------------------------------------------------------------------------------------
+name: $(date:yyyy).$(date:MM).$(date:dd)$(rev:.r)
+pool:
+  vmImage: 'ubuntu-latest'
+
+# ----------------------------------------------------------------------------------------------------
 trigger:
   branches:
     include:
@@ -6,15 +17,22 @@ trigger:
     include:
     - Infrastructure/*
 
-pool:
-  vmImage: 'ubuntu-latest'
+# ----------------------------------------------------------------------------------------------------
+stages:
+  - stage: DeployDEVResources
+    displayName: DEV Deploy Resources
+    jobs:
+    - template: azure-release-stage-template2.yml
+      parameters:
+        environment: 'DEV'
+        variableGroupName: 'LogicAppDemo-Dev1'
+        templateFile: '$(Pipeline.Workspace)/Infrastructure/main.bicep'
 
-variables:
-  buildConfiguration: 'Release'
-
-steps:
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: 'Infrastructure'
-    artifact: 'Infrastructure'
-    publishLocation: 'pipeline'
+  - stage: DeployQAResources
+    displayName: QA Deploy Resources
+    jobs:
+    - template: azure-release-stage-template2.yml
+      parameters:
+        environment: 'QA'
+        variableGroupName: 'LogicAppDemo-QA1'
+        templateFile: '$(Pipeline.Workspace)/Infrastructure/main.bicep'
