@@ -18,6 +18,10 @@ trigger:
     - Infrastructure/*
 
 # ----------------------------------------------------------------------------------------------------
+variables:
+  - group: 'LogicAppDemo1'
+
+# ----------------------------------------------------------------------------------------------------
 stages:
   - stage: DeployDEVResources
     displayName: DEV Deploy Resources
@@ -26,7 +30,7 @@ stages:
       parameters:
         environment: 'DEV'
         variableGroupName: 'LogicAppDemo-Dev1'
-        templateFile: '$(Pipeline.Workspace)/Infrastructure/main.bicep'
+        azureSubscription: $(azureSubscription)
 
   - stage: DeployQAResources
     displayName: QA Deploy Resources
@@ -35,4 +39,4 @@ stages:
       parameters:
         environment: 'QA'
         variableGroupName: 'LogicAppDemo-QA1'
-        templateFile: '$(Pipeline.Workspace)/Infrastructure/main.bicep'
+        azureSubscription: $(azureSubscription)

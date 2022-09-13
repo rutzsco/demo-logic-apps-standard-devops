@@ -21,7 +21,7 @@ jobs:
   - name: environmentLower
     value: ${{ lower(parameters.environment) }}
   - name: templateFile
-    value: ${{ parameters.templateFile }}
+    value: '$(Pipeline.Workspace)/s/Infrastructure/main.bicep'
 
   steps:
   - bash: |
@@ -38,7 +38,7 @@ jobs:
 
   - task: AzureCLI@2
     inputs:
-      azureSubscription: 'Lyle Luppes Sandbox'
+      azureSubscription: $(azureSubscription)
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
