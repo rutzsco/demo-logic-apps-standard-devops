@@ -1,31 +1,31 @@
 trigger: none
 
 variables:
-  - group: 'LogicAppDemo1'
+  - group: LogicAppDemo1
   - name: artifactName
     value: 'LA.zip'
 
 stages:
-- template: ci-stage-template.yml
+- template: templates\build-app-template.yml
   parameters:
-    stageName: 'BuildArtifacts'
-    stageDisplayName: 'Build Artifacts'
+    stageName: BuildArtifacts
+    stageDisplayName: Build Artifacts
     artifactName: $(artifactName)
 
-- template: cd-stage-template.yml
+- template: templates\deploy-app-template.yml
   parameters:
-    stageName: 'DeployDEV'
-    stageDisplayName: 'Deploy App DEV'
+    stageName: DeployDEV
+    stageDisplayName: Deploy App DEV
     variableGroupName: 'LogicAppDemo-Dev1'
     resourceGroupName: $(resourceGroupNameDev)
     environment: 'DEV'
     triggerFrequency: 'Minute'
     artifactName: $(artifactName)
 
-- template: cd-stage-template.yml
+- template: templates\deploy-app-template.yml
   parameters:
-    stageName: 'DeployQA'
-    stageDisplayName: 'Deploy App QA'
+    stageName: DeployQA
+    stageDisplayName: Deploy App QA
     variableGroupName: 'LogicAppDemo-QA1'
     resourceGroupName: $(resourceGroupNameQA)
     environment: 'QA'
