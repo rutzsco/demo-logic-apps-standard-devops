@@ -4,7 +4,7 @@
 parameters: 
   variableGroupName:  'myVariableGroup'
   environment:  'DEV'
-  templateFile: ''
+  azureSubscription: ''
 
 # ----------------------------------------------------------------------------------------------------
 jobs:
