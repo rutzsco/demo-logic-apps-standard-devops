@@ -1,24 +1,16 @@
 parameters: 
 - name: stageName
   default: ''
+- name: stageDisplayName
+  default: ''
 - name: environment
   default: ''
-- name: azureSubscription
-  default: ''
 - name: resourceGroupName
-  default: ''
-- name: region
-  default: ''
-- name: logicAppName
-  default: ''
-- name: logicAppStorageName
-  default: ''
-- name: templateFile
   default: ''
 
 stages:
   - stage: ${{ parameters.stageName }}
-    displayName: ${{ parameters.stageName }}
+    displayName: ${{ parameters.stageDisplayName }}
 
     jobs:
     - deployment: Deploy
@@ -26,18 +18,35 @@ stages:
       environment: ${{ parameters.environment }}
       pool:
         vmImage: 'ubuntu-latest'
-  
+
+      variables:
+      - name: resourceGroupName
+        value: ${{ parameters.resourceGroupName }}        
+      - name: environment
+        value: ${{ parameters.environment }}
+      - name: environmentLower
+        value: ${{ lower(parameters.environment) }}
+
       strategy:
         runOnce:
           deploy:
-  
             steps:
+            - bash: |
+                echo "resourceGroupName=$(resourceGroupName)"
+                echo "environment=$(environment)"
+                echo "environmentLower=$(environmentLower)"
+                echo "appPrefix=$(appPrefix)"
+                echo "templateFile=$(templateFile)"
+
+              displayName: 'Display Variables'
+              continueOnError: true
+
             - task: AzureCLI@2
               inputs:
-                azureSubscription: $(azureServiceConnection)
+                azureSubscription: $(azureSubscription)
                 scriptType: bash
                 scriptLocation: inlineScript
                 inlineScript: |
                   ls
-                  az group create --name ${{ parameters.resourceGroupName }} --location ${{ parameters.region }}
-                  az deployment group create --resource-group ${{ parameters.resourceGroupName }} --template-file ${{ parameters.templateFile }} --parameters logicAppServiceName=${{ parameters.logicAppName }} logicAppStorageAccountName=${{ parameters.logicAppStorageName }} environment=${{ lower(parameters.stageName) }} > outputs.json
+                  az group create --name $(resourceGroupName) --location $(region)
+                  az deployment group create --resource-group $(resourceGroupName) --template-file $(templateFile) --parameters appPrefix=$(appPrefix) environment=$(environmentLower) blobStorageContributorId=$(blobStorageContributorId) > outputs.json

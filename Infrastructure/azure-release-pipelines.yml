@@ -3,14 +3,12 @@ trigger: none
 resources:
   pipelines:
   - pipeline: build
-    source: 'Infra - Build'
+    source: 'demo-logic-app.1.Build-Infra-Templates'
 
 variables:
-  azureServiceConnection: 'Demo Account'
-  region: 'eastus'
-  logicAppStorageName: 'rutzscodemola'
-  logicAppName: 'rutzsco-demo-logic-app'
-  templateFile: '$(Pipeline.Workspace)/build/Infrastructure/main.bicep'
+  - group: 'LogicAppDemo'
+  - name: templateFile
+    value: '$(Pipeline.Workspace)/build/Infrastructure/main.bicep'
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -18,21 +16,14 @@ pool:
 stages:
 - template: azure-release-stage-template.yml
   parameters:
-    stageName: 'CI'
-    environment: 'LA-CI'
-    azureSubscription: $(azureSubscription)
-    resourceGroupName: 'rutzsco-demo-logic-app-ci'
-    region: $(region)
-    logicAppName: $(logicAppName)
-    logicAppStorageName: $(logicAppStorageName)
-    templateFile: $(templateFile)
+    stageName: 'INFRADEV'
+    stageDisplayName: 'Create Infra DEV'
+    environment: 'DEV'
+    resourceGroupName: $(resourceGroupNameDev)
+
 - template: azure-release-stage-template.yml
   parameters:
-    stageName: 'QA'
-    environment: 'LA-QA'
-    azureSubscription: $(azureSubscription)
-    resourceGroupName: 'rutzsco-demo-logic-app-qa'
-    region: $(region)
-    logicAppName: $(logicAppName)
-    logicAppStorageName: $(logicAppStorageName)
-    templateFile: $(templateFile)
+    stageName: 'INFRAQA'
+    stageDisplayName: 'Create Infra QA'
+    environment: 'QA'
+    resourceGroupName: $(resourceGroupNameQA)

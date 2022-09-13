@@ -1,26 +1,22 @@
 parameters: 
+- name: variableGroupName
+  default: 'LogicAppDemoDev'
+- name: resourceGroupName
+  default: ''
 - name: stageName
+  default: ''
+- name: stageDisplayName
   default: ''
 - name: environment
   default: ''
-- name: azureSubscription
-  default: ''
-- name: azureSubscriptionId
-  default: ''
-- name: resourceGroupName
-  default: ''
-- name: region
-  default: ''
-- name: logicAppName
-  default: ''
-- name: storageAccountName
-  default: ''
 - name: triggerFrequency
   default: ''
+- name: artifactName
+  default: 'LA.zip'
 
 stages:
   - stage: ${{ parameters.stageName }}
-    displayName: ${{ parameters.stageName }}
+    displayName: ${{ parameters.stageDisplayName }}
 
     jobs:
     - deployment: Deploy
@@ -29,17 +25,42 @@ stages:
       pool:
         vmImage: 'ubuntu-latest'
   
+      variables:
+      - group: ${{ parameters.variableGroupName }}
+      - name: resourceGroupName
+        value: ${{ parameters.resourceGroupName }}        
+      - name: stageName
+        value: ${{ parameters.stageName }}
+      - name: environment
+        value: ${{ parameters.environment }}
+      - name: triggerFrequency
+        value: ${{ parameters.triggerFrequency }}
+
       strategy:
         runOnce:
           deploy:
-  
             steps:
+            - bash: |
+                echo "azureSubscription=$(azureSubscription)"
+                echo "azureSubscriptionId=$(azureSubscriptionId)"
+                echo "region=$(region)"
+                echo "resourceGroupName=$(resourceGroupName)"
+                echo "environment=$(environment)"
+                echo "appPrefix=$(appPrefix)"
+                echo "logicAppName=$(logicAppName)"
+                echo "storageAccountName=$(storageAccountName)"
+                echo "triggerFrequency=$(triggerFrequency)"
+                echo "Pipeline.Workspace=$(Pipeline.Workspace)"
+                tree $(Pipeline.Workspace)
+              displayName: 'Display Variables'
+              continueOnError: true
+
             - task: AzureFunctionApp@1
               displayName: 'Deploy logic app workflows'
               inputs:
-                azureSubscription: ${{ parameters.azureSubscription }}
+                azureSubscription: $(azureSubscription)
                 appType: 'functionApp'
-                appName: ${{ parameters.logicAppName }}
-                package: '$(Pipeline.Workspace)/build/App/LA.zip'
+                appName: $(logicAppName)
+                package: '$(Pipeline.Workspace)/App/$(artifactName)'
                 deploymentMethod: 'zipDeploy'
-                AppSettings: '-WORKFLOWS_SUBSCRIPTION_ID ${{ parameters.azureSubscriptionId }} -WORKFLOWS_LOCATION_NAME ${{ parameters.region }} -WORKFLOWS_RESOURCE_GROUP_NAME ${{ parameters.resourceGroupName }} -STORAGE_ACCOUNT_NAME  ${{ parameters.storageAccountName }} -TRIGGER_FREQUENCY ${{ parameters.triggerFrequency }}'
+                AppSettings: '-WORKFLOWS_SUBSCRIPTION_ID $(azureSubscriptionId) -WORKFLOWS_LOCATION_NAME $(region) -WORKFLOWS_RESOURCE_GROUP_NAME $(resourceGroupName) -STORAGE_ACCOUNT_NAME  $(storageAccountName) -TRIGGER_FREQUENCY $(triggerFrequency)'

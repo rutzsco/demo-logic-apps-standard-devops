@@ -1,35 +1,33 @@
 trigger: none
 
-resources:
-  pipelines:
-  - pipeline: build
-    source: 'Workflows - Build'
-
 variables:
-  azureSubscription: 'Demo Account'
-  azureSubscriptionId: '164a84cf-b099-4567-a527-c2a8143a32c7'
-  region: 'eastus'
+  - group: 'LogicAppDemo'
+  - name: artifactName
+    value: 'LA.zip'
 
 stages:
+- template: ci-stage-template.yml
+  parameters:
+    stageName: 'BuildArtifacts'
+    stageDisplayName: 'Build Artifacts'
+    artifactName: $(artifactName)
+
 - template: cd-stage-template.yml
   parameters:
-    stageName: 'CI'
-    environment: 'LA-CI'
-    azureSubscription: $(azureSubscription)
-    azureSubscriptionId: $(azureSubscriptionId)
-    resourceGroupName: 'rutzsco-demo-logic-app-ci'
-    region: $(region)
-    logicAppName: 'rutzsco-demo-logic-app-ci'
-    storageAccountName: 'rutzscodemolablobsci'
+    stageName: 'DeployDEV'
+    stageDisplayName: 'Deploy App DEV'
+    variableGroupName: 'LogicAppDemoDev'
+    resourceGroupName: $(resourceGroupNameDev)
+    environment: 'DEV'
     triggerFrequency: 'Minute'
+    artifactName: $(artifactName)
+
 - template: cd-stage-template.yml
   parameters:
-    stageName: 'QA'
-    environment: 'LA-QA'
-    azureSubscription: $(azureSubscription)
-    azureSubscriptionId: $(azureSubscriptionId)
-    resourceGroupName: 'rutzsco-demo-logic-app-qa'
-    region: $(region)
-    logicAppName: 'rutzsco-demo-logic-app-qa'
-    storageAccountName: 'rutzscodemolablobsqa'
+    stageName: 'DeployQA'
+    stageDisplayName: 'Deploy App QA'
+    variableGroupName: 'LogicAppDemoQA'
+    resourceGroupName: $(resourceGroupNameQA)
+    environment: 'QA'
     triggerFrequency: 'Day'
+    artifactName: $(artifactName)

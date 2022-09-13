@@ -1,7 +1,7 @@
 param name string
 param storageAccountName string
 param blobStorageConnectionRuntimeUrl string
-param environment string = 'ci'
+param environment string = 'DEV'
 param logwsid string
 param minimumElasticSize int = 1
 param location string = resourceGroup().location

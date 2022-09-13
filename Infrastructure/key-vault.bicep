@@ -1,3 +1,10 @@
+// --------------------------------------------------------------------------------
+// FYI: to delete an existing/deleted Key Vault, run this command in an Azure Cloud Shell:
+//  > az keyvault purge --name keyvaultname
+//  > az keyvault purge --name <appPrefix>demolavaultdev
+//  > az keyvault purge --name <appPrefix>demolavaultqa
+// --------------------------------------------------------------------------------
+
 @description('Specifies the name of the key vault.')
 param keyVaultName string
 
