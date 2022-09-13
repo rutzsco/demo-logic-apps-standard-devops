@@ -1,13 +1,18 @@
+param appPrefix string = 'myorgname'
+param environment string = 'DEV'
 param location string = 'eastus'
-param roleDefinitionId string = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe' //Default as Storage Blob Data Contributor role
+// Storage Blob Data Contributor role
+param blobStorageContributorId string = ''
+param longAppName string = 'demo-logic-app'
+param shortAppName string = 'demola'
 
-param logicAppServiceName string = 'rutzsco-demo-logic-app'
-param logicAppStorageAccountName string = 'rutzscodemola'
-param workflowStorageAccountName string = 'rutzscodemolablobs'
-param keyVaultName string = 'rutzscodemologicapp'
-param environment string = 'ci'
+var lowerAppPrefix = toLower(appPrefix)
 
-param logAnalyticsWorkspaceName string = 'rutzsco-demo-logic-app'
+var logicAppServiceName = '${lowerAppPrefix}-${longAppName}'
+var logAnalyticsWorkspaceName = '${lowerAppPrefix}-${longAppName}'
+var logicAppStorageAccountName = '${lowerAppPrefix}${shortAppName}store'
+var workflowStorageAccountName = '${lowerAppPrefix}${shortAppName}blobs'
+var keyVaultName = '${lowerAppPrefix}${shortAppName}vault'
 
 // Integration - Storage Account
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
@@ -41,7 +46,7 @@ module logAnalytics 'log-analytics.bicep' = {
 }
 
 // Logic Apps - StorageConnection
-var blobStorageConnectionName = '${workflowStorageAccountName}-blobconnection-${environment}'
+var blobStorageConnectionName = '${workflowStorageAccountName}${environment}-blobconnection'
 resource blobStorageConnection 'Microsoft.Web/connections@2016-06-01' = {
   name: blobStorageConnectionName
   kind: 'V2'
@@ -62,7 +67,7 @@ var connectionRuntimeUrl = reference(blobStorageConnection.id, blobStorageConnec
 
 // Logic Apps - Service
 module la 'logic-app-service.bicep' = {
-  name: 'la'
+  name: 'logicappservice'
   params: {
     location: location
     name: logicAppServiceName
@@ -76,10 +81,10 @@ module la 'logic-app-service.bicep' = {
 // Logic Apps - RBAC Contributor Access to Ingrgration Storage Account
 resource logicAppStorageAccountRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
   scope: storageAccount
-  name: guid('${logicAppServiceName}-${roleDefinitionId}-${environment}-ra')
+  name: guid('${logicAppServiceName}-${blobStorageContributorId}-${environment}-ra')
   properties: {
     principalType: 'ServicePrincipal'
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefinitionId)
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', blobStorageContributorId)
     principalId: la.outputs.managedIdentityPrincipalId
   }
 }
@@ -101,7 +106,7 @@ resource connectionAccessPolicy 'Microsoft.Web/connections/accessPolicies@2016-0
 
 // Key Vault
 module keyVault 'key-vault.bicep' = {
-  name: 'kv'
+  name: 'keyvault'
   params: {
     location: location
     keyVaultName: '${keyVaultName}${environment}'

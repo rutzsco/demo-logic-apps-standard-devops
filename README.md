@@ -34,7 +34,16 @@ An Azure DevOps project is required for running CICD pipelines. A service connec
 
 https://docs.microsoft.com/en-us/azure/devops/pipelines/library/connect-to-azure?view=azure-devops#create-an-azure-resource-manager-service-connection-with-an-existing-service-principal
 
-The CICD pipelines have been implemented with YAML in the  [Infrastructure](Infrastructure) folder.
+### 4. Azure Devops Variable Groups
+The pipelines in this project are customized using an Azure DevOps Variable Group. Variable groups can be created via the command line as shown in the [Create Variable Groups](Infrastructure/docs/Create-Variable-Group.md) document.
+
+### 4. Azure Devops Pipelines
+Two CICD pipelines have been created with YML. Instructions on how to create pipelines can be found in the  [Create Pipelines](Infrastructure/docs/Create-Pipeline.md) document.
+
+- [deploy-infra-pipeline.yml](Infrastructure/yml/deploy-infra-pipeline.yml)
+- [deploy-app-pipeline.yml.yml](Infrastructure/yml/deploy-app-pipeline.yml.yml)
+
+
 
 ## Solution Structure
 
