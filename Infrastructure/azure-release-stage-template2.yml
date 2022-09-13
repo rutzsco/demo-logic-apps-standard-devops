@@ -2,12 +2,9 @@
 # Template to deploy infrastructure
 # ----------------------------------------------------------------------------------------------------
 parameters: 
-- name: variableGroupName
-  default:  'myVariableGroup'
-- name: environment
-  default:  'DEV'
-- name: templateFile
-  default: ''
+  variableGroupName:  'myVariableGroup'
+  environment:  'DEV'
+  templateFile: ''
 
 # ----------------------------------------------------------------------------------------------------
 jobs:
@@ -41,7 +38,7 @@ jobs:
 
   - task: AzureCLI@2
     inputs:
-      azureSubscription: $(azureSubscription)
+      azureSubscription: 'Lyles Azure Sandbox'
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
