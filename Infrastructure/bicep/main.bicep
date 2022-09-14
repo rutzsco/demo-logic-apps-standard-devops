@@ -2,7 +2,7 @@ param appPrefix string = 'myorgname'
 param environment string = 'DEV'
 param location string = 'eastus'
 // Storage Blob Data Contributor role
-param blobStorageContributorId string = ''
+param blobStorageContributorId string = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
 param longAppName string = 'demo-logic-app'
 param shortAppName string = 'demola'
 
