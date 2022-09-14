@@ -11,7 +11,7 @@ var lowerAppPrefix = toLower(appPrefix)
 var logicAppServiceName = '${lowerAppPrefix}-${longAppName}'
 var logAnalyticsWorkspaceName = '${lowerAppPrefix}-${longAppName}'
 var logicAppStorageAccountName = '${lowerAppPrefix}${shortAppName}app'
-var workflowStorageAccountName = '${lowerAppPrefix}${shortAppName}blobs'
+var workflowStorageAccountName = '${lowerAppPrefix}${shortAppName}blob'
 var keyVaultName = '${lowerAppPrefix}${shortAppName}vault'
 
 // Integration - Storage Account
