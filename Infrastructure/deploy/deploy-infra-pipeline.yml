@@ -1,0 +1,43 @@
+# ------------------------------------------------------------------------------------------------------------------------
+# Pipeline to deploy Azure Resources for multiple environments
+# ------------------------------------------------------------------------------------------------------------------------
+# Note: This pipeline needs a variable group "LogicAppDemo-<env>" -> one for EACH environment being deployed.
+#  See ../Docs/VariableGroups.md for details
+# ------------------------------------------------------------------------------------------------------------------------
+name: $(date:yyyy).$(date:MM).$(date:dd)$(rev:.r)
+pool:
+  vmImage: 'ubuntu-latest'
+
+# ----------------------------------------------------------------------------------------------------
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include: 
+      - '**/*.yml'
+      - '**/*.bicep'
+
+# ----------------------------------------------------------------------------------------------------
+variables:
+  - group: LogicAppDemo
+
+# ----------------------------------------------------------------------------------------------------
+stages:
+  - stage: DeployDEVResources
+    displayName: DEV Deploy Resources
+    jobs:
+    - template: templates\create-infra-template.yml
+      parameters:
+        environment: 'DEV'
+        variableGroupName: LogicAppDemo-Dev
+        azureSubscription: $(azureSubscription)
+
+  - stage: DeployQAResources
+    displayName: QA Deploy Resources
+    jobs:
+    - template: templates\create-infra-template.yml
+      parameters:
+        environment: 'QA'
+        variableGroupName: LogicAppDemo-QA
+        azureSubscription: $(azureSubscription)
