@@ -1,10 +1,18 @@
 {
     "storageAcountName": {
         "type": "String",
-        "value": "@appsetting('STORAGE_ACCOUNT_NAME')"
+        "value": "@appsetting('BLOB_STORAGE_ACCOUNT_NAME')"
     },
     "triggerFrequency": {
         "type": "String",
         "value": "@appsetting('TRIGGER_FREQUENCY')"
+    },
+    "blob_auth": {
+        "type":"object", 
+        "value": {
+            "type": "Raw",
+            "scheme": "Key",
+            "parameter": "@appsetting('azureblob-connectionKey')"
+        }
     }
 }

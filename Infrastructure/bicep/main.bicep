@@ -2,7 +2,7 @@ param appPrefix string = 'myorgname'
 param environment string = 'DEV'
 param location string = 'eastus'
 // Storage Blob Data Contributor role
-param blobStorageContributorId string = ''
+param blobStorageContributorId string = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
 param longAppName string = 'demo-logic-app'
 param shortAppName string = 'demola'
 
@@ -10,8 +10,8 @@ var lowerAppPrefix = toLower(appPrefix)
 
 var logicAppServiceName = '${lowerAppPrefix}-${longAppName}'
 var logAnalyticsWorkspaceName = '${lowerAppPrefix}-${longAppName}'
-var logicAppStorageAccountName = '${lowerAppPrefix}${shortAppName}store'
-var workflowStorageAccountName = '${lowerAppPrefix}${shortAppName}blobs'
+var logicAppStorageAccountName = '${lowerAppPrefix}${shortAppName}app'
+var workflowStorageAccountName = '${lowerAppPrefix}${shortAppName}blob'
 var keyVaultName = '${lowerAppPrefix}${shortAppName}vault'
 
 // Integration - Storage Account
@@ -74,6 +74,8 @@ module la 'logic-app-service.bicep' = {
     storageAccountName: logicAppStorageAccountName
     logwsid: logAnalytics.outputs.id
     blobStorageConnectionRuntimeUrl: connectionRuntimeUrl
+    blobStorageConnectionName: blobStorageConnectionName
+    blobStorageAccountName: storageAccount.name
     environment: environment
   }
 }

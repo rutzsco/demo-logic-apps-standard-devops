@@ -66,9 +66,19 @@ The single-tenant model gives you the capability to separate the concerns betwee
 
 ##  Reference
 
+### Local Development
+- https://docs.microsoft.com/en-us/azure/logic-apps/create-single-tenant-workflows-visual-studio-code
+
+### CICD
 - https://docs.microsoft.com/en-us/azure/logic-apps/devops-deployment-single-tenant-azure-logic-apps
 - https://docs.microsoft.com/en-us/azure/logic-apps/set-up-devops-deployment-single-tenant-azure-logic-apps?tabs=github
 - https://mattruma.com/adventures-with-logic-apps-using-bicep-to-deploy-logic-apps/
+
+### Observability
 - https://docs.microsoft.com/en-us/azure/logic-apps/create-single-tenant-workflows-azure-portal#enable-or-open-application-insights-after-deployment
+
+## Known Issues
+
+- https://github.com/Azure/logicapps/issues/609
 
 

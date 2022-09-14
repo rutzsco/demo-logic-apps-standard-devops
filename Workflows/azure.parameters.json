@@ -1,6 +1,14 @@
 {
+    "storageAcountName": {
+        "type": "String",
+        "value": "@appsetting('BLOB_STORAGE_ACCOUNT_NAME')"
+    },
+    "triggerFrequency": {
+        "type": "String",
+        "value": "@appsetting('TRIGGER_FREQUENCY')"
+    },
     "blob_auth": {
-        "type":"object", 
+        "type": "object",
         "value": {
             "type": "ManagedServiceIdentity"
         }

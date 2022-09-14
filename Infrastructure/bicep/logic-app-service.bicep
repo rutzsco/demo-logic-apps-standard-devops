@@ -1,6 +1,8 @@
 param name string
 param storageAccountName string
 param blobStorageConnectionRuntimeUrl string
+param blobStorageConnectionName string
+param blobStorageAccountName string
 param environment string = 'DEV'
 param logwsid string
 param minimumElasticSize int = 1
@@ -116,6 +118,26 @@ properties: {
       {
         name: 'BLOB_CONNECTION_RUNTIMEURL'
         value: blobStorageConnectionRuntimeUrl
+      }
+      {
+        name: 'BLOB_STORAGE_CONNECTION_NAME'
+        value: blobStorageConnectionName
+      }
+      {
+        name: 'BLOB_STORAGE_ACCOUNT_NAME'
+        value: blobStorageAccountName
+      }
+      {
+        name: 'WORKFLOWS_SUBSCRIPTION_ID'
+        value: subscription().subscriptionId
+      }
+      {
+        name: 'WORKFLOWS_RESOURCE_GROUP_NAME'
+        value: resourceGroup().name
+      }
+      {
+        name: 'WORKFLOWS_LOCATION_NAME'
+        value: location
       }
     ]
     use32BitWorkerProcess: true
