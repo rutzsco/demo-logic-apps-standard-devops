@@ -14,9 +14,7 @@
           "type": "ManagedServiceIdentity"
         }
       },
-      "authentication": {
-        "type": "ManagedServiceIdentity"
-      }
+      "authentication": "@parameters('blob_auth')"
     }
   }
 }
