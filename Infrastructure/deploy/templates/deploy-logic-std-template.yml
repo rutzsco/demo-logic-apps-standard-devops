@@ -43,7 +43,6 @@ stages:
                 echo "environment=$(environment)"
                 echo "appPrefix=$(appPrefix)"
                 echo "logicAppName=$(logicAppName)"
-                echo "storageAccountName=$(storageAccountName)"
                 echo "triggerFrequency=$(triggerFrequency)"
                 echo "Pipeline.Workspace=$(Pipeline.Workspace)"
                 tree $(Pipeline.Workspace)
@@ -59,4 +58,4 @@ stages:
                 appName: $(logicAppName)
                 package: '$(Pipeline.Workspace)/$(artifactFolderName)/$(artifactName)'
                 deploymentMethod: 'zipDeploy'
-                AppSettings: '-WORKFLOWS_SUBSCRIPTION_ID $(azureSubscriptionId) -WORKFLOWS_LOCATION_NAME $(region) -WORKFLOWS_RESOURCE_GROUP_NAME $(resourceGroupName) -STORAGE_ACCOUNT_NAME  $(storageAccountName) -TRIGGER_FREQUENCY $(triggerFrequency)'
+                AppSettings: '-WORKFLOWS_SUBSCRIPTION_ID $(azureSubscriptionId) -WORKFLOWS_LOCATION_NAME $(region) -WORKFLOWS_RESOURCE_GROUP_NAME $(resourceGroupName) -TRIGGER_FREQUENCY $(triggerFrequency)'

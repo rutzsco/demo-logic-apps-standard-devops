@@ -2,6 +2,7 @@ param name string
 param storageAccountName string
 param blobStorageConnectionRuntimeUrl string
 param blobStorageConnectionName string
+param blobStorageAccountName string
 param environment string = 'DEV'
 param logwsid string
 param minimumElasticSize int = 1
@@ -121,6 +122,10 @@ properties: {
       {
         name: 'BLOB_STORAGE_CONNECTION_NAME'
         value: blobStorageConnectionName
+      }
+      {
+        name: 'BLOB_STORAGE_ACCOUNT_NAME'
+        value: blobStorageAccountName
       }
     ]
     use32BitWorkerProcess: true

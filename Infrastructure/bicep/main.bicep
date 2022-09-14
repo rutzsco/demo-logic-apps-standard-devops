@@ -75,6 +75,7 @@ module la 'logic-app-service.bicep' = {
     logwsid: logAnalytics.outputs.id
     blobStorageConnectionRuntimeUrl: connectionRuntimeUrl
     blobStorageConnectionName: blobStorageConnectionName
+    blobStorageAccountName: storageAccount.name
     environment: environment
   }
 }

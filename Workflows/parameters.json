@@ -1,7 +1,7 @@
 {
     "storageAcountName": {
         "type": "String",
-        "value": "@appsetting('STORAGE_ACCOUNT_NAME')"
+        "value": "@appsetting('BLOB_STORAGE_ACCOUNT_NAME')"
     },
     "triggerFrequency": {
         "type": "String",
