@@ -10,7 +10,7 @@ var lowerAppPrefix = toLower(appPrefix)
 
 var logicAppServiceName = '${lowerAppPrefix}-${longAppName}'
 var logAnalyticsWorkspaceName = '${lowerAppPrefix}-${longAppName}'
-var logicAppStorageAccountName = '${lowerAppPrefix}${shortAppName}store'
+var logicAppStorageAccountName = '${lowerAppPrefix}${shortAppName}app'
 var workflowStorageAccountName = '${lowerAppPrefix}${shortAppName}blobs'
 var keyVaultName = '${lowerAppPrefix}${shortAppName}vault'
 
