@@ -37,7 +37,6 @@ stages:
             steps:
             - bash: |
                 echo "azureSubscription=$(azureSubscription)"
-                echo "azureSubscriptionId=$(azureSubscriptionId)"
                 echo "region=$(region)"
                 echo "resourceGroupName=$(resourceGroupName)"
                 echo "environment=$(environment)"
@@ -58,4 +57,4 @@ stages:
                 appName: $(logicAppName)
                 package: '$(Pipeline.Workspace)/$(artifactFolderName)/$(artifactName)'
                 deploymentMethod: 'zipDeploy'
-                AppSettings: '-WORKFLOWS_SUBSCRIPTION_ID $(azureSubscriptionId) -WORKFLOWS_LOCATION_NAME $(region) -WORKFLOWS_RESOURCE_GROUP_NAME $(resourceGroupName) -TRIGGER_FREQUENCY $(triggerFrequency)'
+                AppSettings: '-TRIGGER_FREQUENCY $(triggerFrequency)'

@@ -20,7 +20,6 @@ These commands actually create the variable groups:
     --variables 
         appPrefix='<yourInitials>' 
         azureSubscription='<yourSubscriptionName/serviceConnectionName>' 
-        azureSubscriptionId='<yourSubscriptionId>' 
         region='eastus' 
 
   az pipelines variable-group create 

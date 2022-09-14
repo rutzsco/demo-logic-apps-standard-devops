@@ -127,6 +127,18 @@ properties: {
         name: 'BLOB_STORAGE_ACCOUNT_NAME'
         value: blobStorageAccountName
       }
+      {
+        name: 'WORKFLOWS_SUBSCRIPTION_ID'
+        value: subscription().subscriptionId
+      }
+      {
+        name: 'WORKFLOWS_RESOURCE_GROUP_NAME'
+        value: resourceGroup().name
+      }
+      {
+        name: 'WORKFLOWS_LOCATION_NAME'
+        value: location
+      }
     ]
     use32BitWorkerProcess: true
   }
