@@ -77,4 +77,8 @@ The single-tenant model gives you the capability to separate the concerns betwee
 ### Observability
 - https://docs.microsoft.com/en-us/azure/logic-apps/create-single-tenant-workflows-azure-portal#enable-or-open-application-insights-after-deployment
 
+## Known Issues
+
+- https://github.com/Azure/logicapps/issues/609
+
 
