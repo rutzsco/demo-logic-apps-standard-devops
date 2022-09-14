@@ -2,12 +2,12 @@
   "managedApiConnections": {
     "azureblob": {
       "api": {
-        "id": "/subscriptions/51274a9c-b1ad-4d34-8ffe-0ba858eee00f/providers/Microsoft.Web/locations/eastus/managedApis/azureblob"
+        "id": "/subscriptions/@appsetting('WORKFLOWS_SUBSCRIPTION_ID')/providers/Microsoft.Web/locations/@appsetting('WORKFLOWS_LOCATION_NAME')/managedApis/azureblob"
       },
       "connection": {
-        "id": "/subscriptions/51274a9c-b1ad-4d34-8ffe-0ba858eee00f/resourceGroups/rutzsco-demo-logic-app-dev/providers/Microsoft.Web/connections/rutzscodemolablobdev-blobconnection"
+        "id": "/subscriptions/@appsetting('WORKFLOWS_SUBSCRIPTION_ID')/resourceGroups/@appsetting('WORKFLOWS_RESOURCE_GROUP_NAME')/providers/Microsoft.Web/connections/@appsetting('BLOB_CONNECTION_NAME')"
       },
-      "connectionRuntimeUrl": "https://08323eb57c5aa963.01.common.logic-eastus.azure-apihub.net/apim/azureblob/f907251c14e44120b7bdf68c5c1f210b",
+      "connectionRuntimeUrl": "@appsetting('BLOB_CONNECTION_RUNTIMEURL')",
       "connectionProperties": {
         "authentication": {
           "audience": "https://storage.azure.com/",
