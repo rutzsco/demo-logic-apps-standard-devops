@@ -12,7 +12,7 @@ Azure Logic Apps Standard provides an opportunity to enable a traditional develo
 
 #### 1. Development Tools 
 
-Follow the prerequisite guid here:
+Follow the prerequisite guide here:
 
 https://docs.microsoft.com/en-us/azure/logic-apps/create-single-tenant-workflows-visual-studio-code#prerequisites
 
@@ -49,8 +49,6 @@ Two CICD pipelines have been created with YML. Instructions on how to create pip
 
 - [deploy-infra-pipeline.yml](Infrastructure/yml/deploy-infra-pipeline.yml)
 - [deploy-app-pipeline.yml.yml](Infrastructure/yml/deploy-app-pipeline.yml.yml)
-
-
 
 ## Solution Componets
 
@@ -95,7 +93,8 @@ The single-tenant model gives you the capability to separate the concerns betwee
 ### CICD
 
 1. Lack of ARM/Bicep schema documentation exits for many connectors.
-2. Development done in Azure Portal needs to be manually copied to source control. 
+2. Schema for using ManagedIdentiry with Managed Connection is not well documented. [Link](https://github.com/Azure/bicep/issues/5516)
+3. Development done in Azure Portal needs to be manually copied to source control. 
 
 ### Links
 - https://github.com/Azure/logicapps/issues/609
