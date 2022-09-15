@@ -2,12 +2,12 @@
   "managedApiConnections": {
     "azureblob": {
       "api": {
-        "id": "/subscriptions/@appsetting('WORKFLOWS_SUBSCRIPTION_ID')/providers/Microsoft.Web/locations/@appsetting('WORKFLOWS_LOCATION_NAME')/managedApis/azureblob"
+        "id": "/subscriptions/a0f86c93-146a-4534-b83e-49090394aa78/providers/Microsoft.Web/locations/eastus/managedApis/azureblob"
       },
       "connection": {
-        "id": "/subscriptions/@appsetting('WORKFLOWS_SUBSCRIPTION_ID')/resourceGroups/@appsetting('WORKFLOWS_RESOURCE_GROUP_NAME')/providers/Microsoft.Web/connections/@appsetting('BLOB_CONNECTION_NAME')"
+        "id": "/subscriptions/a0f86c93-146a-4534-b83e-49090394aa78/resourceGroups/rg_logic_demo_dev/providers/Microsoft.Web/connections/luppesdemolablobdev-blobconnection"
       },
-      "connectionRuntimeUrl": "@appsetting('BLOB_CONNECTION_RUNTIMEURL')",
+      "connectionRuntimeUrl": "https://d0550650dbf6f152.15.common.logic-eastus.azure-apihub.net/apim/azureblob/124494d90be5429a8e2883d2ef4acf7f",
       "connectionProperties": {
         "authentication": {
           "audience": "https://storage.azure.com/",
@@ -16,6 +16,20 @@
       },
       "authentication": {
         "type": "ManagedServiceIdentity"
+      }
+    },
+    "azureblob": {
+      "api": {
+        "id": "/subscriptions/a0f86c93-146a-4534-b83e-49090394aa78/providers/Microsoft.Web/locations/eastus/managedApis/azureblob"
+      },
+      "connection": {
+        "id": "/subscriptions/a0f86c93-146a-4534-b83e-49090394aa78/resourceGroups/rg_logic_demo_dev/providers/Microsoft.Web/connections/azureblob"
+      },
+      "connectionRuntimeUrl": "https://d0550650dbf6f152.15.common.logic-eastus.azure-apihub.net/apim/azureblob/e9d5711de9a142d38e4ea2efa3cb385c/",
+      "authentication": {
+        "type": "Raw",
+        "scheme": "Key",
+        "parameter": "@appsetting('azureblob_1-connectionKey')"
       }
     }
   }
