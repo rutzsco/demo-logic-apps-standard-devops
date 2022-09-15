@@ -58,9 +58,26 @@ The following diagram shows the dependencies between the demo logic app solution
 
 ![Deployment Pipelines](Design/design-structure.png)
 
+***Hosting***
+
+An app service plan and storage account resource are needed to host the logic app standard runtime.
+
+***Security***
+
+A Managed Identity, associated with the resource is ussed to acccess different azure resources. Azure RBAC can be used to assign access.
+
+***Logic***
+
+An 'EventTrigger' and 'EventProcessor' workflows are persited as JSON files and deploy into the Logic App
+
+***Azure Connectors***
+
+Azure BlobStorage Managed connector provides access to Azure blob storage.
+
 ## CICD Design
 
 ***Separation of Concerns***
+
 ![Deployment Pipelines](https://docs.microsoft.com/en-us/azure/logic-apps/media/devops-deployment-single-tenant/deployment-pipelines-logic-apps.png)
 
 The single-tenant model gives you the capability to separate the concerns between app and the underlying infrastructure. For example, you can develop, build, zip, and deploy your app separately as an immutable artifact to different environments. Logic app workflows typically have "application code" that you update more often than the underlying infrastructure. By separating these layers, you can focus more on building out your logic app's workflow and spend less on your effort to deploy the required resources across multiple environments.
