@@ -39,7 +39,7 @@ stages:
     variableGroupName: LogicAppDemo-Dev
     azureSubscription: $(azureSubscription)
     environment: 'DEV'
-    triggerFrequency: 'Minute'
+    triggerFrequency: 'Day'
     artifactName: $(artifactName)
 
 - template: templates\deploy-logic-std-template.yml
