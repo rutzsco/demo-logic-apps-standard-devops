@@ -1,6 +1,6 @@
 # Logic Apps Standard DevOps - Accelerator 
 
-Azure Logic Apps Standard provides an opportunity to enable a traditional developer workflow, and associated benefits(local development, source control, automation) with low code tooling. The goal of this repository is to augment existing documentation to accelerate the use of CICD practices enabled with [Azure Logic Apps Standard](https://docs.microsoft.com/en-us/azure/logic-apps/devops-deployment-single-tenant-azure-logic-apps).
+Azure Logic Apps Standard provides an opportunity to enable a traditional developer workflow, and associated benefits(local development, source control, automation) with low code tooling. The goal of this repository is to augment existing documentation to accelerate the use of CICD practices enabled with [Azure Logic Apps Standard](https://docs.microsoft.com/en-us/azure/logic-apps/devops-deployment-single-tenant-azure-logic-apps). This is accomplished by providing a demo implemantation and highlighting best practices and workarounds to common challenges.
 
 ***Aligns with traditional CI/CD Delivery Model***
 
@@ -16,8 +16,7 @@ Follow the prerequisite guid here:
 
 https://docs.microsoft.com/en-us/azure/logic-apps/create-single-tenant-workflows-visual-studio-code#prerequisites
 
-***NOTE***
-
+[^note]:
 There is a bug with Azurite 3.17 so currently the best way to isntall Azureite is via NPM:
 
 ``` bash
