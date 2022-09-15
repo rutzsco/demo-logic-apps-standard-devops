@@ -18,17 +18,15 @@ The single-tenant model gives you the capability to separate the concerns betwee
 
 #### 1. Development Tools 
 
-Follow the prerequisite guide here:
+Follow the prerequisite guide [here](https://docs.microsoft.com/en-us/azure/logic-apps/create-single-tenant-workflows-visual-studio-code#prerequisites)
 
-https://docs.microsoft.com/en-us/azure/logic-apps/create-single-tenant-workflows-visual-studio-code#prerequisites
-
-[^note]:
-There is a bug with Azurite 3.17 so currently the best way to isntall Azureite is via NPM:
-
-``` bash
-npm uninstall -g azurite
-npm install -g azurite@3.16.0
-```
+> **Note**
+> There is a bug with Azurite 3.17 so currently the best way to isntall Azureite is via NPM:
+>
+> ``` bash
+> npm uninstall -g azurite
+> npm install -g azurite@3.16.0
+> ```
 
 #### 2. Azure Environment
 
