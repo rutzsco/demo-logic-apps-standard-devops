@@ -67,6 +67,22 @@ The single-tenant model gives you the capability to separate the concerns betwee
 
 ![Pipeline Design](Design/design-cicd-detail.png)
 
+## Challenges and Known Issues
+
+### Local Development
+
+1. Version compatibility exist between development tools and extensions. Azurite v3.16.0 with Logic App Standard extension is known to work v1.0.14.
+2. Locally AppSettings do not resolve in Connections.json. Having local versions of files that are swaped with Azure versions is a workaround.
+3. Managed Identites cannot be used to connect with Azure Connectors. Locally you will need versions of Azure connectors that can be used with keys/connection strings and config can be swapped at build.
+
+### CICD
+
+1. Lack of ARM/Bicep schema documentation exits for many connectors.
+2. Development done in Azure Portal needs to be manually copied to source control. 
+
+### Links
+- https://github.com/Azure/logicapps/issues/609
+
 ##  Reference
 
 ### Local Development
@@ -80,8 +96,6 @@ The single-tenant model gives you the capability to separate the concerns betwee
 ### Observability
 - https://docs.microsoft.com/en-us/azure/logic-apps/create-single-tenant-workflows-azure-portal#enable-or-open-application-insights-after-deployment
 
-## Known Issues
 
-- https://github.com/Azure/logicapps/issues/609
 
 
