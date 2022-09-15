@@ -1,8 +1,16 @@
-# Logic Apps Standard - Accelerator 
+# Logic Apps Standard DevOps - Accelerator 
 
-## Prerequisites
+Azure Logic Apps Standard provides an opportunity to enable a traditional developer workflow, and associated benefits(local development, source control, automation) with low code tooling. The goal of this repository is to augment existing documentation to accelerate the use of CICD practices enabled with [Azure Logic Apps Standard](https://docs.microsoft.com/en-us/azure/logic-apps/devops-deployment-single-tenant-azure-logic-apps).
 
-### 1. Development Tools 
+***Aligns with traditional CI/CD Delivery Model***
+
+![Pipeline Design](Design/developer-delivery.png)
+
+## Local Development
+
+### Prerequisites
+
+#### 1. Development Tools 
 
 Follow the prerequisite guid here:
 
@@ -17,7 +25,7 @@ npm uninstall -g azurite
 npm install -g azurite@3.16.0
 ```
 
-### 2. Azure Environment
+#### 2. Azure Environment
 
 A Service Principal is required with Owner RBAC to a Resource Group in Azure. The following resoureces will be created as part of the IaC.
 
@@ -28,16 +36,16 @@ A Service Principal is required with Owner RBAC to a Resource Group in Azure. Th
 - Storage Account for Integration
 
 
-### 3. Azure Devops Project
+#### 3. Azure Devops Project
 
 An Azure DevOps project is required for running CICD pipelines. A service connection needs to be created for the piplines to deploy into the Azure sandbox resrouce group:
 
 https://docs.microsoft.com/en-us/azure/devops/pipelines/library/connect-to-azure?view=azure-devops#create-an-azure-resource-manager-service-connection-with-an-existing-service-principal
 
-### 4. Azure Devops Variable Groups
+#### 4. Azure Devops Variable Groups
 The pipelines in this project are customized using an Azure DevOps Variable Group. Variable groups can be created via the command line as shown in the [Create Variable Groups](Infrastructure/docs/Create-Variable-Group.md) document.
 
-### 4. Azure Devops Pipelines
+#### 5. Azure Devops Pipelines
 Two CICD pipelines have been created with YML. Instructions on how to create pipelines can be found in the  [Create Pipelines](Infrastructure/docs/Create-Pipeline.md) document.
 
 - [deploy-infra-pipeline.yml](Infrastructure/yml/deploy-infra-pipeline.yml)
@@ -52,10 +60,6 @@ The following diagram shows the dependencies between the demo logic app solution
 ![Deployment Pipelines](Design/design-structure.png)
 
 ## CICD Design
-
-***Aligns with CI/CD Delivery Model***
-
-![Pipeline Design](Design/developer-delivery.png)
 
 ***Separation of Concerns***
 ![Deployment Pipelines](https://docs.microsoft.com/en-us/azure/logic-apps/media/devops-deployment-single-tenant/deployment-pipelines-logic-apps.png)
