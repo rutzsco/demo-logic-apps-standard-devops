@@ -53,7 +53,7 @@ Two CICD pipelines have been created with YML. Instructions on how to create pip
 
 
 
-## Solution Structure
+## Solution Componets
 
 The following diagram shows the dependencies between the demo logic app solution and the infrastructure resources:
 
