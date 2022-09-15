@@ -6,6 +6,12 @@ Azure Logic Apps Standard provides an opportunity to enable a traditional develo
 
 ![Pipeline Design](Design/developer-delivery.png)
 
+***Separation of Concerns***
+
+![Deployment Pipelines](https://docs.microsoft.com/en-us/azure/logic-apps/media/devops-deployment-single-tenant/deployment-pipelines-logic-apps.png)
+
+The single-tenant model gives you the capability to separate the concerns between app and the underlying infrastructure. For example, you can develop, build, zip, and deploy your app separately as an immutable artifact to different environments. Logic app workflows typically have "application code" that you update more often than the underlying infrastructure. By separating these layers, you can focus more on building out your logic app's workflow and spend less on your effort to deploy the required resources across multiple environments.
+
 ## Local Development
 
 ### Prerequisites
@@ -73,12 +79,6 @@ An 'EventTrigger' and 'EventProcessor' workflows are persited as JSON files and 
 Azure BlobStorage Managed connector provides access to Azure blob storage.
 
 ## CICD Design
-
-***Separation of Concerns***
-
-![Deployment Pipelines](https://docs.microsoft.com/en-us/azure/logic-apps/media/devops-deployment-single-tenant/deployment-pipelines-logic-apps.png)
-
-The single-tenant model gives you the capability to separate the concerns between app and the underlying infrastructure. For example, you can develop, build, zip, and deploy your app separately as an immutable artifact to different environments. Logic app workflows typically have "application code" that you update more often than the underlying infrastructure. By separating these layers, you can focus more on building out your logic app's workflow and spend less on your effort to deploy the required resources across multiple environments.
 
 ![Pipeline Design](Design/design-cicd-detail.png)
 
