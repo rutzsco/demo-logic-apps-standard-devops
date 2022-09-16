@@ -2,7 +2,6 @@
 # Template to Deploy Azure resources
 # ----------------------------------------------------------------------------------------------------
 parameters: 
-  variableGroupName:  'myVariableGroup'
   environment:  'DEV'
   azureSubscription: ''
 
@@ -15,7 +14,6 @@ jobs:
 - job: DeployResourcesJob
   displayName: Deploy Resources
   variables:
-  - group: ${{ parameters.variableGroupName }}
   - name: environment
     value: ${{ parameters.environment }}
   - name: environmentLower
@@ -24,6 +22,11 @@ jobs:
     value: '$(Pipeline.Workspace)/s/Infrastructure/bicep/main.bicep'
 
   steps:
+  - bash: |
+      resourceGroupName=$(echo "rg_logic_demo_$(environment)" | tr '[:upper:]' '[:lower:]')
+      echo "##vso[task.setvariable variable=resourceGroupName]$resourceGroupName"
+    displayName: 'Create Variables'
+
   - bash: |
       echo "azureSubscription=$(azureSubscription)"
       echo "resourceGroupName=$(resourceGroupName)"
