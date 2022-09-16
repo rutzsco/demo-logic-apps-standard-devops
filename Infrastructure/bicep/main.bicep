@@ -20,6 +20,7 @@ module blobStorageAccountModule 'storageaccount.bicep' = {
     storageSku: 'Standard_LRS'
 
     lowerAppPrefix: lowerAppPrefix
+    longAppName: longAppName
     shortAppName: shortAppName
     environment: environment
     location: location
@@ -75,6 +76,7 @@ module keyVaultModule 'key-vault.bicep' = {
     objectId: logicAppServiceModule.outputs.managedIdentityPrincipalId
     
     lowerAppPrefix: lowerAppPrefix
+    longAppName: longAppName
     shortAppName: shortAppName
     environment: environment
     location: location

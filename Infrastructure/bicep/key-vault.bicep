@@ -46,6 +46,7 @@ param roleName string = 'Key Vault Secrets User'
 param environment string = 'dev'
 param lowerAppPrefix string
 param shortAppName string
+param longAppName string
 param runDateTime string = utcNow()
 
 // --------------------------------------------------------------------------------
@@ -70,7 +71,7 @@ resource keyVaultResource 'Microsoft.KeyVault/vaults@2021-04-01-preview' = {
     LastDeployed: runDateTime
     TemplateFile: templateFileName
     AppPrefix: lowerAppPrefix
-    AppName: shortAppName
+    AppName: longAppName
     Environment: environment
   }
   properties: {

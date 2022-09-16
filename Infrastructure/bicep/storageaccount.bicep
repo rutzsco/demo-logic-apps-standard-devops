@@ -3,6 +3,7 @@
 // --------------------------------------------------------------------------------
 param lowerAppPrefix string = 'myorgname'
 param shortAppName string = 'demola'
+param longAppName string
 @allowed([ 'dev', 'qa', 'stg', 'prod' ])
 param environment string = 'dev'
 param location string = resourceGroup().location
@@ -28,7 +29,7 @@ resource storageAccountResource 'Microsoft.Storage/storageAccounts@2019-06-01' =
         LastDeployed: runDateTime
         TemplateFile: templateFileName
         AppPrefix: lowerAppPrefix
-        AppName: shortAppName
+        AppName: longAppName
         Environment: environment
     }
     kind: 'StorageV2'
@@ -64,6 +65,13 @@ resource blobStorageConnectionResource 'Microsoft.Web/connections@2016-06-01' = 
     name: blobStorageConnectionName
     kind: 'V2'
     location: location
+    tags: {
+        LastDeployed: runDateTime
+        TemplateFile: templateFileName
+        AppPrefix: lowerAppPrefix
+        AppName: longAppName
+        Environment: environment
+    }
     properties: {
         api: {
             id: 'subscriptions/${subscription().subscriptionId}/providers/Microsoft.Web/locations/${location}/managedApis/azureblob'

@@ -25,6 +25,13 @@ resource storageResource 'Microsoft.Storage/storageAccounts@2019-06-01' = {
   name: logicAppStorageAccountName
   location: location
   kind: 'StorageV2'
+  tags: {
+    LastDeployed: runDateTime
+    TemplateFile: templateFileName
+    AppPrefix: lowerAppPrefix
+    AppName: longAppName
+    Environment: environment
+  }
   sku: {
     name: 'Standard_GRS'
   }
@@ -45,7 +52,7 @@ resource logicAppPlanResource 'Microsoft.Web/serverfarms@2021-02-01' = {
     LastDeployed: runDateTime
     TemplateFile: templateFileName
     AppPrefix: lowerAppPrefix
-    AppName: shortAppName
+    AppName: longAppName
     Environment: environment
   }
   properties: {
@@ -65,7 +72,7 @@ resource appInsightsResource 'Microsoft.Insights/components@2020-02-02' = {
     LastDeployed: runDateTime
     TemplateFile: templateFileName
     AppPrefix: lowerAppPrefix
-    AppName: shortAppName
+    AppName: longAppName
     Environment: environment
   }
   properties: {
@@ -91,7 +98,7 @@ resource logicAppSiteResource 'Microsoft.Web/sites@2021-02-01' = {
     LastDeployed: runDateTime
     TemplateFile: templateFileName
     AppPrefix: lowerAppPrefix
-    AppName: shortAppName
+    AppName: longAppName
     Environment: environment
   }
   properties: {
