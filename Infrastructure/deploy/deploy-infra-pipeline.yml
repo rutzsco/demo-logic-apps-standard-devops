@@ -30,7 +30,6 @@ stages:
     - template: templates\create-infra-template.yml
       parameters:
         environment: 'DEV'
-        variableGroupName: LogicAppDemo-Dev
         azureSubscription: $(azureSubscription)
 
   - stage: DeployQAResources
@@ -39,5 +38,4 @@ stages:
     - template: templates\create-infra-template.yml
       parameters:
         environment: 'QA'
-        variableGroupName: LogicAppDemo-QA
         azureSubscription: $(azureSubscription)

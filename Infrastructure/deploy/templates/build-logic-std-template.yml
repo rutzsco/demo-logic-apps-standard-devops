@@ -6,8 +6,6 @@ parameters:
   default: ''
 - name: stageDisplayName
   default: ''
-- name: artifactName
-  default: 'LA.zip'
 
 # ----------------------------------------------------------------------------------------------------
 stages:
@@ -20,6 +18,7 @@ stages:
 
       variables:
         artifactFolderName: 'App'
+        artifactName: 'LA.zip'
 
       steps:
       - task: CopyFiles@2
