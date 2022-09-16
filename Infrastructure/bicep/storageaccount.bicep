@@ -14,13 +14,12 @@ param containerName string = 'myblobs'
 
 // --------------------------------------------------------------------------------
 var templateFileName = '~storageAccount.bicep'
-var logicAppStorageAccountName = '${lowerAppPrefix}${shortAppName}app'
-var workflowStorageAccountName = '${lowerAppPrefix}${shortAppName}blob'
-var blobStorageConnectionName = '${workflowStorageAccountName}${environment}-blobconnection'
+var storageAccountName = '${lowerAppPrefix}${shortAppName}app${environment}'
+var blobStorageConnectionName = '${lowerAppPrefix}${shortAppName}${environment}-blobconnection'
 
 // --------------------------------------------------------------------------------
 resource storageAccountResource 'Microsoft.Storage/storageAccounts@2019-06-01' = {
-    name: logicAppStorageAccountName
+    name: storageAccountName
     location: location
     sku: {
         name: storageSku
@@ -44,7 +43,7 @@ resource storageAccountResource 'Microsoft.Storage/storageAccounts@2019-06-01' =
 resource storageAccountContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-04-01' = {
     name: '${storageAccountResource.name}/default/${containerName}'
     properties: {}
-  }
+}
 
 resource blobServiceResource 'Microsoft.Storage/storageAccounts/blobServices@2019-06-01' = {
     name: '${storageAccountResource.name}/default'
@@ -67,18 +66,18 @@ resource blobStorageConnection 'Microsoft.Web/connections@2016-06-01' = {
     location: location
     properties: {
         api: {
-        id: 'subscriptions/${subscription().subscriptionId}/providers/Microsoft.Web/locations/${location}/managedApis/azureblob'
+            id: 'subscriptions/${subscription().subscriptionId}/providers/Microsoft.Web/locations/${location}/managedApis/azureblob'
         }
         customParameterValues: {}
         displayName: blobStorageConnectionName
         parameterValueSet: {
-        name: 'managedIdentityAuth'
-        values: {}
+            name: 'managedIdentityAuth'
+            values: {}
         }
     }
 }
 var connectionRuntimeUrl = reference(blobStorageConnection.id, blobStorageConnection.apiVersion, 'full').properties.connectionRuntimeUrl
- 
+
 // --------------------------------------------------------------------------------
 output name string = storageAccountResource.name
 output id string = storageAccountResource.id
