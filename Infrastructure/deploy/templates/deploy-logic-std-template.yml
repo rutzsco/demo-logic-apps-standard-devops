@@ -37,13 +37,16 @@ stages:
             steps:
             - bash: |
                 LOGIC_APP_NAME2="$(appPrefix)-demo-logic-app-$(environment)"
+                LOGIC_APP_NAME3=$(echo $LOGIC_APP_NAME2 | tr '[:upper:]' '[:lower:]')
+                echo "##vso[task.setvariable variable=LOGIC_APP_NAME3]$LOGIC_APP_NAME3"
+
                 RESOURCEGROUPNAME2="rg_logic_demo_$(environment)"
-                echo "##vso[task.setvariable variable=LOGIC_APP_NAME2]$LOGIC_APP_NAME2"
-                echo "##vso[task.setvariable variable=RESOURCEGROUPNAME2]$RESOURCEGROUPNAME2"
+                RESOURCEGROUPNAME3=$(echo $RESOURCEGROUPNAME2 | tr '[:upper:]' '[:lower:]')
+                echo "##vso[task.setvariable variable=RESOURCEGROUPNAME3]$RESOURCEGROUPNAME3"
 
             - bash: |
-                echo "RESOURCEGROUPNAME2=$(RESOURCEGROUPNAME2)"
-                echo "LOGIC_APP_NAME2=$(LOGIC_APP_NAME2)"
+                echo "resourcegroupname3=$(RESOURCEGROUPNAME3)"
+                echo "logic_app_name3=$(LOGIC_APP_NAME3)"
                 echo "azureSubscription=$(azureSubscription)"
                 echo "region=$(region)"
                 echo "resourceGroupName=$(resourceGroupName)"
@@ -62,7 +65,7 @@ stages:
               inputs:
                 azureSubscription: $(azureSubscription)
                 appType: 'functionApp'
-                appName: $(logicAppName)
+                appName: $(logic_app_name3)
                 package: '$(Pipeline.Workspace)/$(artifactFolderName)/$(artifactName)'
                 deploymentMethod: 'zipDeploy'
                 AppSettings: '-TRIGGER_FREQUENCY $(triggerFrequency)'
