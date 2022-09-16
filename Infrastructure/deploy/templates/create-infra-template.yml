@@ -52,9 +52,7 @@ jobs:
     displayName: 'Publish Bicep Resources'
     inputs:
       csmFile: $(templateFile)
-      overrideParameters: >
-        -appPrefix=$(appPrefix) 
-        -environment=$(environmentLower) 
+      overrideParameters: '-appPrefix=$(appPrefix) -environment=$(environmentLower)'
       deploymentScope: 'Resource Group'
       azureResourceManagerConnection: $(azureSubscription)
       #subscriptionId: $(subscriptionId)
