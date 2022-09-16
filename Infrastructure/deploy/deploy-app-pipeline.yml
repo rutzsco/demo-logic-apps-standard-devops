@@ -36,7 +36,6 @@ stages:
   parameters:
     stageName: DeployDEV
     stageDisplayName: Deploy App DEV
-    variableGroupName: LogicAppDemo-Dev
     azureSubscription: $(azureSubscription)
     environment: 'DEV'
     triggerFrequency: 'Day'
@@ -46,7 +45,6 @@ stages:
   parameters:
     stageName: DeployQA
     stageDisplayName: Deploy App QA
-    variableGroupName: LogicAppDemo-QA
     azureSubscription: $(azureSubscription)
     environment: 'QA'
     triggerFrequency: 'Day'
