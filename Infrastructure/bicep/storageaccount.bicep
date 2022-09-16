@@ -82,5 +82,5 @@ var connectionRuntimeUrl = reference(blobStorageConnectionResource.id, blobStora
 output name string = storageAccountResource.name
 output id string = storageAccountResource.id
 output connectionRuntimeUrl string = connectionRuntimeUrl
-output blobStorageConnectionName string = blobStorageConnectionName
 output blobStorageContainerName string = storageAccountBlobContainerResource.name
+output blobStorageConnectionName string = blobStorageConnectionResource.name

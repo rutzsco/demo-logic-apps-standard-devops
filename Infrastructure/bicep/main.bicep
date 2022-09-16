@@ -61,6 +61,7 @@ module storageAccountRoleModule 'storageaccountroles.bicep' = {
     logicAppServiceName: logicAppServiceModule.outputs.name
     storageAccountName: blobStorageAccountModule.outputs.name
     logicAppServicePrincipalId: logicAppServiceModule.outputs.managedIdentityPrincipalId
+    blobStorageConnectionName: blobStorageAccountModule.outputs.blobStorageConnectionName
     blobStorageContributorId: blobStorageContributorId
 
     environment: environment

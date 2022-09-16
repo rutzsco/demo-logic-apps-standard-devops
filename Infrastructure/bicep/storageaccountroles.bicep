@@ -6,6 +6,7 @@ param location string
 param logicAppServiceName string
 param storageAccountName string
 param logicAppServicePrincipalId string
+param blobStorageConnectionName string
 param blobStorageContributorId string = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
 
 // --------------------------------------------------------------------------------
@@ -24,7 +25,7 @@ resource storageAccountRoleAssignment 'Microsoft.Authorization/roleAssignments@2
 }
 
 resource connectionAccessPolicy 'Microsoft.Web/connections/accessPolicies@2016-06-01' = {
-  name: '${blobStorageAccountResource.name}/${logicAppServiceName}'
+  name: '${blobStorageConnectionName}/${logicAppServiceName}'
   location: location
   properties: {
     principal: {

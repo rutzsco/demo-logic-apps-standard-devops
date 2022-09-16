@@ -47,7 +47,6 @@ jobs:
       scriptLocation: inlineScript
       inlineScript: az group create --name $(resourceGroupName) --location $(region)
 
-  # az deployment group create --resource-group $(resourceGroupName) --template-file $(templateFile) --parameters appPrefix=$(appPrefix) environment=$(environmentLower) > outputs.json
   - task: AzureResourceManagerTemplateDeployment@3
     displayName: 'Publish Bicep Resources'
     inputs:
@@ -57,10 +56,9 @@ jobs:
         -environment $(environmentLower)
       deploymentScope: 'Resource Group'
       azureResourceManagerConnection: $(azureSubscription)
-      #subscriptionId: $(subscriptionId)
-      action: 'Create Or Update Resource Group'
       resourceGroupName: '$(resourceGroupName)'
       location: '$(region)'
+      action: 'Create Or Update Resource Group'
       templateLocation: 'Linked artifact'
       deploymentMode: 'Incremental'
       continueOnError: ignoreError
