@@ -20,8 +20,6 @@ trigger:
 # ----------------------------------------------------------------------------------------------------
 variables:
   - group: LogicAppDemo
-  - name: artifactName
-    value: 'LA.zip'
 
 # ----------------------------------------------------------------------------------------------------
 stages:
@@ -29,7 +27,6 @@ stages:
   parameters:
     stageName: BuildApplication
     stageDisplayName: Build Application
-    artifactName: $(artifactName)
 
 # ----------------------------------------------------------------------------------------------------
 - template: templates\deploy-logic-std-template.yml
@@ -39,7 +36,6 @@ stages:
     azureSubscription: $(azureSubscription)
     environment: 'DEV'
     triggerFrequency: 'Day'
-    artifactName: $(artifactName)
 
 - template: templates\deploy-logic-std-template.yml
   parameters:
@@ -48,4 +44,3 @@ stages:
     azureSubscription: $(azureSubscription)
     environment: 'QA'
     triggerFrequency: 'Day'
-    artifactName: $(artifactName)

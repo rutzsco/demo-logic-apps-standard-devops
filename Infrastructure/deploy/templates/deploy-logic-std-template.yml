@@ -7,7 +7,6 @@ parameters:
   azureSubscription: ''
   environment: ''
   triggerFrequency: ''
-  artifactName: ''
 
 # ----------------------------------------------------------------------------------------------------
 stages:
@@ -28,6 +27,8 @@ stages:
         value: ${{ parameters.triggerFrequency }}
       - name: artifactFolderName
         value: 'App'
+      - name: artifactName
+        value: 'LA.zip'
 
       strategy:
         runOnce:

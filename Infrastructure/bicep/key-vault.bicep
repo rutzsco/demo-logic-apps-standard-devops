@@ -1,11 +1,9 @@
 // --------------------------------------------------------------------------------
+// Creates a KeyVault 
+// --------------------------------------------------------------------------------
 // FYI: to delete an existing/deleted Key Vault, run this command in an Azure Cloud Shell:
 //  > az keyvault purge --name keyvaultname
 // --------------------------------------------------------------------------------
-
-@description('Specifies the name of the key vault.')
-param keyVaultName string
-
 @description('Specifies the Azure location where the key vault should be created.')
 param location string = resourceGroup().location
 
@@ -44,6 +42,15 @@ param objectId string
 ])
 param roleName string = 'Key Vault Secrets User'
 
+@allowed([ 'dev', 'qa', 'stg', 'prod' ])
+param environment string = 'dev'
+param lowerAppPrefix string
+param shortAppName string
+param runDateTime string = utcNow()
+
+// --------------------------------------------------------------------------------
+var keyVaultName = '${lowerAppPrefix}${shortAppName}vault${environment}'
+var templateFileName = '~key-vault.bicep'
 var roleIdMapping = {
   'Key Vault Administrator': '00482a5a-887f-4fb3-b363-3b7fe8e74483'
   'Key Vault Certificates Officer': 'a4417e6f-fecd-4de8-b567-7b0420556985'
@@ -55,16 +62,17 @@ var roleIdMapping = {
   'Key Vault Secrets User': '4633458b-17de-408a-b874-0445c86b69e6'
 }
 
-@description('Specifies the name of the secret that you want to create.')
-param secretName string
-
-@description('Specifies the value of the secret that you want to create.')
-@secure()
-param secretValue string
-
-resource keyvaultResource 'Microsoft.KeyVault/vaults@2021-04-01-preview' = {
+// --------------------------------------------------------------------------------
+resource keyVaultResource 'Microsoft.KeyVault/vaults@2021-04-01-preview' = {
   name: keyVaultName
   location: location
+  tags: {
+    LastDeployed: runDateTime
+    TemplateFile: templateFileName
+    AppPrefix: lowerAppPrefix
+    AppName: shortAppName
+    Environment: environment
+  }
   properties: {
     enabledForDeployment: enabledForDeployment
     enabledForDiskEncryption: enabledForDiskEncryption
@@ -84,17 +92,9 @@ resource keyvaultResource 'Microsoft.KeyVault/vaults@2021-04-01-preview' = {
   }
 }
 
-resource secret 'Microsoft.KeyVault/vaults/secrets@2021-04-01-preview' = {
-  parent: keyvaultResource
-  name: secretName
-  properties: {
-    value: secretValue
-  }
-}
-
 resource kvRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(roleIdMapping[roleName],objectId,keyvaultResource.id)
-  scope: keyvaultResource
+  name: guid(roleIdMapping[roleName],objectId,keyVaultResource.id)
+  scope: keyVaultResource
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleIdMapping[roleName])
     principalId: objectId
@@ -102,6 +102,6 @@ resource kvRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-pr
   }
 }
 
-output keyVaultName string = keyvaultResource.name
-output keyVaultId string = keyvaultResource.id
-output secretUri string = secret.properties.secretUriWithVersion
+// --------------------------------------------------------------------------------
+output name string = keyVaultResource.name
+output id string = keyVaultResource.id
