@@ -36,6 +36,14 @@ stages:
           deploy:
             steps:
             - bash: |
+                LOGIC_APP_NAME2="$('$(appPrefix)-demo-logic-app-$(environment)"
+                RESOURCEGROUPNAME2="rg_logic_demo_$(environment)"
+                echo "##vso[task.setvariable variable=LOGIC_APP_NAME2]$LOGIC_APP_NAME2"
+                echo "##vso[task.setvariable variable=RESOURCEGROUPNAME2]$RESOURCEGROUPNAME2"
+
+            - bash: |
+                echo "RESOURCEGROUPNAME2=$(RESOURCEGROUPNAME2)"
+                echo "LOGIC_APP_NAME2=$(LOGIC_APP_NAME2)"
                 echo "azureSubscription=$(azureSubscription)"
                 echo "region=$(region)"
                 echo "resourceGroupName=$(resourceGroupName)"
