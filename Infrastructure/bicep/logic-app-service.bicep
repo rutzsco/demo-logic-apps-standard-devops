@@ -21,8 +21,18 @@ var logicAppStorageAccountName = '${lowerAppPrefix}${shortAppName}app${environme
 
 // --------------------------------------------------------------------------------
 // Storage account for the service
-resource storageResource 'Microsoft.Storage/storageAccounts@2019-06-01' existing = { name: logicAppStorageAccountName }
-
+resource storageResource 'Microsoft.Storage/storageAccounts@2019-06-01' = {
+  name: logicAppStorageAccountName
+  location: location
+  kind: 'StorageV2'
+  sku: {
+    name: 'Standard_GRS'
+  }
+  properties: {
+    supportsHttpsTrafficOnly: true
+    minimumTlsVersion: 'TLS1_2'
+  }
+  }
 // Dedicated app plan for the service
 resource logicAppPlanResource 'Microsoft.Web/serverfarms@2021-02-01' = {
   name: '${logicAppServiceName}-${environment}'

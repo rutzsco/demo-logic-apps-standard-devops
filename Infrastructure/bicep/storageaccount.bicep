@@ -14,8 +14,8 @@ param containerName string = 'myblobs'
 
 // --------------------------------------------------------------------------------
 var templateFileName = '~storageAccount.bicep'
-var storageAccountName = '${lowerAppPrefix}${shortAppName}app${environment}'
-var blobStorageConnectionName = '${lowerAppPrefix}${shortAppName}${environment}-blobconnection'
+var storageAccountName = '${lowerAppPrefix}${shortAppName}blob${environment}'
+var blobStorageConnectionName = '${storageAccountName}-blobconnection'
 
 // --------------------------------------------------------------------------------
 resource storageAccountResource 'Microsoft.Storage/storageAccounts@2019-06-01' = {
@@ -40,7 +40,7 @@ resource storageAccountResource 'Microsoft.Storage/storageAccounts@2019-06-01' =
     }
 }
 
-resource storageAccountContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-04-01' = {
+resource storageAccountBlobContainerResource 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-04-01' = {
     name: '${storageAccountResource.name}/default/${containerName}'
     properties: {}
 }
@@ -60,7 +60,7 @@ resource blobServiceResource 'Microsoft.Storage/storageAccounts/blobServices@201
 }
 
 // --------------------------------------------------------------------------------
-resource blobStorageConnection 'Microsoft.Web/connections@2016-06-01' = {
+resource blobStorageConnectionResource 'Microsoft.Web/connections@2016-06-01' = {
     name: blobStorageConnectionName
     kind: 'V2'
     location: location
@@ -76,10 +76,11 @@ resource blobStorageConnection 'Microsoft.Web/connections@2016-06-01' = {
         }
     }
 }
-var connectionRuntimeUrl = reference(blobStorageConnection.id, blobStorageConnection.apiVersion, 'full').properties.connectionRuntimeUrl
+var connectionRuntimeUrl = reference(blobStorageConnectionResource.id, blobStorageConnectionResource.apiVersion, 'full').properties.connectionRuntimeUrl
 
 // --------------------------------------------------------------------------------
 output name string = storageAccountResource.name
 output id string = storageAccountResource.id
 output connectionRuntimeUrl string = connectionRuntimeUrl
 output blobStorageConnectionName string = blobStorageConnectionName
+output blobStorageContainerName string = storageAccountBlobContainerResource.name

@@ -14,7 +14,7 @@ var deploymentSuffix = '-${runDateTime}'
 var lowerAppPrefix = toLower(appPrefix)
 
 // --------------------------------------------------------------------------------
-module storageAccountModule 'storageaccount.bicep' = {
+module blobStorageAccountModule 'storageaccount.bicep' = {
   name: 'storage${deploymentSuffix}'
   params: {
     storageSku: 'Standard_LRS'
@@ -42,9 +42,9 @@ module logicAppServiceModule 'logic-app-service.bicep' = {
   name: 'logicappservice${deploymentSuffix}'
   params: {
     logwsid: logAnalyticsModule.outputs.id
-    blobStorageConnectionRuntimeUrl: storageAccountModule.outputs.connectionRuntimeUrl
-    blobStorageConnectionName: storageAccountModule.outputs.blobStorageConnectionName
-    blobStorageAccountName: storageAccountModule.outputs.name
+    blobStorageConnectionRuntimeUrl: blobStorageAccountModule.outputs.connectionRuntimeUrl
+    blobStorageConnectionName: blobStorageAccountModule.outputs.blobStorageConnectionName
+    blobStorageAccountName: blobStorageAccountModule.outputs.name
 
     lowerAppPrefix: lowerAppPrefix
     longAppName: longAppName
@@ -59,7 +59,7 @@ module storageAccountRoleModule 'storageaccountroles.bicep' = {
   name: 'storageaccountroles${deploymentSuffix}' 
   params: {
     logicAppServiceName: logicAppServiceModule.outputs.name
-    storageAccountName: storageAccountModule.outputs.name
+    storageAccountName: blobStorageAccountModule.outputs.name
     logicAppServicePrincipalId: logicAppServiceModule.outputs.managedIdentityPrincipalId
     blobStorageContributorId: blobStorageContributorId
 
@@ -83,10 +83,10 @@ module keyVaultModule 'key-vault.bicep' = {
 
 module keyVaultSecret1 'key-vault-secret-storageconnection.bicep' = {
   name: 'keyVaultSecret1${deploymentSuffix}'
-  dependsOn: [ keyVaultModule, storageAccountModule ]
+  dependsOn: [ keyVaultModule, blobStorageAccountModule ]
   params: {
     keyVaultName: keyVaultModule.outputs.name
     keyName: 'BlobStorageConnectionString'
-    storageAccountName: storageAccountModule.outputs.name
+    storageAccountName: blobStorageAccountModule.outputs.name
   }
 }
