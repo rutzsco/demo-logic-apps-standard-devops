@@ -21,20 +21,4 @@ These commands actually create the variable groups:
         appPrefix='<yourInitials>' 
         azureSubscription='<yourSubscriptionName/serviceConnectionName>' 
         region='eastus' 
-
-  az pipelines variable-group create 
-    --organization=https://dev.azure.com/<yourAzDOOrg>/ 
-    --project='<yourAzDOProject>' 
-    --name LogicAppDemo-Dev
-    --variables 
-        logicAppName='<yourInitials>-demo-logic-app-dev' 
-        resourceGroupName='rg_logic_demo_dev' 
-
-  az pipelines variable-group create 
-    --organization=https://dev.azure.com/<yourAzDOOrg>/ 
-    --project='<yourAzDOProject>' 
-    --name LogicAppDemo-QA
-    --variables 
-        logicAppName='<yourInitials>-demo-logic-app-qa' 
-        resourceGroupName='rg_logic_demo_qa' 
 ```
