@@ -1,8 +1,11 @@
 # ------------------------------------------------------------------------------------------------------------------------
-# Pipeline to deploy Logic Application to existing Function App
+# Pipeline to deploy Logic Application infrastructure AND deploy the Function App
 # ------------------------------------------------------------------------------------------------------------------------
-# Note: This pipeline needs a variable group "LogicAppDemo"
-#  See ../Docs/VariableGroups.md for details
+# Note: This pipeline needs a variable group "LogicAppEasyButton" with these three variables:
+#     appPrefix='<yourInitials>' 
+#     azureSubscription='<yourSubscriptionName/serviceConnectionName>' 
+#     region='eastus' 
+#  See ../Docs/VariableGroups.md for more details
 # ------------------------------------------------------------------------------------------------------------------------
 name: $(date:yyyy).$(date:MM).$(date:dd)$(rev:.r)
 pool:
@@ -13,13 +16,10 @@ trigger:
   branches:
     include:
     - main
-  paths:
-    include:
-      - Workflows/*
 
 # ----------------------------------------------------------------------------------------------------
 variables:
-  - group: LogicAppDemo
+  - group: LogicAppEasyButton
 
 # ----------------------------------------------------------------------------------------------------
 stages:
@@ -27,6 +27,17 @@ stages:
   parameters:
     stageName: BuildApplication
     stageDisplayName: Build Application
+
+# ----------------------------------------------------------------------------------------------------
+- template: templates\create-infra-template.yml
+  parameters:
+    environment: 'DEV'
+    azureSubscription: $(azureSubscription)
+
+- template: templates\create-infra-template.yml
+  parameters:
+    environment: 'QA'
+    azureSubscription: $(azureSubscription)
 
 # ----------------------------------------------------------------------------------------------------
 - template: templates\deploy-logic-std-template.yml

@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------------------------------------------------
 # Pipeline to deploy Azure Resources for multiple environments
 # ------------------------------------------------------------------------------------------------------------------------
-# Note: This pipeline needs a variable group "LogicAppDemo-<env>" -> one for EACH environment being deployed.
+# Note: This pipeline needs a variable group "LogicAppDemo"
 #  See ../Docs/VariableGroups.md for details
 # ------------------------------------------------------------------------------------------------------------------------
 name: $(date:yyyy).$(date:MM).$(date:dd)$(rev:.r)
@@ -30,7 +30,6 @@ stages:
     - template: templates\create-infra-template.yml
       parameters:
         environment: 'DEV'
-        variableGroupName: LogicAppDemo-Dev
         azureSubscription: $(azureSubscription)
 
   - stage: DeployQAResources
@@ -39,5 +38,4 @@ stages:
     - template: templates\create-infra-template.yml
       parameters:
         environment: 'QA'
-        variableGroupName: LogicAppDemo-QA
         azureSubscription: $(azureSubscription)
