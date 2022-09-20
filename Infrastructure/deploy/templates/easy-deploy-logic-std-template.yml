@@ -17,8 +17,6 @@ jobs:
     value: ${{ parameters.environment }}
   - name: environmentLower
     value: ${{ lower(parameters.environment) }}
-  - name: appPrefixLower
-    value: $(appPrefix).toLower()
   - name: artifactFolderName
     value: 'App'
   - name: artifactName
@@ -31,6 +29,9 @@ jobs:
       deploy:
         steps:
         - bash: |
+            appPrefixLower=$(echo "$(appPrefix)" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
+            echo "##vso[task.setvariable variable=appPrefixLower]$appPrefixLower"
+
             logic_app_name=$(echo "$(appPrefixLower)-demo-logic-app" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
             echo "##vso[task.setvariable variable=logic_app_name]$logic_app_name"
 

@@ -18,13 +18,14 @@ jobs:
     value: ${{ parameters.environment }}
   - name: environmentLower
     value: ${{ lower(parameters.environment) }}
-  - name: appPrefixLower
-    value: $(appPrefix).toLower()
   - name: templateFile
     value: '$(Pipeline.Workspace)/s/Infrastructure/bicep/main.bicep'
 
   steps:
   - bash: |
+      appPrefixLower=$(echo "$(appPrefix)" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
+      echo "##vso[task.setvariable variable=appPrefixLower]$appPrefixLower"
+
       resourceGroupName=$(echo "rg_$(appPrefixLower)_logic_app" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
       echo "##vso[task.setvariable variable=resourceGroupName]$resourceGroupName"
     displayName: 'Create Variables'
