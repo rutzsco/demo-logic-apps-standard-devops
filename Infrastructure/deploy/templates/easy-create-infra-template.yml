@@ -49,7 +49,7 @@ jobs:
       csmFile: $(templateFile)
       overrideParameters: >
         -appPrefix $(appPrefix) 
-        -environment 'DEV'
+        -environment 'dev'
       deploymentScope: 'Resource Group'
       azureResourceManagerConnection: $(azureSubscription)
       resourceGroupName: '$(resourceGroupName)'
