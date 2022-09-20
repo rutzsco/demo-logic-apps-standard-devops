@@ -8,12 +8,10 @@ parameters:
 # ----------------------------------------------------------------------------------------------------
 jobs:
 - deployment: LogicAppDeploy
-  displayName: Deploy Logic App
+  displayName: Deploy App
   environment: 'DEV'
 
   variables:
-  - name: stageName
-    value: ${{ parameters.stageName }}
   - name: triggerFrequency
     value: ${{ parameters.triggerFrequency }}
   - name: artifactFolderName

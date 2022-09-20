@@ -5,9 +5,9 @@ jobs:
 - deployment: BuildApp
   displayName: Initialize Build Application
   environment: 'DEV'
-  
+
 - job: LogicAppBuild
-  displayName: 'Build and Publish'
+  displayName: Build Application
   variables:
     artifactFolderName: 'App'
     artifactName: 'LA.zip'
