@@ -18,7 +18,7 @@ jobs:
   - name: environmentLower
     value: ${{ lower(parameters.environment) }}
   - name: appPrefixLower
-    value: ${{ lower(variables.appPrefix) }}
+    value: $(appPrefix).toLower()
   - name: artifactFolderName
     value: 'App'
   - name: artifactName
