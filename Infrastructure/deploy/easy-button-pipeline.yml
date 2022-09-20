@@ -1,0 +1,57 @@
+# ------------------------------------------------------------------------------------------------------------------------
+# Pipeline to deploy Logic Application infrastructure AND deploy the Function App
+# ------------------------------------------------------------------------------------------------------------------------
+# Note: This pipeline needs a variable group "LogicAppDemo" with these three variables:
+#     appPrefix='<yourInitials>' 
+#     azureSubscription='<yourSubscriptionName/serviceConnectionName>' 
+#     region='eastus' 
+#  See ../Docs/VariableGroups.md for more details
+# ------------------------------------------------------------------------------------------------------------------------
+name: $(date:yyyy).$(date:MM).$(date:dd)$(rev:.r)
+pool:
+  vmImage: 'ubuntu-latest'
+
+# ----------------------------------------------------------------------------------------------------
+trigger:
+  branches:
+    include:
+    - main
+
+# ----------------------------------------------------------------------------------------------------
+variables:
+  - group: LogicAppDemo
+
+# ----------------------------------------------------------------------------------------------------
+stages:
+- template: templates\build-logic-std-template.yml
+  parameters:
+    stageName: BuildApplication
+    stageDisplayName: Build Application
+
+# ----------------------------------------------------------------------------------------------------
+- template: templates\create-infra-template.yml
+  parameters:
+    environment: 'DEV'
+    azureSubscription: $(azureSubscription)
+
+- template: templates\create-infra-template.yml
+  parameters:
+    environment: 'QA'
+    azureSubscription: $(azureSubscription)
+
+# ----------------------------------------------------------------------------------------------------
+- template: templates\deploy-logic-std-template.yml
+  parameters:
+    stageName: DeployDEV
+    stageDisplayName: Deploy App DEV
+    azureSubscription: $(azureSubscription)
+    environment: 'DEV'
+    triggerFrequency: 'Day'
+
+- template: templates\deploy-logic-std-template.yml
+  parameters:
+    stageName: DeployQA
+    stageDisplayName: Deploy App QA
+    azureSubscription: $(azureSubscription)
+    environment: 'QA'
+    triggerFrequency: 'Day'
