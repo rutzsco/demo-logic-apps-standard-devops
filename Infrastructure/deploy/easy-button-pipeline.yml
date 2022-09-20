@@ -23,35 +23,54 @@ variables:
 
 # ----------------------------------------------------------------------------------------------------
 stages:
-- template: templates\build-logic-std-template.yml
-  parameters:
-    stageName: BuildApplication
-    stageDisplayName: Build Application
+  - stage: BuildApplicationStage
+    displayName: Build Application
+    jobs:
+    - template: templates\build-logic-std-template.yml
+      parameters:
+        stageName: BuildApplication
+        stageDisplayName: Build Application
 
 # ----------------------------------------------------------------------------------------------------
-- template: templates\create-infra-template.yml
-  parameters:
-    environment: 'DEV'
-    azureSubscription: $(azureSubscription)
+  - stage: DeployDEVResources
+    displayName: DEV Deploy Resources
+    dependsOn: BuildApplicationStage
+    jobs:
+    - template: templates\create-infra-template.yml
+      parameters:
+        environment: 'DEV'
+        azureSubscription: $(azureSubscription)
 
-- template: templates\create-infra-template.yml
-  parameters:
-    environment: 'QA'
-    azureSubscription: $(azureSubscription)
+  - stage: DeployQAResources
+    displayName: QA Deploy Resources
+    dependsOn: DeployDEVResources
+    jobs:
+    - template: templates\create-infra-template.yml
+      parameters:
+        environment: 'QA'
+        azureSubscription: $(azureSubscription)
 
 # ----------------------------------------------------------------------------------------------------
-- template: templates\deploy-logic-std-template.yml
-  parameters:
-    stageName: DeployDEV
-    stageDisplayName: Deploy App DEV
-    azureSubscription: $(azureSubscription)
-    environment: 'DEV'
-    triggerFrequency: 'Day'
+  - stage: DeployDEVApplication
+    displayName: DEV Deploy Application
+    dependsOn: DeployQAResources
+    jobs:
+    - template: templates\deploy-logic-std-template.yml
+      parameters:
+        stageName: DeployDEV
+        stageDisplayName: Deploy App DEV
+        azureSubscription: $(azureSubscription)
+        environment: 'DEV'
+        triggerFrequency: 'Day'
 
-- template: templates\deploy-logic-std-template.yml
-  parameters:
-    stageName: DeployQA
-    stageDisplayName: Deploy App QA
-    azureSubscription: $(azureSubscription)
-    environment: 'QA'
-    triggerFrequency: 'Day'
+  - stage: DeployQAApplication
+    displayName: QA Deploy Application
+    dependsOn: DeployDEVApplication
+    jobs:
+    - template: templates\deploy-logic-std-template.yml
+      parameters:
+        stageName: DeployQA
+        stageDisplayName: Deploy App QA
+        azureSubscription: $(azureSubscription)
+        environment: 'QA'
+        triggerFrequency: 'Day'
