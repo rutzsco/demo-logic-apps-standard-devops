@@ -31,9 +31,9 @@ stages:
         stageName: BuildApplication
         stageDisplayName: Build Application
 
-# ----------------------------------------------------------------------------------------------------
-  - stage: DeployDEVResources
-    displayName: DEV Deploy Resources
+  # ----------------------------------------------------------------------------------------------------
+  - stage: DeployResources
+    displayName: Deploy Resources
     dependsOn: BuildApplicationStage
     jobs:
     - template: templates\create-infra-template.yml
@@ -41,36 +41,15 @@ stages:
         environment: 'DEV'
         azureSubscription: $(azureSubscription)
 
-  - stage: DeployQAResources
-    displayName: QA Deploy Resources
-    dependsOn: DeployDEVResources
-    jobs:
-    - template: templates\create-infra-template.yml
-      parameters:
-        environment: 'QA'
-        azureSubscription: $(azureSubscription)
-
-# ----------------------------------------------------------------------------------------------------
-  - stage: DeployDEVApplication
-    displayName: DEV Deploy Application
-    dependsOn: DeployQAResources
+  # ----------------------------------------------------------------------------------------------------
+  - stage: DeployApplication
+    displayName: Deploy Application
+    dependsOn: DeployResources
     jobs:
     - template: templates\deploy-logic-std-template.yml
       parameters:
-        stageName: DeployDEV
-        stageDisplayName: Deploy App DEV
+        stageName: DeployApp
+        stageDisplayName: Deploy App
         azureSubscription: $(azureSubscription)
         environment: 'DEV'
-        triggerFrequency: 'Day'
-
-  - stage: DeployQAApplication
-    displayName: QA Deploy Application
-    dependsOn: DeployDEVApplication
-    jobs:
-    - template: templates\deploy-logic-std-template.yml
-      parameters:
-        stageName: DeployQA
-        stageDisplayName: Deploy App QA
-        azureSubscription: $(azureSubscription)
-        environment: 'QA'
         triggerFrequency: 'Day'
