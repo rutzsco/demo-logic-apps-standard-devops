@@ -2,7 +2,7 @@
 # Template to Deploy Azure resources
 # ----------------------------------------------------------------------------------------------------
 parameters: 
-  environment:  'DEV'
+  environment: ''
   azureSubscription: ''
 
 # ----------------------------------------------------------------------------------------------------
@@ -23,7 +23,10 @@ jobs:
 
   steps:
   - bash: |
-      resourceGroupName=$(echo "rg_logic_demo_$(environment)" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
+      appPrefixLower=$(echo "$(appPrefix)" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
+      echo "##vso[task.setvariable variable=appPrefixLower]$appPrefixLower"
+
+      resourceGroupName=$(echo "rg_$(appPrefix)_logic_app" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
       echo "##vso[task.setvariable variable=resourceGroupName]$resourceGroupName"
     displayName: 'Create Variables'
 
@@ -34,6 +37,7 @@ jobs:
       echo "environment=$(environment)"
       echo "environmentLower=$(environmentLower)"
       echo "appPrefix=$(appPrefix)"
+      echo "appPrefixLower=$(appPrefixLower)"
       echo "templateFile=$(templateFile)"
       tree $(Pipeline.Workspace)
     displayName: 'Display Variables'
