@@ -4,7 +4,7 @@
         "actions": {
             "Invoke_a_workflow_in_this_workflow_app": {
                 "inputs": {
-                    "body": "demo content",
+                    "body": "demo content goes here",
                     "host": {
                         "workflow": {
                             "id": "eventprocessor"
@@ -20,7 +20,7 @@
         "triggers": {
             "Recurrence": {
                 "recurrence": {
-                    "frequency": "Minute",
+                    "frequency": "Hour",
                     "interval": 1
                 },
                 "type": "Recurrence"
