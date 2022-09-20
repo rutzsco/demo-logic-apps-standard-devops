@@ -12,44 +12,44 @@ parameters:
 #   - stage: ${{ parameters.stageName }}
 #     displayName: ${{ parameters.stageDisplayName }}
 
-    # jobs:
-    - job: logic_app_build
-      displayName: 'Build and Publish'
+# jobs:
+# - job: logic_app_build
+#   displayName: 'Build and Publish'
 
-      variables:
-        artifactFolderName: 'App'
-        artifactName: 'LA.zip'
+variables:
+  artifactFolderName: 'App'
+  artifactName: 'LA.zip'
 
-      steps:
-      - task: CopyFiles@2
-        displayName: 'Create project folder'
-        inputs:
-          SourceFolder: '$(System.DefaultWorkingDirectory)'
-          Contents: |
-            Workflows/**
-          TargetFolder: 'project_output'
+steps:
+- task: CopyFiles@2
+  displayName: 'Create project folder'
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)'
+    Contents: |
+      Workflows/**
+    TargetFolder: 'project_output'
 
-      - task: Bash@3
-        displayName: 'Swap local settings files with Azure versions'
-        inputs:
-          targetType: 'inline'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/project_output/Workflows'
-          script: |
-            mv azure.parameters.json parameters.json
-            mv azure.connections.json connections.json
+- task: Bash@3
+  displayName: 'Swap local settings files with Azure versions'
+  inputs:
+    targetType: 'inline'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/project_output/Workflows'
+    script: |
+      mv azure.parameters.json parameters.json
+      mv azure.connections.json connections.json
 
-      - task: ArchiveFiles@2
-        displayName: 'Create project zip'
-        inputs:
-          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/project_output/Workflows'
-          includeRootFolder: false
-          archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/$(artifactName)'
-          replaceExistingArchive: true
+- task: ArchiveFiles@2
+  displayName: 'Create project zip'
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/project_output/Workflows'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(artifactName)'
+    replaceExistingArchive: true
 
-      - task: PublishPipelineArtifact@1
-        displayName: 'Publish project zip artifact'
-        inputs:
-          targetPath: '$(Build.ArtifactStagingDirectory)/$(artifactName)'
-          artifact: '$(artifactFolderName)'
-          publishLocation: 'pipeline'
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish project zip artifact'
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/$(artifactName)'
+    artifact: '$(artifactFolderName)'
+    publishLocation: 'pipeline'
