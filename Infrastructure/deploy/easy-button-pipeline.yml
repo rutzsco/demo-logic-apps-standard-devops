@@ -2,7 +2,7 @@
 # Pipeline to deploy Logic Application infrastructure AND deploy the Function App
 # ------------------------------------------------------------------------------------------------------------------------
 # Notes: 
-#   This pipeline expects that you have an AzDO Environment named "DEV".
+#   This pipeline expects that you have an AzDO Environment named "dev".
 #   This pipeline expects a variable group "LogicAppEasyButton" with these three variables:
 #     appPrefix='<yourInitials>' 
 #     azureSubscription='<yourSubscriptionName/serviceConnectionName>' 

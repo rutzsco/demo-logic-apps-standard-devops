@@ -3,13 +3,13 @@
 # ----------------------------------------------------------------------------------------------------
 parameters: 
   azureSubscription: ''
-  appPrefix: 'logic-demo'
+  appPrefix: ''
 
 # ----------------------------------------------------------------------------------------------------
 jobs:
 - deployment: DeployResources
   displayName: Initialize Deploy Resources
-  environment: 'DEV'
+  environment: 'dev'
 
 - job: DeployResourcesJob
   displayName: Deploy Resources
@@ -21,7 +21,7 @@ jobs:
 
   steps:
   - bash: |
-      resourceGroupName=$(echo "rg_$(appPrefixLower)_logic_app" | tr '[:upper:]' '[:lower:]')
+      resourceGroupName=$(echo "rg_$(appPrefixLower)_logic_app" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
       echo "##vso[task.setvariable variable=resourceGroupName]$resourceGroupName"
     displayName: 'Create Variables'
 
