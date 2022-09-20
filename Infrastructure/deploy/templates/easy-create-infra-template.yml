@@ -10,7 +10,6 @@ parameters:
 jobs:
 - deployment: DeployResources
   displayName: Initialize Deploy Resources
-  appPrefix: 'logic_demo'
 
 - job: DeployResourcesJob
   displayName: Deploy Resources
