@@ -32,10 +32,10 @@ jobs:
             appPrefixLower=$(echo "$(appPrefix)" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
             echo "##vso[task.setvariable variable=appPrefixLower]$appPrefixLower"
 
-            logic_app_name=$(echo "$(appPrefixLower)-demo-logic-app" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
+            logic_app_name=$(echo "$(appPrefix)-demo-logic-app" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
             echo "##vso[task.setvariable variable=logic_app_name]$logic_app_name"
 
-            resourceGroupName=$(echo "rg_$(appPrefixLower)_logic_app" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
+            resourceGroupName=$(echo "rg_$(appPrefix)_logic_app" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
             echo "##vso[task.setvariable variable=resource_group_name]$resource_group_name"
           displayName: 'Create Variables'
 
