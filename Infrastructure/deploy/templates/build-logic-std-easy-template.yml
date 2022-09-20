@@ -1,25 +1,6 @@
 # ----------------------------------------------------------------------------------------------------
 # Template to build logic app standard artifacts
 # ----------------------------------------------------------------------------------------------------
-parameters: 
-- name: stageName
-  default: ''
-- name: stageDisplayName
-  default: ''
-
-# ----------------------------------------------------------------------------------------------------
-# stages:
-#   - stage: ${{ parameters.stageName }}
-#     displayName: ${{ parameters.stageDisplayName }}
-
-# jobs:
-# - job: logic_app_build
-#   displayName: 'Build and Publish'
-
-variables:
-  artifactFolderName: 'App'
-  artifactName: 'LA.zip'
-
 steps:
 - task: CopyFiles@2
   displayName: 'Create project folder'
@@ -44,12 +25,12 @@ steps:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/project_output/Workflows'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(artifactName)'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/LA.zip'
     replaceExistingArchive: true
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish project zip artifact'
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/$(artifactName)'
-    artifact: '$(artifactFolderName)'
+    targetPath: '$(Build.ArtifactStagingDirectory)/LA.zip'
+    artifact: 'App'
     publishLocation: 'pipeline'

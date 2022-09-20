@@ -27,9 +27,6 @@ stages:
     displayName: Build Application
     jobs:
     - template: templates\build-logic-std-easy-template.yml
-      parameters:
-        stageName: BuildApplication
-        stageDisplayName: Build Application
 
   # ----------------------------------------------------------------------------------------------------
   - stage: DeployResources
