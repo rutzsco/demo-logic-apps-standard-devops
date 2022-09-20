@@ -12,7 +12,7 @@ parameters:
 #   - stage: ${{ parameters.stageName }}
 #     displayName: ${{ parameters.stageDisplayName }}
 
-    jobs:
+    # jobs:
     - job: logic_app_build
       displayName: 'Build and Publish'
 
