@@ -7,8 +7,8 @@ parameters:
 
 # ----------------------------------------------------------------------------------------------------
 jobs:
-- deployment: logic_app_deploy
-  displayName: 'Deploy Logic App'
+- deployment: LogicAppDeploy
+  displayName: Deploy Logic App
 
   variables:
   - name: stageName

@@ -5,7 +5,7 @@ jobs:
 - deployment: BuildApp
   displayName: Initialize Build Application
 
-- job: logic_app_build
+- job: LogicAppBuild
   displayName: 'Build and Publish'
   variables:
     artifactFolderName: 'App'

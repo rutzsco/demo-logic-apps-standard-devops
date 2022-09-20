@@ -2,7 +2,6 @@
 # Template to Deploy Azure resources
 # ----------------------------------------------------------------------------------------------------
 parameters: 
-  environment:  'DEV'
   azureSubscription: ''
   appPrefix: 'logic-demo'
 
