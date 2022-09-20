@@ -3,20 +3,16 @@
 # ----------------------------------------------------------------------------------------------------
 parameters: 
   azureSubscription: ''
-  environment: ''
   triggerFrequency: ''
 
 # ----------------------------------------------------------------------------------------------------
 jobs:
 - deployment: logic_app_deploy
   displayName: 'Deploy Logic App'
-  environment: ${{ parameters.environment }}
 
   variables:
   - name: stageName
     value: ${{ parameters.stageName }}
-  - name: environment
-    value: ${{ parameters.environment }}
   - name: triggerFrequency
     value: ${{ parameters.triggerFrequency }}
   - name: artifactFolderName
@@ -29,10 +25,10 @@ jobs:
       deploy:
         steps:
         - bash: |
-            logic_app_name=$(echo "$(appPrefix)-demo-logic-app-$(environment)" | tr '[:upper:]' '[:lower:]')
+            logic_app_name=$(echo "$(appPrefix)-demo-logic-app" | tr '[:upper:]' '[:lower:]')
             echo "##vso[task.setvariable variable=logic_app_name]$logic_app_name"
 
-            resource_group_name=$(echo "rg_logic_demo_$(environment)" | tr '[:upper:]' '[:lower:]')
+            resourceGroupName=$(echo "rg_$(appPrefixLower)_logic_app" | tr '[:upper:]' '[:lower:]')
             echo "##vso[task.setvariable variable=resource_group_name]$resource_group_name"
           displayName: 'Create Variables'
 
@@ -41,7 +37,6 @@ jobs:
             echo "logic_app_name=$(logic_app_name)"
             echo "azureSubscription=$(azureSubscription)"
             echo "region=$(region)"
-            echo "environment=$(environment)"
             echo "appPrefix=$(appPrefix)"
             echo "triggerFrequency=$(triggerFrequency)"
             echo "Pipeline.Workspace=$(Pipeline.Workspace)"
