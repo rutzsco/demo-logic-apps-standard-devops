@@ -4,7 +4,6 @@
 parameters: 
   environment: ''
   azureSubscription: ''
-  appPrefix: ''
 
 # ----------------------------------------------------------------------------------------------------
 jobs:
@@ -20,7 +19,7 @@ jobs:
   - name: environmentLower
     value: ${{ lower(parameters.environment) }}
   - name: appPrefixLower
-    value: ${{ lower(appPrefix) }}
+    value: ${{ lower(variables.appPrefix) }}
   - name: templateFile
     value: '$(Pipeline.Workspace)/s/Infrastructure/bicep/main.bicep'
 
