@@ -43,10 +43,8 @@ stages:
     displayName: Deploy Application
     dependsOn: DeployResources
     jobs:
-    - template: templates\deploy-logic-std-template.yml
+    - template: templates\deploy-logic-std-easy-template.yml
       parameters:
-        stageName: DeployApp
-        stageDisplayName: Deploy App
         azureSubscription: $(azureSubscription)
         environment: 'DEV'
         triggerFrequency: 'Day'
