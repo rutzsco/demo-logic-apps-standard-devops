@@ -2,6 +2,7 @@
 # Template to deploy a logic app standard to a Function App
 # ----------------------------------------------------------------------------------------------------
 parameters: 
+  environment: ''
   azureSubscription: ''
   triggerFrequency: ''
 
@@ -9,22 +10,28 @@ parameters:
 jobs:
 - deployment: LogicAppDeploy
   displayName: Deploy Application
-  environment: 'dev'
+  environment: ${{ parameters.environment }}
 
   variables:
-  - name: triggerFrequency
-    value: ${{ parameters.triggerFrequency }}
+  - name: environment
+    value: ${{ parameters.environment }}
+  - name: environmentLower
+    value: ${{ lower(parameters.environment) }}
+  - name: appPrefixLower
+    value: ${{ lower(appPrefix) }}
   - name: artifactFolderName
     value: 'App'
   - name: artifactName
     value: 'LA.zip'
+  - name: triggerFrequency
+    value: ${{ parameters.triggerFrequency }}
 
   strategy:
     runOnce:
       deploy:
         steps:
         - bash: |
-            logic_app_name=$(echo "$(appPrefix)-demo-logic-app" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
+            logic_app_name=$(echo "$(appPrefixLower)-demo-logic-app" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
             echo "##vso[task.setvariable variable=logic_app_name]$logic_app_name"
 
             resourceGroupName=$(echo "rg_$(appPrefixLower)_logic_app" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
@@ -36,7 +43,10 @@ jobs:
             echo "logic_app_name=$(logic_app_name)"
             echo "azureSubscription=$(azureSubscription)"
             echo "region=$(region)"
+            echo "environment=$(environment)"
+            echo "environmentLower=$(environmentLower)"
             echo "appPrefix=$(appPrefix)"
+            echo "appPrefixLower=$(appPrefixLower)"
             echo "triggerFrequency=$(triggerFrequency)"
             echo "Pipeline.Workspace=$(Pipeline.Workspace)"
             tree $(Pipeline.Workspace)

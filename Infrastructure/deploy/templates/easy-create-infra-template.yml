@@ -2,6 +2,7 @@
 # Template to Deploy Azure resources
 # ----------------------------------------------------------------------------------------------------
 parameters: 
+  environment: ''
   azureSubscription: ''
   appPrefix: ''
 
@@ -9,13 +10,17 @@ parameters:
 jobs:
 - deployment: DeployResources
   displayName: Initialize Deploy Resources
-  environment: 'dev'
+  environment: ${{ parameters.environment }}
 
 - job: DeployResourcesJob
   displayName: Deploy Resources
   variables:
+  - name: environment
+    value: ${{ parameters.environment }}
+  - name: environmentLower
+    value: ${{ lower(parameters.environment) }}
   - name: appPrefixLower
-    value: ${{ lower(parameters.appPrefix) }}
+    value: ${{ lower(appPrefix) }}
   - name: templateFile
     value: '$(Pipeline.Workspace)/s/Infrastructure/bicep/main.bicep'
 
@@ -29,7 +34,10 @@ jobs:
       echo "azureSubscription=$(azureSubscription)"
       echo "resourceGroupName=$(resourceGroupName)"
       echo "region=$(region)"
+      echo "environment=$(environment)"
+      echo "environmentLower=$(environmentLower)"
       echo "appPrefix=$(appPrefix)"
+      echo "appPrefixLower=$(appPrefixLower)"
       echo "templateFile=$(templateFile)"
       tree $(Pipeline.Workspace)
     displayName: 'Display Variables'

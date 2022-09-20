@@ -1,16 +1,25 @@
 # ----------------------------------------------------------------------------------------------------
 # Template to build logic app standard artifacts
 # ----------------------------------------------------------------------------------------------------
+parameters: 
+  environment: ''
+
 jobs:
 - deployment: BuildApp
   displayName: Initialize Build Application
-  environment: 'dev'
+  environment: ${{ parameters.environment }}
 
 - job: LogicAppBuild
   displayName: Build Application
   variables:
-    artifactFolderName: 'App'
-    artifactName: 'LA.zip'
+  - name: environment
+    value: ${{ parameters.environment }}
+  - name: environmentLower
+    value: ${{ lower(parameters.environment) }}
+  - name: artifactFolderName
+    value: 'App'
+  - name: artifactName
+    value: 'LA.zip'
 
   steps:
   - task: CopyFiles@2

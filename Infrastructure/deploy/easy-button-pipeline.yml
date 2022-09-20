@@ -29,6 +29,8 @@ stages:
     displayName: Build Application
     jobs:
     - template: templates\easy-build-logic-std-template.yml
+      parameters:
+        environment: dev
 
   # ----------------------------------------------------------------------------------------------------
   - stage: DeployResources
@@ -37,6 +39,7 @@ stages:
     jobs:
     - template: templates\easy-create-infra-template.yml
       parameters:
+        environment: dev
         azureSubscription: $(azureSubscription)
 
   # ----------------------------------------------------------------------------------------------------
@@ -46,5 +49,6 @@ stages:
     jobs:
     - template: templates\easy-deploy-logic-std-template.yml
       parameters:
+        environment: dev
         azureSubscription: $(azureSubscription)
         triggerFrequency: 'Day'
