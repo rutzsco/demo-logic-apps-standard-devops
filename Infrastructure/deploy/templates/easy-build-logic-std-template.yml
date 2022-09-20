@@ -4,7 +4,8 @@
 jobs:
 - deployment: BuildApp
   displayName: Initialize Build Application
-
+  environment: 'DEV'
+  
 - job: LogicAppBuild
   displayName: 'Build and Publish'
   variables:

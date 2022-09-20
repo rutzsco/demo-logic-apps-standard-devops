@@ -9,6 +9,7 @@ parameters:
 jobs:
 - deployment: DeployResources
   displayName: Initialize Deploy Resources
+  environment: 'DEV'
 
 - job: DeployResourcesJob
   displayName: Deploy Resources

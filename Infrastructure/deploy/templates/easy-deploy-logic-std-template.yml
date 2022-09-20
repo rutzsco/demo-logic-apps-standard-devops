@@ -9,6 +9,7 @@ parameters:
 jobs:
 - deployment: LogicAppDeploy
   displayName: Deploy Logic App
+  environment: 'DEV'
 
   variables:
   - name: stageName
