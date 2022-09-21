@@ -40,7 +40,7 @@ jobs:
           displayName: 'Create Variables'
 
         - bash: |
-                echo "resourceGroupName=$(resourceGroupName)"
+            echo "resourceGroupName=$(resourceGroupName)"
             echo "logic_app_name=$(logic_app_name)"
             echo "azureSubscription=$(azureSubscription)"
             echo "region=$(region)"
