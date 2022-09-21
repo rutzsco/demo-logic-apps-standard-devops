@@ -2,66 +2,65 @@
 # Template to deploy a logic app standard to a Function App
 # ----------------------------------------------------------------------------------------------------
 parameters: 
-  stageName: ''
-  stageDisplayName: ''
-  azureSubscription: ''
   environment: ''
+  azureSubscription: ''
   triggerFrequency: ''
 
 # ----------------------------------------------------------------------------------------------------
-stages:
-  - stage: ${{ parameters.stageName }}
-    displayName: ${{ parameters.stageDisplayName }}
+jobs:
+- deployment: LogicAppDeploy
+  displayName: Deploy Application
+  environment: ${{ parameters.environment }}
 
-    jobs:
-    - deployment: logic_app_deploy
-      displayName: 'Deploy Logic App'
-      environment: ${{ parameters.environment }}
+  variables:
+  - name: environment
+    value: ${{ parameters.environment }}
+  - name: environmentLower
+    value: ${{ lower(parameters.environment) }}
+  - name: artifactFolderName
+    value: 'App'
+  - name: artifactName
+    value: 'LA.zip'
+  - name: triggerFrequency
+    value: ${{ parameters.triggerFrequency }}
 
-      variables:
-      - name: stageName
-        value: ${{ parameters.stageName }}
-      - name: environment
-        value: ${{ parameters.environment }}
-      - name: triggerFrequency
-        value: ${{ parameters.triggerFrequency }}
-      - name: artifactFolderName
-        value: 'App'
-      - name: artifactName
-        value: 'LA.zip'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - bash: |
+            appPrefixLower=$(echo "$(appPrefix)" | tr '[:upper:]' '[:lower:]')
+            echo "##vso[task.setvariable variable=appPrefixLower]$appPrefixLower"
 
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - bash: |
-                logic_app_name=$(echo "$(appPrefix)-demo-logic-app-$(environment)" | tr '[:upper:]' '[:lower:]')
-                echo "##vso[task.setvariable variable=logic_app_name]$logic_app_name"
+            logic_app_name=$(echo "$(appPrefix)-demo-logic-app-$(environment)" | tr '[:upper:]' '[:lower:]')
+            echo "##vso[task.setvariable variable=logic_app_name]$logic_app_name"
 
-                resource_group_name=$(echo "rg_logic_demo_$(environment)" | tr '[:upper:]' '[:lower:]')
-                echo "##vso[task.setvariable variable=resource_group_name]$resource_group_name"
-              displayName: 'Create Variables'
+            resourceGroupName=$(echo "rg_$(appPrefix)_logic_app_$(environment)" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
+                echo "##vso[task.setvariable variable=resourceGroupName]$resourceGroupName"
+          displayName: 'Create Variables'
 
-            - bash: |
-                echo "resource_group_name=$(resource_group_name)"
-                echo "logic_app_name=$(logic_app_name)"
-                echo "azureSubscription=$(azureSubscription)"
-                echo "region=$(region)"
-                echo "environment=$(environment)"
-                echo "appPrefix=$(appPrefix)"
-                echo "triggerFrequency=$(triggerFrequency)"
-                echo "Pipeline.Workspace=$(Pipeline.Workspace)"
-                tree $(Pipeline.Workspace)
-              displayName: 'Display Variables'
-              continueOnError: true
+        - bash: |
+            echo "resourceGroupName=$(resourceGroupName)"
+            echo "logic_app_name=$(logic_app_name)"
+            echo "azureSubscription=$(azureSubscription)"
+            echo "region=$(region)"
+            echo "environment=$(environment)"
+            echo "environmentLower=$(environmentLower)"
+            echo "appPrefix=$(appPrefix)"
+            echo "appPrefixLower=$(appPrefixLower)"
+            echo "triggerFrequency=$(triggerFrequency)"
+            echo "Pipeline.Workspace=$(Pipeline.Workspace)"
+            tree $(Pipeline.Workspace)
+          displayName: 'Display Variables'
+          continueOnError: true
 
-            - task: AzureFunctionApp@1
-              displayName: 'Deploy Logic App Zip'
-              retryCountOnTaskFailure: 2
-              inputs:
-                azureSubscription: $(azureSubscription)
-                appType: 'functionApp'
-                appName: $(logic_app_name)
-                package: '$(Pipeline.Workspace)/$(artifactFolderName)/$(artifactName)'
-                deploymentMethod: 'zipDeploy'
-                AppSettings: '-TRIGGER_FREQUENCY $(triggerFrequency)'
+        - task: AzureFunctionApp@1
+          displayName: 'Deploy Logic App Zip'
+          retryCountOnTaskFailure: 2
+          inputs:
+            azureSubscription: $(azureSubscription)
+            appType: 'functionApp'
+            appName: $(logic_app_name)
+            package: '$(Pipeline.Workspace)/$(artifactFolderName)/$(artifactName)'
+            deploymentMethod: 'zipDeploy'
+            AppSettings: '-TRIGGER_FREQUENCY $(triggerFrequency)'
