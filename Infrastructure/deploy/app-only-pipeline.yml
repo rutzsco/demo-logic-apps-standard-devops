@@ -28,8 +28,7 @@ stages:
     jobs:
     - template: templates\build-logic-std-template.yml
       parameters:
-        stageName: BuildApplication
-        stageDisplayName: Build Application
+        environment: dev
 
 # ----------------------------------------------------------------------------------------------------
   - stage: DeployDEVResources
@@ -38,8 +37,6 @@ stages:
     jobs:
     - template: templates\deploy-logic-std-template.yml
       parameters:
-        stageName: DeployDEV
-        stageDisplayName: Deploy App DEV
         azureSubscription: $(azureSubscription)
         environment: 'DEV'
         triggerFrequency: 'Day'
@@ -50,8 +47,6 @@ stages:
     jobs:
     - template: templates\deploy-logic-std-template.yml
       parameters:
-        stageName: DeployQA
-        stageDisplayName: Deploy App QA
         azureSubscription: $(azureSubscription)
         environment: 'QA'
         triggerFrequency: 'Day'
