@@ -13,9 +13,8 @@ stages:
     displayName: ${{ parameters.stageDisplayName }}
 
     jobs:
-    - job: logic_app_build
-      displayName: 'Build and Publish'
-
+    - job: LogicAppBuild
+      displayName: Build Application
       variables:
         artifactFolderName: 'App'
         artifactName: 'LA.zip'

@@ -4,8 +4,8 @@
 parameters: 
   stageName: ''
   stageDisplayName: ''
-  azureSubscription: ''
   environment: ''
+  azureSubscription: ''
   triggerFrequency: ''
 
 # ----------------------------------------------------------------------------------------------------
@@ -14,8 +14,8 @@ stages:
     displayName: ${{ parameters.stageDisplayName }}
 
     jobs:
-    - deployment: logic_app_deploy
-      displayName: 'Deploy Logic App'
+- deployment: LogicAppDeploy
+  displayName: Deploy Application
       environment: ${{ parameters.environment }}
 
       variables:
@@ -23,32 +23,39 @@ stages:
         value: ${{ parameters.stageName }}
       - name: environment
         value: ${{ parameters.environment }}
-      - name: triggerFrequency
-        value: ${{ parameters.triggerFrequency }}
+      - name: environmentLower
+        value: ${{ lower(parameters.environment) }}
       - name: artifactFolderName
         value: 'App'
       - name: artifactName
         value: 'LA.zip'
+      - name: triggerFrequency
+        value: ${{ parameters.triggerFrequency }}
 
       strategy:
         runOnce:
           deploy:
             steps:
             - bash: |
+                appPrefixLower=$(echo "$(appPrefix)" | tr '[:upper:]' '[:lower:]')
+                echo "##vso[task.setvariable variable=appPrefixLower]$appPrefixLower"
+
                 logic_app_name=$(echo "$(appPrefix)-demo-logic-app-$(environment)" | tr '[:upper:]' '[:lower:]')
                 echo "##vso[task.setvariable variable=logic_app_name]$logic_app_name"
 
-                resource_group_name=$(echo "rg_logic_demo_$(environment)" | tr '[:upper:]' '[:lower:]')
-                echo "##vso[task.setvariable variable=resource_group_name]$resource_group_name"
+                resourceGroupName=$(echo "rg_$(appPrefix)_logic_app_$(environment)" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
+                echo "##vso[task.setvariable variable=resourceGroupName]$resourceGroupName"
               displayName: 'Create Variables'
 
             - bash: |
-                echo "resource_group_name=$(resource_group_name)"
+                echo "resourceGroupName=$(resourceGroupName)"
                 echo "logic_app_name=$(logic_app_name)"
                 echo "azureSubscription=$(azureSubscription)"
                 echo "region=$(region)"
                 echo "environment=$(environment)"
+                echo "environmentLower=$(environmentLower)"
                 echo "appPrefix=$(appPrefix)"
+                echo "appPrefixLower=$(appPrefixLower)"
                 echo "triggerFrequency=$(triggerFrequency)"
                 echo "Pipeline.Workspace=$(Pipeline.Workspace)"
                 tree $(Pipeline.Workspace)

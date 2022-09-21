@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------------------------------------
-# Pipeline to deploy Azure Resources for multiple environments
+# Pipeline to deploy Logic Application to existing Function App
 # ------------------------------------------------------------------------------------------------------------------------
 # Note: This pipeline needs a variable group "LogicAppDemo"
 #  See ../Docs/VariableGroups.md for details
@@ -14,9 +14,8 @@ trigger:
     include:
     - main
   paths:
-    include: 
-      - 'Infrastructure/**/*.yml'
-      - 'Infrastructure/**/*.bicep'
+    include:
+      - Workflows/*
 
 # ----------------------------------------------------------------------------------------------------
 variables:
@@ -24,18 +23,35 @@ variables:
 
 # ----------------------------------------------------------------------------------------------------
 stages:
-  - stage: DeployDEVResources
-    displayName: DEV Deploy Resources
+  - stage: BuildApplicationStage
+    displayName: Build Application
     jobs:
-    - template: templates\create-infra-template.yml
+    - template: templates\build-logic-std-template.yml
       parameters:
-        environment: 'DEV'
+        stageName: BuildApplication
+        stageDisplayName: Build Application
+
+# ----------------------------------------------------------------------------------------------------
+  - stage: DeployDEVResources
+    displayName: Deploy DEV Resources
+    dependsOn: BuildApplicationStage
+    jobs:
+    - template: templates\deploy-logic-std-template.yml
+      parameters:
+        stageName: DeployDEV
+        stageDisplayName: Deploy App DEV
         azureSubscription: $(azureSubscription)
+        environment: 'DEV'
+        triggerFrequency: 'Day'
 
   - stage: DeployQAResources
-    displayName: QA Deploy Resources
+    displayName: Deploy QA Resources
+    dependsOn: DeployDEVResources
     jobs:
-    - template: templates\create-infra-template.yml
+    - template: templates\deploy-logic-std-template.yml
       parameters:
-        environment: 'QA'
+        stageName: DeployQA
+        stageDisplayName: Deploy App QA
         azureSubscription: $(azureSubscription)
+        environment: 'QA'
+        triggerFrequency: 'Day'

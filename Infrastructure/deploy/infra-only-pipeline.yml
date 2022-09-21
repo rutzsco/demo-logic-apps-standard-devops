@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------------------------------------
-# Pipeline to deploy Logic Application to existing Function App
+# Pipeline to deploy Azure Resources for multiple environments
 # ------------------------------------------------------------------------------------------------------------------------
 # Note: This pipeline needs a variable group "LogicAppDemo"
 #  See ../Docs/VariableGroups.md for details
@@ -14,8 +14,9 @@ trigger:
     include:
     - main
   paths:
-    include:
-      - Workflows/*
+    include: 
+      - 'Infrastructure/**/*.yml'
+      - 'Infrastructure/**/*.bicep'
 
 # ----------------------------------------------------------------------------------------------------
 variables:
@@ -23,24 +24,18 @@ variables:
 
 # ----------------------------------------------------------------------------------------------------
 stages:
-- template: templates\build-logic-std-template.yml
-  parameters:
-    stageName: BuildApplication
-    stageDisplayName: Build Application
+  - stage: DeployDEVResources
+    displayName: Deploy DEV Resources
+    jobs:
+    - template: templates\create-infra-template.yml
+      parameters:
+        environment: 'DEV'
+        azureSubscription: $(azureSubscription)
 
-# ----------------------------------------------------------------------------------------------------
-- template: templates\deploy-logic-std-template.yml
-  parameters:
-    stageName: DeployDEV
-    stageDisplayName: Deploy App DEV
-    azureSubscription: $(azureSubscription)
-    environment: 'DEV'
-    triggerFrequency: 'Day'
-
-- template: templates\deploy-logic-std-template.yml
-  parameters:
-    stageName: DeployQA
-    stageDisplayName: Deploy App QA
-    azureSubscription: $(azureSubscription)
-    environment: 'QA'
-    triggerFrequency: 'Day'
+  - stage: DeployQAResources
+    displayName: QA Deploy Resources
+    jobs:
+    - template: templates\create-infra-template.yml
+      parameters:
+        environment: 'QA'
+        azureSubscription: $(azureSubscription)
