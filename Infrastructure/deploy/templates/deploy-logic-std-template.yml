@@ -36,7 +36,7 @@ jobs:
             echo "##vso[task.setvariable variable=logic_app_name]$logic_app_name"
 
             resourceGroupName=$(echo "rg_$(appPrefix)_logic_app_$(environment)" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
-                echo "##vso[task.setvariable variable=resourceGroupName]$resourceGroupName"
+            echo "##vso[task.setvariable variable=resourceGroupName]$resourceGroupName"
           displayName: 'Create Variables'
 
         - bash: |
