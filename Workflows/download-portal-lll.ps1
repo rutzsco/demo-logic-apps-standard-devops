@@ -45,13 +45,15 @@ $jsonObj | Select-Object -Property Name, Mime | ForEach-Object {
                         $confirmAll = "Y"
                     }
                 }
-            } else {
+            }
+            else {
                 $confirm = "Y"
             }
             if ($confirm -eq "Y" -or $confirmAll -eq "Y") {
                 Write-Host "Downloading Config: $thisName to $outputName ..." -Foregroundcolor Green
                 Invoke-WebRequest -Uri $t -Headers @{Authorization = ("Basic {0}" -f $base64AuthInfo) } -Method GET -OutFile $o -ContentType "multipart/form-data"
-            } else {
+            }
+            else {
                 Write-Host "Skipping Config: $thisName ..." -Foregroundcolor Green
             }
         }
@@ -59,11 +61,29 @@ $jsonObj | Select-Object -Property Name, Mime | ForEach-Object {
 
     if ($_.mime -eq 'inode/directory') {
         $thisName = $_.name
+        $outputName = $_.name
         Write-Host "Downloading Workflow: $thisName ..." -Foregroundcolor Green
         $t = $baseTargetUri + $_.name + '/workflow.json'
         $o = $baseOutputPath + $_.name + '/workflow.json'
         $d = $baseOutputPath + $_.name
-        New-Item -ItemType Directory -Force -Path $d
-        Invoke-WebRequest -Uri $t -Headers @{Authorization = ("Basic {0}" -f $base64AuthInfo) } -Method GET -OutFile $o -ContentType "multipart/form-data"
+        if (Test-Path $o) {
+            Write-Host "Warning! Workflow $outputName already exists... " -Foregroundcolor Red
+            if ($confirmAll -ne "Y") {
+                $confirm = Read-Host -Prompt "Overwrite it? (Y/N/A)"
+                if ($confirm -eq "A") {
+                    $confirmAll = "Y"
+                }
+            }
+        }
+        else {
+            $confirm = "Y"
+        }
+        if ($confirm -eq "Y" -or $confirmAll -eq "Y") {
+            New-Item -ItemType Directory -Force -Path $d
+            Invoke-WebRequest -Uri $t -Headers @{Authorization = ("Basic {0}" -f $base64AuthInfo) } -Method GET -OutFile $o -ContentType "multipart/form-data"
+        } 
+        else {
+            Write-Host "Skipping Workflow: $thisName ..." -Foregroundcolor Green
+        }
     }
 }
