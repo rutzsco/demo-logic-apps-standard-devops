@@ -58,6 +58,8 @@ jobs:
       overrideParameters: >
         -appPrefix $(appPrefix) 
         -environment $(environmentLower)
+        -longAppName $(longAppName)
+        -shortAppName $(shortAppName)
       deploymentScope: 'Resource Group'
       azureResourceManagerConnection: $(azureSubscription)
       resourceGroupName: '$(resourceGroupName)'

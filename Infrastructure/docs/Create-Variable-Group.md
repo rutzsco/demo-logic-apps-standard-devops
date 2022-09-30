@@ -21,4 +21,6 @@ These commands actually create the variable groups:
         appPrefix='<yourInitials>' 
         azureSubscription='<yourSubscriptionName/serviceConnectionName>' 
         region='eastus' 
+        longAppName='logic-std-demo'
+        shortAppName='logstddemo'
 ```
