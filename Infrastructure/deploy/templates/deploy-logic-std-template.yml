@@ -32,15 +32,11 @@ jobs:
             appPrefixLower=$(echo "$(appPrefix)" | tr '[:upper:]' '[:lower:]')
             echo "##vso[task.setvariable variable=appPrefixLower]$appPrefixLower"
 
-            logic_app_name=$(echo "$(appPrefix)-demo-logic-app-$(environment)" | tr '[:upper:]' '[:lower:]')
+            logic_app_name=$(echo "$(appPrefix)-logic-demo-$(environment)" | tr '[:upper:]' '[:lower:]')
             echo "##vso[task.setvariable variable=logic_app_name]$logic_app_name"
-
-            resourceGroupName=$(echo "rg_$(appPrefix)_logic_app_$(environment)" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
-            echo "##vso[task.setvariable variable=resourceGroupName]$resourceGroupName"
           displayName: 'Create Variables'
 
         - bash: |
-            echo "resourceGroupName=$(resourceGroupName)"
             echo "logic_app_name=$(logic_app_name)"
             echo "azureSubscription=$(azureSubscription)"
             echo "region=$(region)"
