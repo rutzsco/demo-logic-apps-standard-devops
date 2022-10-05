@@ -1,5 +1,5 @@
 Clear-Host
-$resourceGroupName = "rg_luppes_logic_app_dev"
+$resourceGroupName = "rg_logstddemo_dev"
 $logicAppName = "luppes-demo-logic-app-dev"
 $baseTargetUri = "https://" + $logicAppName + ".scm.azurewebsites.net/api/vfs/site/wwwroot/"
 $curDir = Get-Location

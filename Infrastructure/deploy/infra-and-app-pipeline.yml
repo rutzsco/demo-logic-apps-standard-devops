@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------------------------------------
-# Pipeline to deploy Azure Resources Only
+# Pipeline to deploy Logic Application infrastructure AND deploy the Function App
 # ------------------------------------------------------------------------------------------------------------------------
 # Note: This pipeline needs a variable group "LogicAppDemo"
 #  See ../Docs/Create-Variable-Group.md for details
@@ -13,14 +13,10 @@ trigger:
   branches:
     include:
     - main
-  paths:
-    include: 
-      - 'Infrastructure/**/*.yml'
-      - 'Infrastructure/**/*.bicep'
 
 # ----------------------------------------------------------------------------------------------------
 stages:
-- template: pipes/infra-only-pipeline-template.yml
+- template: pipes/infra-and-logicstd-pipeline-template.yml
   parameters:
     variableGroupName: 'LogicAppDemo'
-    environments: ['DEV','PROD']  # ['DEV'] or ['DEV','QA'] or ['DEV','QA','PROD']
+    environments: ['DEV','PROD']  # ['DEV','QA'] or ['DEV','QA','PROD']

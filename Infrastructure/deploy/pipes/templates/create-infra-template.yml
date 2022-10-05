@@ -1,0 +1,86 @@
+# ----------------------------------------------------------------------------------------------------
+# Template to deploy Azure Resources for one environment
+# ----------------------------------------------------------------------------------------------------
+parameters: 
+- name: variableGroupName
+  default: 'myVariableGroup'
+- name: environmentName
+  default: 'DEV'
+- name: templateFolderName
+  default: 'Infrastructure/bicep'
+- name: templateFileName
+  default: 'main.bicep'
+# ----------------------------------------------------------------------------------------------------
+jobs:
+- deployment: Create${{ parameters.environmentName }}Infra
+  displayName: Initialize ${{ parameters.environmentName }} Create Infra
+  environment: ${{ parameters.environmentName }}
+
+- job: Create${{ parameters.environmentName }}InfraJob
+  displayName: Create ${{ parameters.environmentName }} Infrastructure
+  variables:
+    - group: ${{ parameters.variableGroupName }}
+    - name: environmentNameUpper
+      value: ${{ upper(parameters.environmentName) }}
+    - name: environmentNameLower
+      value: ${{ lower(parameters.environmentName) }}
+    - name: templateFile
+      value: '$(Pipeline.Workspace)/s/${{ parameters.templateFolderName }}/${{ parameters.templateFileName }}'
+    - name: resourceGroupSuffixBase
+      value: '_${{ lower(parameters.environmentName) }}'
+    - name: resourceGroupSuffix
+      value: ${{ replace(variables.resourceGroupSuffixBase, '_prod', '') }}
+
+  steps:
+  - bash: |
+      appPrefixLower=$(echo "$(appPrefix)" | tr '[:upper:]' '[:lower:]')
+      echo "##vso[task.setvariable variable=appPrefixLower]$appPrefixLower"
+
+      resourceGroupName=$(echo "rg_$(shortAppName)$(resourceGroupSuffix)" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
+      echo "resourceGroupName=$resourceGroupName"
+      echo "##vso[task.setvariable variable=resourceGroupName]$resourceGroupName"
+      
+      runDateTime=$(echo $(date '+%Y%m%d-%H%M%S'))
+      echo "##vso[task.setvariable variable=runDateTime]$runDateTime"
+      echo "runDateTime=$runDateTime"
+    displayName: 'Create Variables'
+
+  - bash: |
+      echo "environmentNameUpper=$(environmentNameUpper)"
+      echo "environmentNameLower=$(environmentNameLower)"
+      echo "resourceGroupSuffixBase=$(resourceGroupSuffixBase)"
+      echo "resourceGroupSuffix=$(resourceGroupSuffix)"
+      echo "resourceGroupName=$(resourceGroupName)"
+      echo "azureSubscription=$(azureSubscription)"
+      echo "region=$(region)"
+      echo "appPrefix=$(appPrefix)"
+      echo "appPrefixLower=$(appPrefixLower)"
+      echo "templateFile=$(templateFile)"
+      tree $(Pipeline.Workspace)
+    displayName: 'Display Variables'
+    continueOnError: true
+
+  - task: AzureCLI@2
+    displayName: 'Create Resource Group'
+    inputs:
+      azureSubscription: $(azureSubscription)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: az group create --name $(resourceGroupName) --location $(region)
+
+  - task: AzureResourceManagerTemplateDeployment@3
+    displayName: 'Publish Bicep Resources'
+    inputs:
+      csmFile: $(templateFile)
+      overrideParameters: >
+        -appPrefix $(appPrefix) 
+        -environment $(environmentNameLower)
+        -longAppName $(longAppName)
+        -shortAppName $(shortAppName)
+      deploymentScope: 'Resource Group'
+      azureResourceManagerConnection: $(azureSubscription)
+      action: 'Create Or Update Resource Group'
+      resourceGroupName: '$(resourceGroupName)'
+      location: '$(region)'
+      templateLocation: 'Linked artifact'
+      deploymentMode: 'Incremental'

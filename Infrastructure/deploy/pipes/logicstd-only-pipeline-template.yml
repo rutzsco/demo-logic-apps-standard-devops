@@ -1,0 +1,29 @@
+# ------------------------------------------------------------------------------------------------------------------------
+# Pipeline Template to build logic apps application and deploy it to multiple optional environments
+# ------------------------------------------------------------------------------------------------------------------------
+parameters:
+- name: environments
+  type: object
+  default: ['DEV'] # or ['DEV','QA'] or ['DEV','QA','PROD'] or ['DEV','QA','STG','PROD']
+- name: variableGroupName
+  default: 'myVariableGroupName'
+
+# ----------------------------------------------------------------------------------------------------
+stages:
+- stage: BuildApplication
+  displayName: Build Application
+  jobs:
+  - template: templates/build-logicstd-template.yml
+    parameters:
+      variableGroupName: ${{ parameters.variableGroupName }}
+      environmentName: 'DEV'
+
+# ----------------------------------------------------------------------------------------------------
+- ${{ each environmentName in parameters.environments }} :
+  - stage: DeployApp${{ environmentName }}
+    displayName: Deploy ${{ environmentName }} Application
+    jobs:
+    - template: templates/deploy-logicstd-template.yml
+      parameters:
+        variableGroupName: ${{ parameters.variableGroupName }}
+        environmentName: ${{ environmentName }}
