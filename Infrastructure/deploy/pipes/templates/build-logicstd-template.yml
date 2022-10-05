@@ -32,7 +32,6 @@ jobs:
         echo "artifactName=$(artifactName)"
         echo "Directory of System.DefaultWorkingDirectory:"
         tree $(System.DefaultWorkingDirectory)
-        dir $(System.DefaultWorkingDirectory) /s
     displayName: 'Display Variables'
     continueOnError: true
 
