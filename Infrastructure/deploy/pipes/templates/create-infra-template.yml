@@ -2,9 +2,14 @@
 # Template to deploy Azure Resources for one environment
 # ----------------------------------------------------------------------------------------------------
 parameters: 
-  variableGroupName: 'myVariableGroup'
-  environmentName:  'DEV'
-
+- name: variableGroupName
+  default: 'myVariableGroup'
+- name: environmentName
+  default: 'DEV'
+- name: templateFolderName
+  default: 'Infrastructure/bicep'
+- name: templateFileName
+  default: 'main.bicep'
 # ----------------------------------------------------------------------------------------------------
 jobs:
 - deployment: Create${{ parameters.environmentName }}Infra
@@ -20,7 +25,7 @@ jobs:
     - name: environmentNameLower
       value: ${{ lower(parameters.environmentName) }}
     - name: templateFile
-      value: '$(Pipeline.Workspace)/s/Infrastructure/bicep/main.bicep'
+      value: '$(Pipeline.Workspace)/s/$(templateFolderName)/$(templateFileName)'
     - name: resourceGroupSuffixBase
       value: '_${{ lower(parameters.environmentName) }}'
     - name: resourceGroupSuffix
@@ -30,10 +35,6 @@ jobs:
   - bash: |
       appPrefixLower=$(echo "$(appPrefix)" | tr '[:upper:]' '[:lower:]')
       echo "##vso[task.setvariable variable=appPrefixLower]$appPrefixLower"
-
-      originalResourceGroupName=$(echo "rg_$(shortAppName)_$(environmentNameLower)" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
-      echo "originalResourceGroupName=$originalResourceGroupName"
-      echo "##vso[task.setvariable variable=originalResourceGroupName]$originalResourceGroupName"
 
       resourceGroupName=$(echo "rg_$(shortAppName)$(resourceGroupSuffix)" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
       echo "resourceGroupName=$resourceGroupName"
@@ -50,7 +51,6 @@ jobs:
       echo "resourceGroupSuffixBase=$(resourceGroupSuffixBase)"
       echo "resourceGroupSuffix=$(resourceGroupSuffix)"
       echo "resourceGroupName=$(resourceGroupName)"
-      echo "originalResourceGroupName=$(originalResourceGroupName)"
       echo "azureSubscription=$(azureSubscription)"
       echo "region=$(region)"
       echo "appPrefix=$(appPrefix)"
