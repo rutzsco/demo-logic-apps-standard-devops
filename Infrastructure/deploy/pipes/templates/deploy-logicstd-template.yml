@@ -19,14 +19,8 @@ jobs:
 
   variables:
     - group: ${{ parameters.variableGroupName }}
-    - name: environmentNameUpper
-      value: ${{ upper(parameters.environmentName) }}
     - name: environmentNameLower
       value: ${{ lower(parameters.environmentName) }}
-    - name: environment
-      value: ${{ parameters.environment }}
-    - name: environmentLower
-      value: ${{ lower(parameters.environment) }}
     - name: artifactFolderName
       value: 'App'
     - name: artifactName
@@ -50,7 +44,6 @@ jobs:
             echo "logic_app_name=$(logic_app_name)"
             echo "azureSubscription=$(azureSubscription)"
             echo "region=$(region)"
-            echo "environment=$(environment)"
             echo "environmentLower=$(environmentLower)"
             echo "appPrefix=$(appPrefix)"
             echo "appPrefixLower=$(appPrefixLower)"
