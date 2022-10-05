@@ -25,7 +25,7 @@ jobs:
     - name: environmentNameLower
       value: ${{ lower(parameters.environmentName) }}
     - name: templateFile
-      value: '$(Pipeline.Workspace)/s/$(templateFolderName)/$(templateFileName)'
+      value: '$(Pipeline.Workspace)/s/${{ parameters.templateFolderName }}/${{ parameters.templateFileName }}'
     - name: resourceGroupSuffixBase
       value: '_${{ lower(parameters.environmentName) }}'
     - name: resourceGroupSuffix
