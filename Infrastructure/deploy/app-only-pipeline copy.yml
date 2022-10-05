@@ -1,14 +1,8 @@
 # ------------------------------------------------------------------------------------------------------------------------
-# Pipeline to deploy Logic Application infrastructure AND deploy the Function App
+# Pipeline to deploy Logic Application to existing Function App
 # ------------------------------------------------------------------------------------------------------------------------
-# Notes: 
-#   This pipeline expects that you have:
-#     - an AzDO Environment named "dev" and "qa".
-#     - a variable group "LogicAppDemo" with these three variables:
-#       - appPrefix='<yourInitials>' 
-#       - azureSubscription='<yourSubscriptionName/serviceConnectionName>' 
-#       - region='eastus' 
-#       See ../Docs/VariableGroups.md for more details on setting up a variable group
+# Note: This pipeline needs a variable group "LogicAppDemo"
+#  See ../Docs/VariableGroups.md for details
 # ------------------------------------------------------------------------------------------------------------------------
 name: $(date:yyyy).$(date:MM).$(date:dd)$(rev:.r)
 pool:
@@ -19,6 +13,9 @@ trigger:
   branches:
     include:
     - main
+  paths:
+    include:
+      - Workflows/*
 
 # ----------------------------------------------------------------------------------------------------
 variables:
@@ -33,42 +30,23 @@ stages:
       parameters:
         environment: dev
 
-  # ----------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------
   - stage: DeployDEVResources
     displayName: Deploy DEV Resources
     dependsOn: BuildApplicationStage
     jobs:
-    - template: templates\create-infra-template.yml
+    - template: templates\deploy-logic-std-template.yml
       parameters:
-        environment: dev
         azureSubscription: $(azureSubscription)
+        environment: 'DEV'
+        triggerFrequency: 'Day'
 
   - stage: DeployQAResources
     displayName: Deploy QA Resources
     dependsOn: DeployDEVResources
     jobs:
-    - template: templates\create-infra-template.yml
-      parameters:
-        environment: qa
-        azureSubscription: $(azureSubscription)
-
-  # ----------------------------------------------------------------------------------------------------
-  - stage: DeployDEVApplication
-    displayName: Deploy DEV Application
-    dependsOn: DeployQAResources
-    jobs:
     - template: templates\deploy-logic-std-template.yml
       parameters:
-        environment: dev
         azureSubscription: $(azureSubscription)
-        triggerFrequency: 'Day'
-
-  - stage: DeployQAApplication
-    displayName: Deploy QA Application
-    dependsOn: DeployDEVApplication
-    jobs:
-    - template: templates\deploy-logic-std-template.yml
-      parameters:
-        environment: dev
-        azureSubscription: $(azureSubscription)
+        environment: 'QA'
         triggerFrequency: 'Day'

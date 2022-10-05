@@ -1,28 +1,38 @@
 # ----------------------------------------------------------------------------------------------------
-# Template to deploy a logic app standard to a Function App
+# Template to deploy a pre-built logic app standard to a Function App
 # ----------------------------------------------------------------------------------------------------
 parameters: 
-  environment: ''
-  azureSubscription: ''
-  triggerFrequency: ''
+- name: variableGroupName
+  default:  'myVariableGroup'
+- name: environmentName
+  default:  'DEV'
+- name: azureSubscription
+  default: ''
+- name: triggerFrequency
+  default: ''
 
 # ----------------------------------------------------------------------------------------------------
 jobs:
-- deployment: LogicAppDeploy
-  displayName: Deploy Application
-  environment: ${{ parameters.environment }}
+- deployment: Deploy${{ parameters.environmentName }}LogicApp
+  displayName: Initialize ${{ parameters.environmentName }} Deploy LogicApp
+  environment: ${{ parameters.environmentName }}
 
   variables:
-  - name: environment
-    value: ${{ parameters.environment }}
-  - name: environmentLower
-    value: ${{ lower(parameters.environment) }}
-  - name: artifactFolderName
-    value: 'App'
-  - name: artifactName
-    value: 'LA.zip'
-  - name: triggerFrequency
-    value: ${{ parameters.triggerFrequency }}
+    - group: ${{ parameters.variableGroupName }}
+    - name: environmentNameUpper
+      value: ${{ upper(parameters.environmentName) }}
+    - name: environmentNameLower
+      value: ${{ lower(parameters.environmentName) }}
+    - name: environment
+      value: ${{ parameters.environment }}
+    - name: environmentLower
+      value: ${{ lower(parameters.environment) }}
+    - name: artifactFolderName
+      value: 'App'
+    - name: artifactName
+      value: 'LA.zip'
+    - name: triggerFrequency
+      value: ${{ parameters.triggerFrequency }}
 
   strategy:
     runOnce:
@@ -47,6 +57,7 @@ jobs:
             echo "triggerFrequency=$(triggerFrequency)"
             echo "Pipeline.Workspace=$(Pipeline.Workspace)"
             tree $(Pipeline.Workspace)
+            dir $(Pipeline.Workspace) /s
           displayName: 'Display Variables'
           continueOnError: true
 

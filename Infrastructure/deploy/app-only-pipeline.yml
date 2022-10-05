@@ -18,35 +18,8 @@ trigger:
       - Workflows/*
 
 # ----------------------------------------------------------------------------------------------------
-variables:
-  - group: LogicAppDemo
-
-# ----------------------------------------------------------------------------------------------------
 stages:
-  - stage: BuildApplicationStage
-    displayName: Build Application
-    jobs:
-    - template: templates\build-logic-std-template.yml
-      parameters:
-        environment: dev
-
-# ----------------------------------------------------------------------------------------------------
-  - stage: DeployDEVResources
-    displayName: Deploy DEV Resources
-    dependsOn: BuildApplicationStage
-    jobs:
-    - template: templates\deploy-logic-std-template.yml
-      parameters:
-        azureSubscription: $(azureSubscription)
-        environment: 'DEV'
-        triggerFrequency: 'Day'
-
-  - stage: DeployQAResources
-    displayName: Deploy QA Resources
-    dependsOn: DeployDEVResources
-    jobs:
-    - template: templates\deploy-logic-std-template.yml
-      parameters:
-        azureSubscription: $(azureSubscription)
-        environment: 'QA'
-        triggerFrequency: 'Day'
+- template: pipes/logicstd-only-pipeline-template.yml
+  parameters:
+    variableGroupName: 'LogicAppDemo'
+    environments: ['DEV','PROD']  # ['DEV'] or ['DEV','QA'] or ['DEV','QA','PROD']
