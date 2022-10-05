@@ -34,6 +34,7 @@ jobs:
         tree $(System.DefaultWorkingDirectory)
         dir $(System.DefaultWorkingDirectory) /s
     displayName: 'Display Variables'
+    continueOnError: true
 
   - task: CopyFiles@2
     displayName: 'Create project folder'
