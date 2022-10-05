@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------------------------------------
-# Pipeline Template to build application and deploy it to multiple optional environments
+# Pipeline Template to build logic apps application and deploy it to multiple optional environments
 # ------------------------------------------------------------------------------------------------------------------------
 parameters:
 - name: environments

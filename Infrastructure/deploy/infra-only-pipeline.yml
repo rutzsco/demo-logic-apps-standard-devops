@@ -2,7 +2,7 @@
 # Pipeline to deploy Azure Resources Only
 # ------------------------------------------------------------------------------------------------------------------------
 # Note: This pipeline needs a variable group "LogicAppDemo"
-#  See ../Docs/VariableGroups.md for details
+#  See ../Docs/Create-Variable-Group.md for details
 # ------------------------------------------------------------------------------------------------------------------------
 name: $(date:yyyy).$(date:MM).$(date:dd)$(rev:.r)
 pool:

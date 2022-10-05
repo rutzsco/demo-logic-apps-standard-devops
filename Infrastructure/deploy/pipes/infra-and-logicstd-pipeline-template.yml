@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------------------------------------
-# Pipeline Template to build and deploy Azure Resources and Application
+# Pipeline Template to build and deploy Azure Resources and Logic App Application
 # ------------------------------------------------------------------------------------------------------------------------
 parameters:
 - name: environments
