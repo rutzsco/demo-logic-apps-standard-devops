@@ -22,4 +22,4 @@ stages:
 - template: pipes/logicstd-only-pipeline-template.yml
   parameters:
     variableGroupName: 'LogicAppDemo'
-    environments: ['DEV']  # ['DEV','PROD'] ['DEV','QA'] or ['DEV','QA','PROD']
+    environments: ['DEMO']  # ['DEV','PROD'] ['DEV','QA'] or ['DEV','QA','PROD']
