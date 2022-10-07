@@ -1,6 +1,9 @@
+param (
+  [string]$resourceGroupName="rg_logappstd_demo",
+  [string]$logicAppName= "lll-logic-app-std-demo"
+)
+
 Clear-Host
-$resourceGroupName = "rg_logappstd_demo"
-$logicAppName = "lll-logic-app-std-demo"
 $baseTargetUri = "https://" + $logicAppName + ".scm.azurewebsites.net/api/vfs/site/wwwroot/"
 $curDir = Get-Location
 $baseOutputPath = $curDir.tostring()
