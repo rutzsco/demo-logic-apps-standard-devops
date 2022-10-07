@@ -3,7 +3,7 @@
 // --------------------------------------------------------------------------------
 param lowerAppPrefix string = 'myorgname'
 param shortAppName string = 'demola'
-param longAppName string
+param longAppName string = ''
 @allowed([ 'dev', 'demo', 'qa', 'stg', 'prod' ])
 param environment string = 'dev'
 param location string = resourceGroup().location

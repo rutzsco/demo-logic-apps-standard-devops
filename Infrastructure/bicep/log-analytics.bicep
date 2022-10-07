@@ -1,9 +1,9 @@
 // --------------------------------------------------------------------------------
 // Creates a Log Analytics Workspace
 // --------------------------------------------------------------------------------
-param lowerAppPrefix string
-param longAppName string
-param environment string
+param lowerAppPrefix string = ''
+param longAppName string = ''
+param environment string = ''
 param location string = resourceGroup().location
 param runDateTime string = utcNow()
 

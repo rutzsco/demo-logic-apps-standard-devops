@@ -1,15 +1,15 @@
 // --------------------------------------------------------------------------------
 // Creates the logic app service and associated resources
 // --------------------------------------------------------------------------------
-param lowerAppPrefix string
-param longAppName string
-param shortAppName string
+param lowerAppPrefix string = ''
+param longAppName string = ''
+param shortAppName string = ''
 
-param blobStorageConnectionRuntimeUrl string
-param blobStorageConnectionName string
-param blobStorageAccountName string
+param blobStorageConnectionRuntimeUrl string = ''
+param blobStorageConnectionName string = ''
+param blobStorageAccountName string = ''
 param environment string = 'DEV'
-param logwsid string
+param logwsid string = ''
 param minimumElasticSize int = 1
 param location string = resourceGroup().location
 param runDateTime string = utcNow()
