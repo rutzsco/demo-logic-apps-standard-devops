@@ -14,62 +14,6 @@ The single-tenant model gives you the capability to separate the concerns betwee
 
 ---
 
-## Local Development
-
-### Prerequisites
-
-#### 1. Development Tools
-
-Follow the prerequisite guide [here](https://docs.microsoft.com/en-us/azure/logic-apps/create-single-tenant-workflows-visual-studio-code#prerequisites)
-
-> **Note**
-> There is a bug with Azurite 3.17 so currently the best way to install Azureite is via NPM:
->
-> ``` bash
-> npm uninstall -g azurite
-> npm install -g azurite@3.16.0
-> ```
-
-#### 2. Azure Environment
-
-A Service Principal is required with Owner RBAC to a Resource Group in Azure. The following resources will be created as part of the IaC.
-
-- Storage Account for Logic App
-- Logic App Service
-- Log Analytics
-- Application Insights
-- Storage Account for Integration
-
-
-#### 3. Azure Devops Project
-
-An Azure DevOps project is required for running CICD pipelines. A service connection needs to be created for the pipelines to deploy into the Azure sandbox resource group:
-
-https://docs.microsoft.com/en-us/azure/devops/pipelines/library/connect-to-azure?view=azure-devops#create-an-azure-resource-manager-service-connection-with-an-existing-service-principal
-
-#### 4. Azure Devops Variable Groups
-
-The pipelines in this project are customized using an Azure DevOps Variable Group. Variable groups can be created via the command line as shown in the [Create Variable Groups](Infrastructure/docs/Create-Variable-Group.md) document.
-
-#### 5. Azure Devops Pipelines
-
-A simple "Easy Button" CICD example pipeline has been created that combines the CI and CD into one pipeline and deploys one environment quickly and easily.
-
-- [single-stage-cicd-pipeline.yml](Infrastructure/deploy/single-stage-cicd-pipeline.yml)
-
-A multi-stage example exists that combines the CI and CD  and deploys multiple environments (i.e. Dev/QA/PROD) in one pipeline.
-
-- [multi-stage-cicd-pipeline.yml](Infrastructure/deploy/multi-stage-cicd-pipeline.yml)
-
-Two separate CI and CD multi-stage pipelines have been created.
-
-- [app-only-pipeline.yml](Infrastructure/deploy/app-only-pipeline.yml)
-- [infra-only-pipeline.yml.yml](Infrastructure/deploy/infra-only-pipeline.yml)
-
-Instructions on how to set up an Azure DevOps pipeline can be found in the [Create Pipelines](Infrastructure/docs/Create-Pipeline.md) document.
-
----
-
 ## Solution Components
 
 The following diagram shows the dependencies between the demo logic app solution and the infrastructure resources:
@@ -117,7 +61,71 @@ Azure BlobStorage Managed connector provides access to Azure blob storage.
 
 - https://github.com/Azure/logicapps/issues/609
 
+---
+
+## Local Development
+
+### Prerequisites
+
+#### 1. Development Tools
+
+Follow the prerequisite guide [here](https://docs.microsoft.com/en-us/azure/logic-apps/create-single-tenant-workflows-visual-studio-code#prerequisites)
+
+> **Note**
+> There is a bug with Azurite 3.17 so currently the best way to install Azureite is via NPM:
+>
+> ``` bash
+> npm uninstall -g azurite
+> npm install -g azurite@3.16.0
+> ```
+
+---
+
+### CI/CD Pipeline Setup
+
+#### 1. Azure Environment
+
+A Service Principal is required with Owner RBAC to a Resource Group in Azure. The following resources will be created as part of the IaC.
+
+- Storage Account for Logic App
+- Logic App Service
+- Log Analytics
+- Application Insights
+- Storage Account for Integration
+
+---
+
+#### 2. Azure Devops Project
+
+An Azure DevOps project is required for running CICD pipelines. A service connection needs to be created for the pipelines to deploy into the Azure sandbox resource group as shown in the [Create Service Connections](Infrastructure/docs/CreateServiceConnections.md) document.
+
+See also: [Create an Azure Resource Manager service connection](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/connect-to-azure?view=azure-devops#create-an-azure-resource-manager-service-connection-with-an-existing-service-principal)
+
+---
+
+#### 3. Azure Devops Variable Groups
+
+The pipelines in this project are customized using an Azure DevOps Variable Group. Variable groups can be created via the command line as shown in the [Create Variable Groups](Infrastructure/docs/Create-Variable-Group.md) document.
+
+---
+
+#### 4. Azure Devops Pipelines
+
+A CICD pipeline has been created that combines the CI and CD into one pipeline and deploys one (or more) environment(s) and the application quickly and easily. Edit the "environments:" variable in the pipeline to specify which environments that should be deployed.
+
+- [infra-and-app-pipeline.yml](Infrastructure/deploy/infra-and-app-pipeline.yml)
+
+As an alternative, two separate CI and CD pipelines have been created. Edit the "environments:" variable in the pipeline to specify which environments that should be deployed.
+
+- [app-only-pipeline.yml](Infrastructure/deploy/app-only-pipeline.yml)
+- [infra-only-pipeline.yml](Infrastructure/deploy/infra-only-pipeline.yml)
+
+> Instructions on how to set up an Azure DevOps pipeline can be found in the [Create Pipelines](Infrastructure/docs/Create-Pipeline.md) document.
+
+---
+
 ## Reference
+
 
 ### Local Development
 

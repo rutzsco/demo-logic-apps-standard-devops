@@ -1,9 +1,9 @@
 // --------------------------------------------------------------------------------
-// Creates a KeyVault secret for a storage account connection
+// This BICEP file will create KeyVault secret for a storage account connection
 // --------------------------------------------------------------------------------
-param keyVaultName string
-param keyName string
-param storageAccountName string
+param keyVaultName string = ''
+param keyName string = ''
+param storageAccountName string = ''
 
 // --------------------------------------------------------------------------------
 resource storageAccountResource 'Microsoft.Storage/storageAccounts@2021-04-01' existing = { name: storageAccountName }
