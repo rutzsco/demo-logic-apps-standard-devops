@@ -54,10 +54,13 @@ jobs:
       echo "resourceGroupName=$(resourceGroupName)"
       echo "azureSubscription=$(azureSubscription)"
       echo "region=$(region)"
-      echo "orgPrefix=$(orgPrefix)"
       echo "appPrefix=$(appPrefix)"
       echo "appPrefixLower=$(appPrefixLower)"
+      echo "runDateTime=$(runDateTime)"
       echo "templateFile=$(templateFile)"
+      echo "Resource Group Command:"
+      echo "  az group create --name $(resourceGroupName) --location $(location) --tags LastDeployed=$(runDateTime) Application=$(appPrefix) LongAppName=$(longAppName) ShortAppName=$(shortAppName) Environment=$(environmentNameUpper)"
+      echo "Pipeline Workspace Directory Contents:"
       tree $(Pipeline.Workspace)
     displayName: 'Display Variables'
     continueOnError: true
@@ -68,7 +71,7 @@ jobs:
       azureSubscription: $(azureSubscription)
       scriptType: bash
       scriptLocation: inlineScript
-      inlineScript: az group create --name $(resourceGroupName) --location $(location) --tags LastDeployed=$(runDateTime) Application=$(appPrefix) Environment=$(environmentNameUpper)
+      inlineScript: az group create --name $(resourceGroupName) --location $(location) --tags LastDeployed=$(runDateTime) Application=$(appPrefix) LongAppName=$(longAppName) ShortAppName=$(shortAppName) Environment=$(environmentNameUpper)
 
   - task: AzureResourceManagerTemplateDeployment@3
     displayName: 'Publish Bicep Resources'
