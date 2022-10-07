@@ -1,0 +1,77 @@
+# ------------------------------------------------------------------------------------------------------------------------
+# Pipeline to scan existing Logic Application and pull down changes to the repository
+# ------------------------------------------------------------------------------------------------------------------------
+name: $(date:yyyy).$(date:MM).$(date:dd)$(rev:.r)
+pool:
+  vmImage: windows-latest
+
+# ----------------------------------------------------------------------------------------------------
+trigger:
+  - none
+  # branches:
+  #   include:
+  #   - main
+  # paths:
+  #   include:
+  #     - Workflows/*
+
+# ----------------------------------------------------------------------------------------------------
+jobs:
+- deployment: InitializeRefreshWorkflowRepo
+  displayName: Initialize Refresh Workflow Repo
+  environment: 'DEV'
+
+- job: RefreshWorkflowsRepo
+  displayName: Refresh Workflow Repo
+  variables:
+    - group: LogicAppRefresh
+  #   - name: templateFile
+  #     value: '$(Pipeline.Workspace)/s/${{ parameters.templateFolderName }}/${{ parameters.templateFileName }}'
+
+  steps:
+  - bash: |
+      branchName=$(echo "refresh_branch_$(date '+%Y%m%d_%H%M%S')")
+      echo "##vso[task.setvariable variable=branchName]$branchName"
+      echo "runDateTime=$branchName"
+    displayName: 'Create Variables'
+
+  - bash: |
+      echo "branchName=$(branchName)"
+      echo "Build.BuildNumber=$(Build.BuildNumber)"
+      echo "Build.BuildId=$(Build.BuildId)"      
+    displayName: 'Display Variables'
+    continueOnError: true
+
+  # Check out the repository
+  - checkout: self
+    persistCredentials: true
+
+  # Login is needed in order to scan the existing workflows
+  - script: az login --service-principal -u $(principalId) -p $(clientSecret) --tenant $(tenantId)
+    displayName: 'Login to Azure'
+
+  # Go pull down the latest repo
+  - script: |
+      git config --global user.email pipeline@demo.com & git config --global user.name "Pipeline"
+      git checkout -b $(branchName)
+      git push origin $(branchName)
+      git pull origin $(branchName)
+    displayName: Fetch Source Repo
+    workingDirectory: $(System.DefaultWorkingDirectory)
+
+    #git branch $(branchName)
+      
+  # Go scan the workflows in the portal for changes
+  - task: PowerShell@2
+    inputs:
+      targetType: 'filePath'
+      filePath: '$(System.DefaultWorkingDirectory)\Infrastructure\scripts\download-portal-workflows.ps1'
+    displayName: Download Workflows
+
+  # Add our changes to a commit and check it in
+  - script: |
+      git add .
+      git commit -m "Refresh Workflow via Pipeline on $(runDateTime)"
+      git push origin $(branchName)
+    displayName: Update Source Repo
+    workingDirectory: $(System.DefaultWorkingDirectory)

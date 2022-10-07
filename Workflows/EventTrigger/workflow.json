@@ -4,7 +4,7 @@
         "actions": {
             "Invoke_a_workflow_in_this_workflow_app": {
                 "inputs": {
-                    "body": "demo content goes here",
+                    "body": "my demo content goes here",
                     "host": {
                         "workflow": {
                             "id": "eventprocessor"

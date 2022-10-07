@@ -20,7 +20,6 @@ $username = $profiles[0].userName
 $password = $profiles[0].userPWD
 $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username, $password)))
 
-$confirmAll = "N"
 Write-Host "Scanning $logicAppName ..." -Foregroundcolor Blue
 Write-Host ""
 $jsonObj = Invoke-RestMethod -Uri $baseTargetUri  -Headers @{Authorization = ("Basic {0}" -f $base64AuthInfo) } -Method GET -ContentType "application/json"
@@ -37,25 +36,8 @@ $jsonObj | Select-Object -Property Name, Mime | ForEach-Object {
                 $outputName = "azure.$outputName"
             } 
             $o = $baseOutputPath + $outputName
-            if (Test-Path $o) {
-                Write-Host "Warning! $outputName already exists... " -Foregroundcolor Red
-                if ($confirmAll -ne "Y") {
-                    $confirm = Read-Host -Prompt "Overwrite it? (Y/N/A)"
-                    if ($confirm -eq "A") {
-                        $confirmAll = "Y"
-                    }
-                }
-            }
-            else {
-                $confirm = "Y"
-            }
-            if ($confirm -eq "Y" -or $confirmAll -eq "Y") {
-                Write-Host "Downloading Config: $thisName to $outputName ..." -Foregroundcolor Green
-                Invoke-WebRequest -Uri $t -Headers @{Authorization = ("Basic {0}" -f $base64AuthInfo) } -Method GET -OutFile $o -ContentType "multipart/form-data"
-            }
-            else {
-                Write-Host "Skipping Config: $thisName ..." -Foregroundcolor Green
-            }
+            Write-Host "Downloading Config: $thisName to $outputName ..." -Foregroundcolor Green
+            Invoke-WebRequest -Uri $t -Headers @{Authorization = ("Basic {0}" -f $base64AuthInfo) } -Method GET -OutFile $o -ContentType "multipart/form-data"
         }
     }
 
@@ -66,24 +48,7 @@ $jsonObj | Select-Object -Property Name, Mime | ForEach-Object {
         $t = $baseTargetUri + $_.name + '/workflow.json'
         $o = $baseOutputPath + $_.name + '/workflow.json'
         $d = $baseOutputPath + $_.name
-        if (Test-Path $o) {
-            Write-Host "Warning! Workflow $outputName already exists... " -Foregroundcolor Red
-            if ($confirmAll -ne "Y") {
-                $confirm = Read-Host -Prompt "Overwrite it? (Y/N/A)"
-                if ($confirm -eq "A") {
-                    $confirmAll = "Y"
-                }
-            }
-        }
-        else {
-            $confirm = "Y"
-        }
-        if ($confirm -eq "Y" -or $confirmAll -eq "Y") {
-            New-Item -ItemType Directory -Force -Path $d
-            Invoke-WebRequest -Uri $t -Headers @{Authorization = ("Basic {0}" -f $base64AuthInfo) } -Method GET -OutFile $o -ContentType "multipart/form-data"
-        } 
-        else {
-            Write-Host "Skipping Workflow: $thisName ..." -Foregroundcolor Green
-        }
+        New-Item -ItemType Directory -Force -Path $d
+        Invoke-WebRequest -Uri $t -Headers @{Authorization = ("Basic {0}" -f $base64AuthInfo) } -Method GET -OutFile $o -ContentType "multipart/form-data"
     }
 }
