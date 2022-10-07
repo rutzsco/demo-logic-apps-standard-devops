@@ -54,6 +54,7 @@ jobs:
       echo "resourceGroupName=$(resourceGroupName)"
       echo "azureSubscription=$(azureSubscription)"
       echo "region=$(region)"
+      echo "orgPrefix=$(orgPrefix)"
       echo "appPrefix=$(appPrefix)"
       echo "appPrefixLower=$(appPrefixLower)"
       echo "templateFile=$(templateFile)"
@@ -67,7 +68,7 @@ jobs:
       azureSubscription: $(azureSubscription)
       scriptType: bash
       scriptLocation: inlineScript
-      inlineScript: az group create --name $(resourceGroupName) --location $(region)
+      inlineScript: az group create --name $(resourceGroupName) --location $(location) --tags LastDeployed=$(runDateTime) Organization=$(orgPrefix) Application=$(appPrefix) Environment=$(environmentNameUpper)
 
   - task: AzureResourceManagerTemplateDeployment@3
     displayName: 'Publish Bicep Resources'
