@@ -1,8 +1,8 @@
 # ------------------------------------------------------------------------------------------------------------------------
-# Pipeline to deploy Azure Resources for multiple environments
+# Pipeline to deploy Azure Resources Only
 # ------------------------------------------------------------------------------------------------------------------------
 # Note: This pipeline needs a variable group "LogicAppDemo"
-#  See ../Docs/VariableGroups.md for details
+#  See ../Docs/Create-Variable-Group.md for details
 # ------------------------------------------------------------------------------------------------------------------------
 name: $(date:yyyy).$(date:MM).$(date:dd)$(rev:.r)
 pool:
@@ -19,23 +19,8 @@ trigger:
       - 'Infrastructure/**/*.bicep'
 
 # ----------------------------------------------------------------------------------------------------
-variables:
-  - group: LogicAppDemo
-
-# ----------------------------------------------------------------------------------------------------
 stages:
-  - stage: DeployDEVResources
-    displayName: DEV Deploy Resources
-    jobs:
-    - template: templates\create-infra-template.yml
-      parameters:
-        environment: 'DEV'
-        azureSubscription: $(azureSubscription)
-
-  - stage: DeployQAResources
-    displayName: QA Deploy Resources
-    jobs:
-    - template: templates\create-infra-template.yml
-      parameters:
-        environment: 'QA'
-        azureSubscription: $(azureSubscription)
+- template: pipes/infra-only-pipeline-template.yml
+  parameters:
+    variableGroupName: 'LogicAppDemo'
+    environments: ['DEMO']  # ['DEV','PROD'] ['DEV','QA'] or ['DEV','QA','PROD']

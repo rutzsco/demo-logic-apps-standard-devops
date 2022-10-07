@@ -2,7 +2,7 @@
 # Pipeline to deploy Logic Application to existing Function App
 # ------------------------------------------------------------------------------------------------------------------------
 # Note: This pipeline needs a variable group "LogicAppDemo"
-#  See ../Docs/VariableGroups.md for details
+#  See ../Docs/Create-Variable-Group.md for details
 # ------------------------------------------------------------------------------------------------------------------------
 name: $(date:yyyy).$(date:MM).$(date:dd)$(rev:.r)
 pool:
@@ -18,29 +18,8 @@ trigger:
       - Workflows/*
 
 # ----------------------------------------------------------------------------------------------------
-variables:
-  - group: LogicAppDemo
-
-# ----------------------------------------------------------------------------------------------------
 stages:
-- template: templates\build-logic-std-template.yml
+- template: pipes/logicstd-only-pipeline-template.yml
   parameters:
-    stageName: BuildApplication
-    stageDisplayName: Build Application
-
-# ----------------------------------------------------------------------------------------------------
-- template: templates\deploy-logic-std-template.yml
-  parameters:
-    stageName: DeployDEV
-    stageDisplayName: Deploy App DEV
-    azureSubscription: $(azureSubscription)
-    environment: 'DEV'
-    triggerFrequency: 'Day'
-
-- template: templates\deploy-logic-std-template.yml
-  parameters:
-    stageName: DeployQA
-    stageDisplayName: Deploy App QA
-    azureSubscription: $(azureSubscription)
-    environment: 'QA'
-    triggerFrequency: 'Day'
+    variableGroupName: 'LogicAppDemo'
+    environments: ['DEMO']  # ['DEV','PROD'] ['DEV','QA'] or ['DEV','QA','PROD']

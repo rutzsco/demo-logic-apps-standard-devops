@@ -1,12 +1,12 @@
 // --------------------------------------------------------------------------------
 // Logic Apps - RBAC Contributor Access to Integration Storage Account
 // --------------------------------------------------------------------------------
-param environment string
-param location string
-param logicAppServiceName string
-param storageAccountName string
-param logicAppServicePrincipalId string
-param blobStorageConnectionName string
+param environment string = ''
+param location string = ''
+param logicAppServiceName string = ''
+param storageAccountName string = ''
+param logicAppServicePrincipalId string = ''
+param blobStorageConnectionName string = ''
 param blobStorageContributorId string = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
 
 // --------------------------------------------------------------------------------
