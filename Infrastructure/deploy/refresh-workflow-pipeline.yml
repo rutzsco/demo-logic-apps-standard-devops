@@ -69,7 +69,7 @@ jobs:
       git push --set-upstream origin $(branchName)
       git pull origin $(branchName)
       echo "$(branchName)" > workflow_version.txt
-    displayName: Fetch Source
+    displayName: Fetch Repo
     workingDirectory: $(System.DefaultWorkingDirectory)
 
   # Go scan the workflows in the portal for changes
@@ -78,14 +78,19 @@ jobs:
       targetType: 'filePath'
       filePath: '$(System.DefaultWorkingDirectory)\Infrastructure\scripts\download-portal-workflows.ps1'
       arguments: '-resourceGroupName $(resourceGroupName) -logicAppName $(logicAppName)'
-    displayName: Download Workflow Source
+    displayName: Download Workflows
 
   # Add our changes to a commit and check it in
   - script: |
       git add .
       git commit -m "$(commitMessage)"
       git push origin $(branchName)
+    displayName: Create Branch
+    workingDirectory: $(System.DefaultWorkingDirectory)
+
+  # Create a GitHub pull request
+  - script: |
       echo $(GITHUB_TOKEN) | gh auth login --with-token
       gh pr create --title "$(branchName)" --body "$(commitMessage)"
-    displayName: Create Branch & PR
+    displayName: Create PR
     workingDirectory: $(System.DefaultWorkingDirectory)
