@@ -19,6 +19,8 @@ trigger:
     include:
       - Workflows/Version
 
+pr: none
+
 # ----------------------------------------------------------------------------------------------------
 stages:
 - template: pipes/logicstd-only-pipeline-template.yml
