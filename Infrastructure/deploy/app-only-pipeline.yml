@@ -1,6 +1,8 @@
 # ------------------------------------------------------------------------------------------------------------------------
 # Pipeline to deploy Logic Application to existing Function App
 # ------------------------------------------------------------------------------------------------------------------------
+# Note: This pipeline is set to ONLY trigger automatically if the workflow_version.txt file is updated
+# ------------------------------------------------------------------------------------------------------------------------
 # Note: This pipeline needs a variable group "LogicAppDemo"
 #  See ../Docs/Create-Variable-Group.md for details
 # ------------------------------------------------------------------------------------------------------------------------
@@ -14,8 +16,10 @@ trigger:
     include:
     - main
   paths:
+    exclude:
+      - '*'
     include:
-      - Workflows/*
+      - Workflows/workflow_version.txt
 
 # ----------------------------------------------------------------------------------------------------
 stages:
