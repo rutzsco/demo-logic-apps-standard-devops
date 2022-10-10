@@ -1,7 +1,8 @@
 // --------------------------------------------------------------------------------
 // Logic Apps - RBAC Contributor Access to Integration Storage Account
 // --------------------------------------------------------------------------------
-param environment string = ''
+@allowed(['demo','design','dev','qa','stg','prod'])
+param environment string = 'dev'
 param location string = ''
 param logicAppServiceName string = ''
 param storageAccountName string = ''

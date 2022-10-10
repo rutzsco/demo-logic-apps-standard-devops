@@ -8,7 +8,8 @@ param shortAppName string = ''
 param blobStorageConnectionRuntimeUrl string = ''
 param blobStorageConnectionName string = ''
 param blobStorageAccountName string = ''
-param environment string = 'DEV'
+@allowed(['demo','design','dev','qa','stg','prod'])
+param environment string = 'dev'
 param logwsid string = ''
 param minimumElasticSize int = 1
 param location string = resourceGroup().location

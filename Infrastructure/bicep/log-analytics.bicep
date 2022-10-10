@@ -3,7 +3,8 @@
 // --------------------------------------------------------------------------------
 param lowerAppPrefix string = ''
 param longAppName string = ''
-param environment string = ''
+@allowed(['demo','design','dev','qa','stg','prod'])
+param environment string = 'dev'
 param location string = resourceGroup().location
 param runDateTime string = utcNow()
 
