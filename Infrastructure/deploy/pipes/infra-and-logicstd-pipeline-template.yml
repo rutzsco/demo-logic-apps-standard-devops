@@ -4,7 +4,7 @@
 parameters:
 - name: environments
   type: object
-  default: ['DEV'] # or ['DEV','QA'] or ['DEV','QA','PROD'] or ['DEV','QA','STG','PROD']
+  default: ['DEMO']
 - name: variableGroupName
   default: 'myVariableGroupName'
 
@@ -16,7 +16,7 @@ stages:
   - template: templates/build-logicstd-template.yml
     parameters:
       variableGroupName: ${{ parameters.variableGroupName }}
-      environmentName: 'DEV'
+      environmentName: 'DEMO'
 
 # ----------------------------------------------------------------------------------------------------
 - ${{ each environmentName in parameters.environments }} :
