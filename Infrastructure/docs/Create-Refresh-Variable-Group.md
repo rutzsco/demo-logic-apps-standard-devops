@@ -2,7 +2,9 @@
 
 The Azure DevOps Refresh Workflow pipeline in this project needs this variable group.
 
-To create it, customize and run the following commands in an Azure Cloud Shell.
+The tenantId/principalId/clientSecret must be for a service principal with rights to read the logic app found in resourceGroupName/logicAppName. Once the code is updated, the GITHUB_TOKEN is a PAT token that had rights to update the repository and create a pull request with the changes.
+
+To create this group, customize and run the following commands in an Azure Cloud Shell.
 
 These commands *may* be needed when you begin:
 
@@ -23,6 +25,7 @@ These commands actually create the variable groups:
         tenantId='<yourTenantId>'
         principalId='<yourPrincipalId>'
         clientSecret='<yourClientSecret>'
-        resourceGroupName="rg_logappstd_demo"
-        logicAppName="lll-logic-app-std-demo"
+        resourceGroupName="<yourResourceGroupName>"
+        logicAppName="<yourLogicAppName>"
+        GITHUB_TOKEN="<GH Personal Access Token>"
 ```

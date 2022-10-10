@@ -28,7 +28,7 @@ jobs:
       echo "##vso[task.setvariable variable=runDateTime]$runDateTime"
       echo "runDateTime=$runDateTime"
 
-      branchName=$(echo "refresh_branch_$runDateTime")
+      branchName=$(echo "workflow_update_$runDateTime")
       echo "##vso[task.setvariable variable=branchName]$branchName"
       echo "branchName=$branchName"
 
@@ -43,12 +43,20 @@ jobs:
       echo "commitMessage=$(commitMessage)"
       echo "resourceGroupName=$(resourceGroupName)"
       echo "logicAppName=$(logicAppName)"
+      echo "Build.RequestedFor=$(Build.RequestedFor)"
+      echo "Build.RequestedForId=$(Build.RequestedForId)"
+      echo "Build.RequestedForEmail=$(Build.RequestedForEmail)"
+      echo "Build.QueuedBy=$(Build.QueuedBy)"
+      echo "Build.QueuedById=$(Build.QueuedById)"
+      echo "GITHUB_TOKEN=$(GITHUB_TOKEN)"
     displayName: 'Display Variables'
     continueOnError: true
 
   # Check out the repository
+  # See: https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/git-commands?view=azure-devops&tabs=yaml
   - checkout: self
     persistCredentials: true
+    clean: true
 
   # Login is needed in order to scan the existing workflows
   - script: az login --service-principal -u $(principalId) -p $(clientSecret) --tenant $(tenantId)
@@ -56,11 +64,12 @@ jobs:
 
   # Go pull down the latest repo and create a branch
   - script: |
-      git config --global user.email pipeline@demo.com & git config --global user.name "Pipeline"
+      git config --global user.email $(Build.RequestedForEmail) & git config --global user.name "$(Build.RequestedFor)"
       git checkout -b $(branchName)
       git push --set-upstream origin $(branchName)
       git pull origin $(branchName)
-    displayName: Fetch Source Repo
+      echo "$(branchName)" > workflow_version.txt
+    displayName: Fetch Source
     workingDirectory: $(System.DefaultWorkingDirectory)
 
   # Go scan the workflows in the portal for changes
@@ -69,12 +78,19 @@ jobs:
       targetType: 'filePath'
       filePath: '$(System.DefaultWorkingDirectory)\Infrastructure\scripts\download-portal-workflows.ps1'
       arguments: '-resourceGroupName $(resourceGroupName) -logicAppName $(logicAppName)'
-    displayName: Download Workflows
+    displayName: Download Workflow Source
 
   # Add our changes to a commit and check it in
   - script: |
       git add .
       git commit -m "$(commitMessage)"
       git push origin $(branchName)
-    displayName: Update Source Repo
+    displayName: Create Source Branch
+    workingDirectory: $(System.DefaultWorkingDirectory)
+
+  # Create a GitHub pull request
+  - script: |
+      echo $(GITHUB_TOKEN) | gh auth login --with-token
+      gh pr create --title "$(branchName)" --body "$(commitMessage)"
+    displayName: Create Pull Request
     workingDirectory: $(System.DefaultWorkingDirectory)
