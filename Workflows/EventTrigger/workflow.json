@@ -1,31 +1,31 @@
 {
-    "definition": {
-        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
-        "actions": {
-            "Invoke_a_workflow_in_this_workflow_app": {
-                "inputs": {
-                    "body": "my demo content goes here",
-                    "host": {
-                        "workflow": {
-                            "id": "eventprocessor"
-                        }
-                    }
-                },
-                "runAfter": {},
-                "type": "Workflow"
+  "definition": {
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "actions": {
+      "Invoke_a_workflow_in_this_workflow_app": {
+        "inputs": {
+          "body": "please put some demo content here",
+          "host": {
+            "workflow": {
+              "id": "eventprocessor"
             }
+          }
         },
-        "contentVersion": "1.0.0.0",
-        "outputs": {},
-        "triggers": {
-            "Recurrence": {
-                "recurrence": {
-                    "frequency": "Hour",
-                    "interval": 1
-                },
-                "type": "Recurrence"
-            }
-        }
+        "runAfter": {},
+        "type": "Workflow"
+      }
     },
-    "kind": "Stateful"
+    "contentVersion": "1.0.0.0",
+    "outputs": {},
+    "triggers": {
+      "Recurrence": {
+        "recurrence": {
+          "frequency": "Hour",
+          "interval": 1
+        },
+        "type": "Recurrence"
+      }
+    }
+  },
+  "kind": "Stateful"
 }
