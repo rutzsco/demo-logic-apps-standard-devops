@@ -79,7 +79,7 @@ jobs:
       csmFile: $(templateFile)
       overrideParameters: >
         -appPrefix $(appPrefix) 
-        -environment $(environmentNameUpper)
+        -environment $(environmentNameLower)
         -longAppName $(longAppName)
         -shortAppName $(shortAppName)
       deploymentScope: 'Resource Group'
