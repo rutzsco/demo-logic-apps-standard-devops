@@ -15,7 +15,7 @@ trigger:
 jobs:
 - deployment: InitializeRefreshWorkflowRepo
   displayName: Initialize Refresh Workflow Repo
-  environment: 'DEV'
+  environment: 'DESIGN'
 
 - job: RefreshWorkflowsRepo
   displayName: Refresh Workflow Repo
@@ -62,7 +62,7 @@ jobs:
   - script: az login --service-principal -u $(principalId) -p $(clientSecret) --tenant $(tenantId)
     displayName: 'Login to Azure'
 
-  # Go pull down the latest repo and create a branch
+  # Pull down the latest repo
   - script: |
       git config --global user.email $(Build.RequestedForEmail) & git config --global user.name "$(Build.RequestedFor)"
       git checkout -b $(branchName)
@@ -72,7 +72,7 @@ jobs:
     displayName: Fetch Repo
     workingDirectory: $(System.DefaultWorkingDirectory)
 
-  # Go scan the workflows in the portal for changes
+  # Scan the workflows in the portal for changes
   - task: PowerShell@2
     inputs:
       targetType: 'filePath'

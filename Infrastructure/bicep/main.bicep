@@ -2,8 +2,8 @@
 // Logic Apps Standard - Main Bicep File
 // --------------------------------------------------------------------------------
 param appPrefix string = 'myorgname'
-@allowed(['demo','design','dev','qa','stg','prod'])
-param environment string = 'dev'
+@allowed(['DEMO','DESIGN','DEV','QA','STG','PROD'])
+param environment string = 'DEMO'
 param location string = 'eastus'
 param blobStorageContributorId string = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
 param longAppName string = 'logic-std-demo'
