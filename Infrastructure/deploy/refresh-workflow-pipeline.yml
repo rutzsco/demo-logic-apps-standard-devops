@@ -85,12 +85,7 @@ jobs:
       git add .
       git commit -m "$(commitMessage)"
       git push origin $(branchName)
-    displayName: Create Source Branch
-    workingDirectory: $(System.DefaultWorkingDirectory)
-
-  # Create a GitHub pull request
-  - script: |
       echo $(GITHUB_TOKEN) | gh auth login --with-token
       gh pr create --title "$(branchName)" --body "$(commitMessage)"
-    displayName: Create Pull Request
+    displayName: Create Branch & PR
     workingDirectory: $(System.DefaultWorkingDirectory)
