@@ -16,10 +16,8 @@ trigger:
     include:
     - main
   paths:
-    exclude:
-      - '*'
     include:
-      - Workflows/workflow_version.txt
+      - Workflows/Version
 
 # ----------------------------------------------------------------------------------------------------
 stages:
