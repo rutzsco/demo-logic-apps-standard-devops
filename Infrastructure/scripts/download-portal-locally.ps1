@@ -1,6 +1,15 @@
+# ------------------------------------------------------------------------------------------------------------------------
+# Script to download Logic App changes from the Azure Portal
+# ------------------------------------------------------------------------------------------------------------------------
+# Examples:
+#   cd "<yourRootFolder>"
+#   ./Infrastructure/scripts/download-portal-locally.ps1 -resourceGroupName "rg_logappstd_demo" -logicAppName "lll-logic-app-std-demo"
+#   ./Infrastructure/scripts/download-portal-locally.ps1 -resourceGroupName "rg_logic_demo_dev" -logicAppName "rutzsco-demo-logic-app-dev"
+# ------------------------------------------------------------------------------------------------------------------------
+
 param (
-  [string]$resourceGroupName="rg_logappstd_demo",
-  [string]$logicAppName= "lll-logic-app-std-demo"
+  [string]$resourceGroupName="yourResourceGroupName",
+  [string]$logicAppName= "yourLogicAppName"
 )
 
 Clear-Host
