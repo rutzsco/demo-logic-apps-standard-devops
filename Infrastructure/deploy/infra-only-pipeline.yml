@@ -10,15 +10,16 @@ pool:
 
 # ----------------------------------------------------------------------------------------------------
 trigger:
-  branches:
-    include:
-    - main
-  paths:
-    exclude:
-      - '*'
-    include: 
-      - 'Infrastructure/**/*.yml'
-      - 'Infrastructure/**/*.bicep'
+  - none
+  # branches:
+  #   include:
+  #   - main
+  # paths:
+  #   exclude:
+  #     - '*'
+  #   include: 
+  #     - 'Infrastructure/**/*.yml'
+  #     - 'Infrastructure/**/*.bicep'
 
 # ----------------------------------------------------------------------------------------------------
 stages:
