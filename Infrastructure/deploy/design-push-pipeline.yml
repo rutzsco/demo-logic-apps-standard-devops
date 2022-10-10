@@ -11,7 +11,13 @@ pool:
   vmImage: 'ubuntu-latest'
 
 # ----------------------------------------------------------------------------------------------------
-trigger: none
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+      - Workflows/Version
 
 pr: none
 
