@@ -4,8 +4,8 @@
 param lowerAppPrefix string = 'myorgname'
 param shortAppName string = 'demola'
 param longAppName string = ''
-@allowed(['DEMO','DESIGN','DEV','QA','STG','PROD'])
-param environment string = 'DEMO'
+@allowed(['demo','design','dev','qa','stg','prod'])
+param environment string = 'demo'
 param location string = resourceGroup().location
 param runDateTime string = utcNow()
 

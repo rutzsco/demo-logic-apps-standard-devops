@@ -42,8 +42,8 @@ param objectId string
 ])
 param roleName string = 'Key Vault Secrets User'
 
-@allowed(['DEMO','DESIGN','DEV','QA','STG','PROD'])
-param environment string = 'DEMO'
+@allowed(['demo','design','dev','qa','stg','prod'])
+param environment string = 'demo'
 param lowerAppPrefix string
 param shortAppName string
 param longAppName string
