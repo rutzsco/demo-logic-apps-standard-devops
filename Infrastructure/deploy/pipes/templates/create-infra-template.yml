@@ -56,6 +56,7 @@ jobs:
       echo "region=$(region)"
       echo "appPrefix=$(appPrefix)"
       echo "appPrefixLower=$(appPrefixLower)"
+      echo "keyVaultOwnerUserId=$(keyVaultOwnerUserId)"
       echo "runDateTime=$(runDateTime)"
       echo "templateFile=$(templateFile)"
       echo "Resource Group Command:"
@@ -82,6 +83,7 @@ jobs:
         -environment $(environmentNameLower)
         -longAppName $(longAppName)
         -shortAppName $(shortAppName)
+        -keyVaultOwnerUserId $(keyVaultOwnerUserId)
       deploymentScope: 'Resource Group'
       azureResourceManagerConnection: $(azureSubscription)
       action: 'Create Or Update Resource Group'

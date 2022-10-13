@@ -76,7 +76,6 @@ module keyVaultModule 'key-vault.bicep' = {
   name: 'keyvault${deploymentSuffix}'
   params: {
     enabledForDeployment: true
-    //objectId: logicAppServiceModule.outputs.managedIdentityPrincipalId
     adminUserObjectIds: [ keyVaultOwnerUserId ]
     applicationUserObjectIds: [ logicAppServiceModule.outputs.managedIdentityPrincipalId ]
     
@@ -89,6 +88,7 @@ module keyVaultModule 'key-vault.bicep' = {
   }
 }
 
+// .getSecret fails with error - not authorized...?
 // resource keyVaultResource 'Microsoft.KeyVault/vaults@2021-04-01-preview' existing = { 
 //   name: keyVaultModule.outputs.name
 // }
