@@ -30,8 +30,14 @@ jobs:
       echo "runDateTime=$runDateTime"
 
       runDateTime2=$(echo "$(date '+%Y/%m/%d %H:%M:%S')")
+      echo "##vso[task.setvariable variable=runDateTime2]$runDateTime2"
       echo "runDateTime2=$runDateTime2"
-      branchName=$(echo "Refresh - $(Build.RequestedForEmail) $runDateTime2")
+
+      prName=$(echo "refresh - $(Build.RequestedForEmail) $runDateTime2")
+      echo "##vso[task.setvariable variable=prName]$prName"
+      echo "prName=$prName"
+
+      branchName=$(echo "refresh_$runDateTime")
       echo "##vso[task.setvariable variable=branchName]$branchName"
       echo "branchName=$branchName"
 
@@ -42,7 +48,9 @@ jobs:
 
   - bash: |
       echo "runDateTime=$(runDateTime)"
+      echo "runDateTime2=$(runDateTime2)"
       echo "branchName=$(branchName)"
+      echo "prName=$(prName)"
       echo "commitMessage=$(commitMessage)"
       echo "resourceGroupName=$(resourceGroupName)"
       echo "logicAppName=$(logicAppName)"
@@ -94,6 +102,6 @@ jobs:
   # Create a GitHub pull request
   - script: |
       echo $(GITHUB_TOKEN) | gh auth login --with-token
-      gh pr create --title "$(branchName)" --body "$(commitMessage)"
+      gh pr create --title "$(prName)" --body "$(commitMessage)"
     displayName: Create PR
     workingDirectory: $(System.DefaultWorkingDirectory)
