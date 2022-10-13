@@ -1,7 +1,5 @@
 # Logic Apps Standard DevOps - Accelerator
 
-**** TEST BRANCH 2022-10-12 12:21:54 *****
-
 Azure Logic Apps Standard provides an opportunity to enable a traditional developer workflow, and associated benefits(local development, source control, automation) with low code tooling. The goal of this repository is to augment existing documentation to accelerate the use of CICD practices enabled with [Azure Logic Apps Standard](https://docs.microsoft.com/en-us/azure/logic-apps/devops-deployment-single-tenant-azure-logic-apps). This is accomplished by providing a demo implementation and highlighting best practices and workarounds to common challenges.
 
 ***Aligns with traditional CI/CD Delivery Model***
