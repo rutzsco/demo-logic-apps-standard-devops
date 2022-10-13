@@ -79,13 +79,13 @@ jobs:
       git checkout -b $(branchName)
       git push --set-upstream origin $(branchName)
       git pull origin $(branchName)
-      echo {                                        > Version/workflow_version.txt
-      echo   "User": "$(Build.RequestedForEmail)", >> Version/workflow_version.txt
-      echo   "Date": "$(runDateTime2)",            >> Version/workflow_version.txt
-      echo   "Branch": "$(branchName)",            >> Version/workflow_version.txt
-      echo   "PR": "$(prName)",                    >> Version/workflow_version.txt
-      echo   "Comment": "$(commitMessage)"         >> Version/workflow_version.txt
-      echo }                                       >> Version/workflow_version.txt
+      echo { > Version/workflow_version.txt
+      echo   "SubmittedBy": "$(Build.RequestedForEmail)", >> Version/workflow_version.txt
+      echo   "DateSubmitted": "$(runDateTime2)", >> Version/workflow_version.txt
+      echo   "BranchName": "$(branchName)", >> Version/workflow_version.txt
+      echo   "PullRequestName": "$(prName)", >> Version/workflow_version.txt
+      echo   "Comment": "$(commitMessage)" >> Version/workflow_version.txt
+      echo } >> Version/workflow_version.txt
     displayName: Fetch Repo
     workingDirectory: $(System.DefaultWorkingDirectory)
 

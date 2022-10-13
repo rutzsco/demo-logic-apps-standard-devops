@@ -8,6 +8,7 @@ param location string = 'eastus'
 param blobStorageContributorId string = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
 param longAppName string = 'logic-std-demo'
 param shortAppName string = 'logstddemo'
+param keyVaultOwnerUserId string = ''
 param runDateTime string = utcNow()
 
 // --------------------------------------------------------------------------------
@@ -74,7 +75,10 @@ module storageAccountRoleModule 'storageaccountroles.bicep' = {
 module keyVaultModule 'key-vault.bicep' = {
   name: 'keyvault${deploymentSuffix}'
   params: {
-    objectId: logicAppServiceModule.outputs.managedIdentityPrincipalId
+    enabledForDeployment: true
+    //objectId: logicAppServiceModule.outputs.managedIdentityPrincipalId
+    adminUserObjectIds: [ keyVaultOwnerUserId ]
+    applicationUserObjectIds: [ logicAppServiceModule.outputs.managedIdentityPrincipalId ]
     
     lowerAppPrefix: lowerAppPrefix
     longAppName: longAppName
@@ -85,6 +89,10 @@ module keyVaultModule 'key-vault.bicep' = {
   }
 }
 
+// resource keyVaultResource 'Microsoft.KeyVault/vaults@2021-04-01-preview' existing = { 
+//   name: keyVaultModule.outputs.name
+// }
+
 module keyVaultSecret1 'key-vault-secret-storageconnection.bicep' = {
   name: 'keyVaultSecret1${deploymentSuffix}'
   dependsOn: [ keyVaultModule, blobStorageAccountModule ]
@@ -92,5 +100,6 @@ module keyVaultSecret1 'key-vault-secret-storageconnection.bicep' = {
     keyVaultName: keyVaultModule.outputs.name
     keyName: 'BlobStorageConnectionString'
     storageAccountName: blobStorageAccountModule.outputs.name
+//    previousValue: keyVaultResource.getSecret('BlobStorageConnectionString')
   }
 }

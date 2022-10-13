@@ -17,6 +17,7 @@ Customize and run the following command in an Azure Cloud Shell to create this v
         region='eastus' 
         longAppName='logic-std-demo'
         shortAppName='logstddemo'
+        keyVaultOwnerUserId='<userSID>'
 ```
 
 ---
