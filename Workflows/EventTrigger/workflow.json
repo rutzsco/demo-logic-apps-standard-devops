@@ -4,7 +4,7 @@
     "actions": {
       "Invoke_a_workflow_in_this_workflow_app": {
         "inputs": {
-          "body": "this demo content is from 10/12/2022 - 13:16pm",
+          "body": "this demo content is from 10/13/2022 - 11:03am",
           "host": {
             "workflow": {
               "id": "eventprocessor"
