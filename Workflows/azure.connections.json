@@ -15,6 +15,18 @@
         }
       },
       "authentication": "@parameters('blob_auth')"
+    },
+    "visualstudioteamservices": {
+      "api": {
+        "id": "/subscriptions/@appsetting('WORKFLOWS_SUBSCRIPTION_ID')/providers/Microsoft.Web/locations/@appsetting('WORKFLOWS_LOCATION_NAME')/managedApis/visualstudioteamservices"
+      },
+      "connection": {
+        "id": "/subscriptions/@appsetting('WORKFLOWS_SUBSCRIPTION_ID')/resourceGroups/@appsetting('WORKFLOWS_RESOURCE_GROUP_NAME')/providers/Microsoft.Web/connections/visualstudioteamservices"
+      },
+      "connectionRuntimeUrl": "https://d0550650dbf6f152.15.common.logic-eastus.azure-apihub.net/apim/visualstudioteamservices/7ad0c66828fc45fdbc7a27a3d3fc58d4",
+      "authentication": {
+        "type": "ManagedServiceIdentity"
+      }
     }
   }
 }

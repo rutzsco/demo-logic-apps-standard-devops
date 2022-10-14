@@ -1,7 +1,7 @@
-{                                        
-  "User": "lyleluppes@microsoft.com", 
-  "Date": "2022/10/13 16:20:59",            
-  "Branch": "refresh_2022-10-13_16-20-59",            
-  "PR": "Refresh: lyleluppes@microsoft.com on 2022/10/13 16:20:59",                    
-  "Comment": "Refresh workflows job submitted by lyleluppes@microsoft.com on 2022/10/13 16:20:59"         
-}                                       
+{ 
+  "SubmittedBy": "lyleluppes@microsoft.com", 
+  "DateSubmitted": "2022/10/14 14:32:13", 
+  "BranchName": "refresh_2022-10-14_14-32-13", 
+  "PullRequestName": "Refresh: lyleluppes@microsoft.com on 2022/10/14 14:32:13", 
+  "Comment": "Refresh workflows job submitted by lyleluppes@microsoft.com on 2022/10/14 14:32:13" 
+} 

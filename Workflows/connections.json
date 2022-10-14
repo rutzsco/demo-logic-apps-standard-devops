@@ -2,12 +2,12 @@
   "managedApiConnections": {
     "azureblob": {
       "api": {
-        "id": "/subscriptions/51274a9c-b1ad-4d34-8ffe-0ba858eee00f/providers/Microsoft.Web/locations/eastus/managedApis/azureblob"
+        "id": "/subscriptions/a0f86c93-146a-4534-b83e-49090394aa78/providers/Microsoft.Web/locations/eastus/managedApis/azureblob"
       },
       "connection": {
-        "id": "/subscriptions/51274a9c-b1ad-4d34-8ffe-0ba858eee00f/resourceGroups/rutzsco-demo-logic-app-dev/providers/Microsoft.Web/connections/rutzscodemolablobdev-blobconnection"
+        "id": "/subscriptions/a0f86c93-146a-4534-b83e-49090394aa78/resourceGroups/rg_logappstd_design/providers/Microsoft.Web/connections/llllogappstdblobdesign-blobconnection"
       },
-      "connectionRuntimeUrl": "https://08323eb57c5aa963.01.common.logic-eastus.azure-apihub.net/apim/azureblob/f907251c14e44120b7bdf68c5c1f210b",
+      "connectionRuntimeUrl": "https://d0550650dbf6f152.15.common.logic-eastus.azure-apihub.net/apim/azureblob/7a4a22db784b4f4697750994fbb85afc",
       "connectionProperties": {
         "authentication": {
           "audience": "https://storage.azure.com/",
@@ -17,6 +17,18 @@
       "authentication": {
         "type": "ManagedServiceIdentity"
       }
+    },
+    "visualstudioteamservices": {
+        "api": {
+            "id": "/subscriptions/a0f86c93-146a-4534-b83e-49090394aa78/providers/Microsoft.Web/locations/eastus/managedApis/visualstudioteamservices"
+        },
+        "authentication": {
+            "type": "ManagedServiceIdentity"
+        },
+        "connection": {
+            "id": "/subscriptions/a0f86c93-146a-4534-b83e-49090394aa78/resourceGroups/rg_logappstd_design/providers/Microsoft.Web/connections/visualstudioteamservices"
+        },
+        "connectionRuntimeUrl": "https://d0550650dbf6f152.15.common.logic-eastus.azure-apihub.net/apim/visualstudioteamservices/7ad0c66828fc45fdbc7a27a3d3fc58d4"
     }
   }
 }

@@ -1,0 +1,34 @@
+{
+  "definition": {
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "actions": {
+      "Queue_a_new_build": {
+        "inputs": {
+          "host": {
+            "connection": {
+              "referenceName": "visualstudioteamservices"
+            }
+          },
+          "method": "post",
+          "path": "/@{encodeURIComponent('GitHubDevOps')}/_apis/build/builds",
+          "queries": {
+            "account": "lyleluppes",
+            "buildDefId": "54"
+          }
+        },
+        "runAfter": {},
+        "type": "ApiConnection"
+      }
+    },
+    "contentVersion": "1.0.0.0",
+    "outputs": {},
+    "triggers": {
+      "manual": {
+        "inputs": {},
+        "kind": "Http",
+        "type": "Request"
+      }
+    }
+  },
+  "kind": "Stateful"
+}
