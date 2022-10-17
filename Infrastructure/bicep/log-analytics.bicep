@@ -1,28 +1,19 @@
 // --------------------------------------------------------------------------------
 // Creates a Log Analytics Workspace
 // --------------------------------------------------------------------------------
-param lowerAppPrefix string = ''
-param longAppName string = ''
-@allowed(['demo','design','dev','qa','stg','prod'])
-param environment string = 'demo'
+param logAnalyticsWorkspaceName string = ''
 param location string = resourceGroup().location
-param runDateTime string = utcNow()
+param commonTags object = {}
 
 // --------------------------------------------------------------------------------
-var workspaceName = '${lowerAppPrefix}-${longAppName}-${environment}'
-var templateFileName = 'log-analytics.bicep'
+var templateTag = { TemplateFile: '~log-analytics.bicep' }
+var tags = union(commonTags, templateTag)
 
 // --------------------------------------------------------------------------------
 resource logWorkspaceResource 'Microsoft.OperationalInsights/workspaces@2021-06-01' = {
-  name: workspaceName
+  name: logAnalyticsWorkspaceName
   location: location
-  tags: {
-    LastDeployed: runDateTime
-    TemplateFile: templateFileName
-    AppPrefix: lowerAppPrefix
-    AppName: longAppName
-    Environment: environment
-  }
+  tags: tags
   properties: {
     sku: {
         name: 'PerGB2018' // Standard
@@ -32,3 +23,4 @@ resource logWorkspaceResource 'Microsoft.OperationalInsights/workspaces@2021-06-
 
 // --------------------------------------------------------------------------------
 output id string = logWorkspaceResource.id
+output name string = logWorkspaceResource.name

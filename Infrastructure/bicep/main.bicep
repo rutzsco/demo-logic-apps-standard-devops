@@ -14,47 +14,54 @@ param runDateTime string = utcNow()
 // --------------------------------------------------------------------------------
 var deploymentSuffix = '-${runDateTime}'
 var lowerAppPrefix = toLower(appPrefix)
+var commonTags = {         
+  LastDeployed: runDateTime
+  AppPrefix: lowerAppPrefix
+  AppName: longAppName
+  Environment: environment
+}
+
+// --------------------------------------------------------------------------------
+module resourceNames 'resource-names.bicep' = {
+  name: 'resourcenames${deploymentSuffix}'
+  params: {
+    lowerAppPrefix: lowerAppPrefix
+    longAppName: longAppName
+    shortAppName: shortAppName
+    environment: environment
+  }
+}
 
 // --------------------------------------------------------------------------------
 module blobStorageAccountModule 'storageaccount.bicep' = {
   name: 'storage${deploymentSuffix}'
   params: {
+    storageAccountName: resourceNames.outputs.storageAccountName
+    blobStorageConnectionName: resourceNames.outputs.blobStorageConnectionName
     storageSku: 'Standard_LRS'
-
-    lowerAppPrefix: lowerAppPrefix
-    longAppName: longAppName
-    shortAppName: shortAppName
-    environment: environment
     location: location
-    runDateTime: runDateTime
+    commonTags: commonTags
   }
 }
 
 module logAnalyticsModule 'log-analytics.bicep' = {
   name: 'logAnalytics${deploymentSuffix}' 
   params: {
-    lowerAppPrefix: lowerAppPrefix
-    longAppName: longAppName
-    environment: environment
+    logAnalyticsWorkspaceName: resourceNames.outputs.logAnalyticsWorkspaceName
     location: location
-    runDateTime: runDateTime
+    commonTags: commonTags
   }
 }
 
 module logicAppServiceModule 'logic-app-service.bicep' = {
   name: 'logicappservice${deploymentSuffix}'
   params: {
+    logicAppServiceName:  resourceNames.outputs.logicAppServiceName
+    logicAppStorageAccountName: resourceNames.outputs.logicAppStorageAccountName
     logwsid: logAnalyticsModule.outputs.id
-    blobStorageConnectionRuntimeUrl: blobStorageAccountModule.outputs.connectionRuntimeUrl
-    blobStorageConnectionName: blobStorageAccountModule.outputs.blobStorageConnectionName
-    blobStorageAccountName: blobStorageAccountModule.outputs.name
-
-    lowerAppPrefix: lowerAppPrefix
-    longAppName: longAppName
-    shortAppName: shortAppName
     environment: environment
     location: location
-    runDateTime: runDateTime
+    commonTags: commonTags
   }
 }
 
@@ -75,23 +82,13 @@ module storageAccountRoleModule 'storageaccountroles.bicep' = {
 module keyVaultModule 'key-vault.bicep' = {
   name: 'keyvault${deploymentSuffix}'
   params: {
-    enabledForDeployment: true
+    keyVaultName: resourceNames.outputs.keyVaultName
     adminUserObjectIds: [ keyVaultOwnerUserId ]
     applicationUserObjectIds: [ logicAppServiceModule.outputs.managedIdentityPrincipalId ]
-    
-    lowerAppPrefix: lowerAppPrefix
-    longAppName: longAppName
-    shortAppName: shortAppName
-    environment: environment
     location: location
-    runDateTime: runDateTime
+    commonTags: commonTags
   }
 }
-
-// .getSecret fails with error - not authorized...?
-// resource keyVaultResource 'Microsoft.KeyVault/vaults@2021-04-01-preview' existing = { 
-//   name: keyVaultModule.outputs.name
-// }
 
 module keyVaultSecret1 'key-vault-secret-storageconnection.bicep' = {
   name: 'keyVaultSecret1${deploymentSuffix}'
@@ -100,6 +97,26 @@ module keyVaultSecret1 'key-vault-secret-storageconnection.bicep' = {
     keyVaultName: keyVaultModule.outputs.name
     keyName: 'BlobStorageConnectionString'
     storageAccountName: blobStorageAccountModule.outputs.name
-//    previousValue: keyVaultResource.getSecret('BlobStorageConnectionString')
   }
 }
+
+
+module functionAppSettingsModule 'logic-app-settings.bicep' = {
+  name: 'functionAppSettings${deploymentSuffix}'
+  // dependsOn: [  keyVaultSecrets ]
+  params: {
+    logicAppName: logicAppServiceModule.outputs.name
+    logicAppStorageAccountName: logicAppServiceModule.outputs.storageResourceName
+    logicAppInsightsKey: logicAppServiceModule.outputs.insightsKey
+    customAppSettings: {
+      BLOB_CONNECTION_RUNTIMEURL: blobStorageAccountModule.outputs.connectionRuntimeUrl
+      BLOB_STORAGE_CONNECTION_NAME: blobStorageAccountModule.outputs.blobStorageConnectionName
+      BLOB_STORAGE_ACCOUNT_NAME: blobStorageAccountModule.outputs.name
+      WORKFLOWS_SUBSCRIPTION_ID: subscription().subscriptionId
+      WORKFLOWS_RESOURCE_GROUP_NAME: resourceGroup().name
+      WORKFLOWS_LOCATION_NAME: location
+    }
+  }
+}
+
+

@@ -1,24 +1,19 @@
 // --------------------------------------------------------------------------------
 // Creates the logic app service and associated resources
 // --------------------------------------------------------------------------------
-param lowerAppPrefix string = ''
-param longAppName string = ''
-param shortAppName string = ''
-
-param blobStorageConnectionRuntimeUrl string = ''
-param blobStorageConnectionName string = ''
-param blobStorageAccountName string = ''
+param logicAppServiceName string = ''
+param logicAppStorageAccountName string = ''
+param location string = resourceGroup().location
+param commonTags object = {}
 @allowed(['demo','design','dev','qa','stg','prod'])
 param environment string = 'demo'
+
 param logwsid string = ''
 param minimumElasticSize int = 1
-param location string = resourceGroup().location
-param runDateTime string = utcNow()
 
 // --------------------------------------------------------------------------------
-var templateFileName = '~logic-app-service.bicep'
-var logicAppServiceName = '${lowerAppPrefix}-${longAppName}'
-var logicAppStorageAccountName = '${lowerAppPrefix}${shortAppName}app${environment}'
+var templateTag = { TemplateFile: '~logic-app-service.bicep' }
+var tags = union(commonTags, templateTag)
 
 // --------------------------------------------------------------------------------
 // Storage account for the service
@@ -26,13 +21,7 @@ resource storageResource 'Microsoft.Storage/storageAccounts@2019-06-01' = {
   name: logicAppStorageAccountName
   location: location
   kind: 'StorageV2'
-  tags: {
-    LastDeployed: runDateTime
-    TemplateFile: templateFileName
-    AppPrefix: lowerAppPrefix
-    AppName: longAppName
-    Environment: environment
-  }
+  tags: tags
   sku: {
     name: 'Standard_GRS'
   }
@@ -49,13 +38,7 @@ resource logicAppPlanResource 'Microsoft.Web/serverfarms@2021-02-01' = {
     tier: 'WorkflowStandard'
     name: 'WS1'
   }
-  tags: {
-    LastDeployed: runDateTime
-    TemplateFile: templateFileName
-    AppPrefix: lowerAppPrefix
-    AppName: longAppName
-    Environment: environment
-  }
+  tags: tags
   properties: {
     targetWorkerCount: minimumElasticSize
     maximumElasticWorkerCount: 20
@@ -69,13 +52,7 @@ resource appInsightsResource 'Microsoft.Insights/components@2020-02-02' = {
   name: '${logicAppServiceName}-${environment}'
   location: location
   kind: 'web'
-  tags: {
-    LastDeployed: runDateTime
-    TemplateFile: templateFileName
-    AppPrefix: lowerAppPrefix
-    AppName: longAppName
-    Environment: environment
-  }
+  tags: tags
   properties: {
     Application_Type: 'web'
     Flow_Type: 'Bluefield'
@@ -95,13 +72,7 @@ resource logicAppSiteResource 'Microsoft.Web/sites@2021-02-01' = {
   identity: {
     type: 'SystemAssigned'
   }
-  tags: {
-    LastDeployed: runDateTime
-    TemplateFile: templateFileName
-    AppPrefix: lowerAppPrefix
-    AppName: longAppName
-    Environment: environment
-  }
+  tags: tags
   properties: {
     httpsOnly: true
     siteConfig: {
@@ -130,6 +101,7 @@ resource logicAppSiteResource 'Microsoft.Web/sites@2021-02-01' = {
           name: 'WEBSITE_CONTENTSHARE'
           value: 'app-${toLower(logicAppServiceName)}-logicservice-${toLower(environment)}a6e9'
         }
+
         {
           name: 'AzureFunctionsJobHost__extensionBundle__id'
           value: 'Microsoft.Azure.Functions.ExtensionBundle.Workflows'
@@ -142,41 +114,18 @@ resource logicAppSiteResource 'Microsoft.Web/sites@2021-02-01' = {
           name: 'APP_KIND'
           value: 'workflowApp'
         }
+
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
           value: appInsightsResource.properties.InstrumentationKey
-        }
-        {
-          name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
-          value: '~2'
         }
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
           value: appInsightsResource.properties.ConnectionString
         }
         {
-          name: 'BLOB_CONNECTION_RUNTIMEURL'
-          value: blobStorageConnectionRuntimeUrl
-        }
-        {
-          name: 'BLOB_STORAGE_CONNECTION_NAME'
-          value: blobStorageConnectionName
-        }
-        {
-          name: 'BLOB_STORAGE_ACCOUNT_NAME'
-          value: blobStorageAccountName
-        }
-        {
-          name: 'WORKFLOWS_SUBSCRIPTION_ID'
-          value: subscription().subscriptionId
-        }
-        {
-          name: 'WORKFLOWS_RESOURCE_GROUP_NAME'
-          value: resourceGroup().name
-        }
-        {
-          name: 'WORKFLOWS_LOCATION_NAME'
-          value: location
+          name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
+          value: '~2'
         }
       ]
       use32BitWorkerProcess: true
@@ -190,5 +139,6 @@ resource logicAppSiteResource 'Microsoft.Web/sites@2021-02-01' = {
 output name string = logicAppSiteResource.name
 output id string = logicAppSiteResource.id
 output managedIdentityPrincipalId string = logicAppSiteResource.identity.principalId
-
+output storageResourceName string = storageResource.name
 output planName string = logicAppPlanResource.name
+output insightsKey string = appInsightsResource.properties.InstrumentationKey
