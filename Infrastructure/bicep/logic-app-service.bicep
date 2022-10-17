@@ -8,7 +8,7 @@ param commonTags object = {}
 @allowed(['demo','design','dev','qa','stg','prod'])
 param environment string = 'demo'
 
-param logwsid string = ''
+param logicAnalyticsWorkspaceId string = ''
 param minimumElasticSize int = 1
 
 // --------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ resource appInsightsResource 'Microsoft.Insights/components@2020-02-02' = {
     publicNetworkAccessForQuery: 'Enabled'
     Request_Source: 'rest'
     RetentionInDays: 30
-    WorkspaceResourceId: logwsid
+    WorkspaceResourceId: logicAnalyticsWorkspaceId
   }
 }
 

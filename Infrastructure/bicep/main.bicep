@@ -2,13 +2,13 @@
 // Logic Apps Standard - Main Bicep File
 // --------------------------------------------------------------------------------
 param appPrefix string = 'myorgname'
-@allowed(['demo','design','dev','qa','stg','prod'])
-param environment string = 'demo'
-param location string = 'eastus'
-param blobStorageContributorId string = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
 param longAppName string = 'logic-std-demo'
 param shortAppName string = 'logstddemo'
 param keyVaultOwnerUserId string = ''
+
+@allowed(['demo','design','dev','qa','stg','prod'])
+param environment string = 'demo'
+param location string = 'eastus'
 param runDateTime string = utcNow()
 
 // --------------------------------------------------------------------------------
@@ -38,7 +38,6 @@ module blobStorageAccountModule 'storageaccount.bicep' = {
   params: {
     storageAccountName: resourceNames.outputs.storageAccountName
     blobStorageConnectionName: resourceNames.outputs.blobStorageConnectionName
-    storageSku: 'Standard_LRS'
     location: location
     commonTags: commonTags
   }
@@ -58,7 +57,7 @@ module logicAppServiceModule 'logic-app-service.bicep' = {
   params: {
     logicAppServiceName:  resourceNames.outputs.logicAppServiceName
     logicAppStorageAccountName: resourceNames.outputs.logicAppStorageAccountName
-    logwsid: logAnalyticsModule.outputs.id
+    logicAnalyticsWorkspaceId: logAnalyticsModule.outputs.id
     environment: environment
     location: location
     commonTags: commonTags
@@ -72,8 +71,6 @@ module storageAccountRoleModule 'storageaccountroles.bicep' = {
     storageAccountName: blobStorageAccountModule.outputs.name
     logicAppServicePrincipalId: logicAppServiceModule.outputs.managedIdentityPrincipalId
     blobStorageConnectionName: blobStorageAccountModule.outputs.blobStorageConnectionName
-    blobStorageContributorId: blobStorageContributorId
-
     environment: environment
     location: location
   }
@@ -100,9 +97,8 @@ module keyVaultSecret1 'key-vault-secret-storageconnection.bicep' = {
   }
 }
 
-
-module functionAppSettingsModule 'logic-app-settings.bicep' = {
-  name: 'functionAppSettings${deploymentSuffix}'
+module logicAppSettingsModule 'logic-app-settings.bicep' = {
+  name: 'logicAppSettings${deploymentSuffix}'
   // dependsOn: [  keyVaultSecrets ]
   params: {
     logicAppName: logicAppServiceModule.outputs.name
@@ -118,5 +114,3 @@ module functionAppSettingsModule 'logic-app-settings.bicep' = {
     }
   }
 }
-
-
