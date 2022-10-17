@@ -29,7 +29,7 @@ Function SetKeyVaultValue {
     }
 }
 
-Function DisplaySecrets
+Function ListKeyVaultSecrets
 {
   Param ([string] $KeyVaultName)
   $secretList = Get-AzureKeyVaultSecret -VaultName $KeyVaultName
@@ -44,7 +44,7 @@ Function DisplaySecrets
   }
 } 
 
-Function DisplaySecret
+Function GetKeyVaultSecret
 {
   Param ([string] $KeyVaultName, [string] $SecretName)
   $secret = Get-AzureKeyVaultSecret -VaultName $KeyVaultName -Name $SecretName
@@ -58,5 +58,5 @@ Function DisplaySecret
 } 
 
 SetKeyVaultValue -KeyVaultName llllogappstdvaultdemo -SecretName test -SecretValue secret
-DisplaySecret -KeyVaultName llllogappstdvaultdemo -SecretName test
-DisplaySecrets -KeyVaultName llllogappstdvaultdemo
+ListKeyVaultSecrets -KeyVaultName llllogappstdvaultdemo
+GetKeyVaultSecret -KeyVaultName llllogappstdvaultdemo -SecretName test
