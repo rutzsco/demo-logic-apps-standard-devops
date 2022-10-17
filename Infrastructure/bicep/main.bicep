@@ -2,59 +2,65 @@
 // Logic Apps Standard - Main Bicep File
 // --------------------------------------------------------------------------------
 param appPrefix string = 'myorgname'
-@allowed(['demo','design','dev','qa','stg','prod'])
-param environment string = 'demo'
-param location string = 'eastus'
-param blobStorageContributorId string = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
 param longAppName string = 'logic-std-demo'
 param shortAppName string = 'logstddemo'
 param keyVaultOwnerUserId string = ''
+
+@allowed(['demo','design','dev','qa','stg','prod'])
+param environment string = 'demo'
+param location string = 'eastus'
 param runDateTime string = utcNow()
 
 // --------------------------------------------------------------------------------
 var deploymentSuffix = '-${runDateTime}'
 var lowerAppPrefix = toLower(appPrefix)
+var commonTags = {         
+  LastDeployed: runDateTime
+  AppPrefix: lowerAppPrefix
+  AppName: longAppName
+  Environment: environment
+}
+
+// --------------------------------------------------------------------------------
+module resourceNames 'resource-names.bicep' = {
+  name: 'resourcenames${deploymentSuffix}'
+  params: {
+    lowerAppPrefix: lowerAppPrefix
+    longAppName: longAppName
+    shortAppName: shortAppName
+    environment: environment
+  }
+}
 
 // --------------------------------------------------------------------------------
 module blobStorageAccountModule 'storageaccount.bicep' = {
   name: 'storage${deploymentSuffix}'
   params: {
-    storageSku: 'Standard_LRS'
-
-    lowerAppPrefix: lowerAppPrefix
-    longAppName: longAppName
-    shortAppName: shortAppName
-    environment: environment
+    storageAccountName: resourceNames.outputs.blobStorageAccountName
+    blobStorageConnectionName: resourceNames.outputs.blobStorageConnectionName
     location: location
-    runDateTime: runDateTime
+    commonTags: commonTags
   }
 }
 
-module logAnalyticsModule 'log-analytics.bicep' = {
+module logAnalyticsModule 'log-analytics-workspace.bicep' = {
   name: 'logAnalytics${deploymentSuffix}' 
   params: {
-    lowerAppPrefix: lowerAppPrefix
-    longAppName: longAppName
-    environment: environment
+    logAnalyticsWorkspaceName: resourceNames.outputs.logAnalyticsWorkspaceName
     location: location
-    runDateTime: runDateTime
+    commonTags: commonTags
   }
 }
 
 module logicAppServiceModule 'logic-app-service.bicep' = {
   name: 'logicappservice${deploymentSuffix}'
   params: {
-    logwsid: logAnalyticsModule.outputs.id
-    blobStorageConnectionRuntimeUrl: blobStorageAccountModule.outputs.connectionRuntimeUrl
-    blobStorageConnectionName: blobStorageAccountModule.outputs.blobStorageConnectionName
-    blobStorageAccountName: blobStorageAccountModule.outputs.name
-
-    lowerAppPrefix: lowerAppPrefix
-    longAppName: longAppName
-    shortAppName: shortAppName
+    logicAppServiceName:  resourceNames.outputs.logicAppServiceName
+    logicAppStorageAccountName: resourceNames.outputs.logicAppStorageAccountName
+    logicAnalyticsWorkspaceId: logAnalyticsModule.outputs.id
     environment: environment
     location: location
-    runDateTime: runDateTime
+    commonTags: commonTags
   }
 }
 
@@ -65,8 +71,6 @@ module storageAccountRoleModule 'storageaccountroles.bicep' = {
     storageAccountName: blobStorageAccountModule.outputs.name
     logicAppServicePrincipalId: logicAppServiceModule.outputs.managedIdentityPrincipalId
     blobStorageConnectionName: blobStorageAccountModule.outputs.blobStorageConnectionName
-    blobStorageContributorId: blobStorageContributorId
-
     environment: environment
     location: location
   }
@@ -75,23 +79,13 @@ module storageAccountRoleModule 'storageaccountroles.bicep' = {
 module keyVaultModule 'key-vault.bicep' = {
   name: 'keyvault${deploymentSuffix}'
   params: {
-    enabledForDeployment: true
+    keyVaultName: resourceNames.outputs.keyVaultName
     adminUserObjectIds: [ keyVaultOwnerUserId ]
     applicationUserObjectIds: [ logicAppServiceModule.outputs.managedIdentityPrincipalId ]
-    
-    lowerAppPrefix: lowerAppPrefix
-    longAppName: longAppName
-    shortAppName: shortAppName
-    environment: environment
     location: location
-    runDateTime: runDateTime
+    commonTags: commonTags
   }
 }
-
-// .getSecret fails with error - not authorized...?
-// resource keyVaultResource 'Microsoft.KeyVault/vaults@2021-04-01-preview' existing = { 
-//   name: keyVaultModule.outputs.name
-// }
 
 module keyVaultSecret1 'key-vault-secret-storageconnection.bicep' = {
   name: 'keyVaultSecret1${deploymentSuffix}'
@@ -100,6 +94,23 @@ module keyVaultSecret1 'key-vault-secret-storageconnection.bicep' = {
     keyVaultName: keyVaultModule.outputs.name
     keyName: 'BlobStorageConnectionString'
     storageAccountName: blobStorageAccountModule.outputs.name
-//    previousValue: keyVaultResource.getSecret('BlobStorageConnectionString')
+  }
+}
+
+module logicAppSettingsModule 'logic-app-settings.bicep' = {
+  name: 'logicAppSettings${deploymentSuffix}'
+  // dependsOn: [  keyVaultSecrets ]
+  params: {
+    logicAppName: logicAppServiceModule.outputs.name
+    logicAppStorageAccountName: logicAppServiceModule.outputs.storageResourceName
+    logicAppInsightsKey: logicAppServiceModule.outputs.insightsKey
+    customAppSettings: {
+      BLOB_CONNECTION_RUNTIMEURL: blobStorageAccountModule.outputs.connectionRuntimeUrl
+      BLOB_STORAGE_CONNECTION_NAME: blobStorageAccountModule.outputs.blobStorageConnectionName
+      BLOB_STORAGE_ACCOUNT_NAME: blobStorageAccountModule.outputs.name
+      WORKFLOWS_SUBSCRIPTION_ID: subscription().subscriptionId
+      WORKFLOWS_RESOURCE_GROUP_NAME: resourceGroup().name
+      WORKFLOWS_LOCATION_NAME: location
+    }
   }
 }

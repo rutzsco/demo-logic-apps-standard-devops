@@ -1,22 +1,18 @@
 ﻿// --------------------------------------------------------------------------------
 // Create storage account
 // --------------------------------------------------------------------------------
-param lowerAppPrefix string = 'myorgname'
-param shortAppName string = 'demola'
-param longAppName string = ''
-@allowed(['demo','design','dev','qa','stg','prod'])
-param environment string = 'demo'
+param storageAccountName string = ''
+param blobStorageConnectionName string = ''
 param location string = resourceGroup().location
-param runDateTime string = utcNow()
+param commonTags object = {}
 
 @allowed([ 'Standard_LRS', 'Standard_GRS', 'Standard_RAGRS' ])
 param storageSku string = 'Standard_LRS'
 param containerName string = 'myblobs'
 
 // --------------------------------------------------------------------------------
-var templateFileName = '~storageAccount.bicep'
-var storageAccountName = '${lowerAppPrefix}${shortAppName}blob${environment}'
-var blobStorageConnectionName = '${storageAccountName}-blobconnection'
+var templateTag = { TemplateFile: '~storageAccount.bicep' }
+var tags = union(commonTags, templateTag)
 
 // --------------------------------------------------------------------------------
 resource storageAccountResource 'Microsoft.Storage/storageAccounts@2019-06-01' = {
@@ -25,13 +21,7 @@ resource storageAccountResource 'Microsoft.Storage/storageAccounts@2019-06-01' =
     sku: {
         name: storageSku
     }
-    tags: {
-        LastDeployed: runDateTime
-        TemplateFile: templateFileName
-        AppPrefix: lowerAppPrefix
-        AppName: longAppName
-        Environment: environment
-    }
+    tags: tags
     kind: 'StorageV2'
     properties: {
         accessTier: 'Hot'
@@ -65,13 +55,7 @@ resource blobStorageConnectionResource 'Microsoft.Web/connections@2016-06-01' = 
     name: blobStorageConnectionName
     kind: 'V2'
     location: location
-    tags: {
-        LastDeployed: runDateTime
-        TemplateFile: templateFileName
-        AppPrefix: lowerAppPrefix
-        AppName: longAppName
-        Environment: environment
-    }
+    tags: tags
     properties: {
         api: {
             id: 'subscriptions/${subscription().subscriptionId}/providers/Microsoft.Web/locations/${location}/managedApis/azureblob'
@@ -87,8 +71,8 @@ resource blobStorageConnectionResource 'Microsoft.Web/connections@2016-06-01' = 
 var connectionRuntimeUrl = reference(blobStorageConnectionResource.id, blobStorageConnectionResource.apiVersion, 'full').properties.connectionRuntimeUrl
 
 // --------------------------------------------------------------------------------
-output name string = storageAccountResource.name
 output id string = storageAccountResource.id
+output name string = storageAccountResource.name
 output connectionRuntimeUrl string = connectionRuntimeUrl
 output blobStorageContainerName string = storageAccountBlobContainerResource.name
 output blobStorageConnectionName string = blobStorageConnectionResource.name
