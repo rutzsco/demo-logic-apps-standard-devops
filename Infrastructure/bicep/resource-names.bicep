@@ -6,11 +6,7 @@ param environment string = 'demo'
 
 output logicAppServiceName string = '${lowerAppPrefix}-${longAppName}'
 output logicAppStorageAccountName string = '${lowerAppPrefix}${shortAppName}app${environment}'
-
-var storageAccountName = '${lowerAppPrefix}${shortAppName}blob${environment}'
-output storageAccountName string = storageAccountName
-output blobStorageConnectionName string = '${storageAccountName}-blobconnection'
-
-output logAnalyticsWorkspaceName string = '${lowerAppPrefix}-${longAppName}-${environment}'
-
+output logAnalyticsWorkspaceName string = '${lowerAppPrefix}-${longAppName}-logs-${environment}'
+output blobStorageAccountName string = '${lowerAppPrefix}${shortAppName}blob${environment}'
+output blobStorageConnectionName string = '${lowerAppPrefix}${shortAppName}blob${environment}-blobconnection'
 output keyVaultName string = '${lowerAppPrefix}${shortAppName}vault${environment}'

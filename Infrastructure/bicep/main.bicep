@@ -36,14 +36,14 @@ module resourceNames 'resource-names.bicep' = {
 module blobStorageAccountModule 'storageaccount.bicep' = {
   name: 'storage${deploymentSuffix}'
   params: {
-    storageAccountName: resourceNames.outputs.storageAccountName
+    storageAccountName: resourceNames.outputs.blobStorageAccountName
     blobStorageConnectionName: resourceNames.outputs.blobStorageConnectionName
     location: location
     commonTags: commonTags
   }
 }
 
-module logAnalyticsModule 'log-analytics.bicep' = {
+module logAnalyticsModule 'log-analytics-workspace.bicep' = {
   name: 'logAnalytics${deploymentSuffix}' 
   params: {
     logAnalyticsWorkspaceName: resourceNames.outputs.logAnalyticsWorkspaceName

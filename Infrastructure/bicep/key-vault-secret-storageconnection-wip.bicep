@@ -15,15 +15,17 @@ var storageAccountConnectionString = 'DefaultEndpointsProtocol=https;AccountName
 
 // --------------------------------------------------------------------------------
 // This should work if you run the script repeatedly as part of your deploy, and it
-// will ONLY adds a new secret version if the value has changed or does not exist 
+// will ONLY add a new secret version if the value has changed or does not exist 
+// See: https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-script-template?tabs=CLI#debug-deployment-scripts
+// --------------------------------------------------------------------------------
 //
 // This script works fine locally, but fails when part of a bicep deployment:
 // "code": "DeploymentScriptError",
 // "message": "The provided script failed with the following error:\r\nSystem.Management.Automation.CommandNotFoundException: 
 //    The term 'Get-AzureKeyVaultSecret' is not recognized as the name of a cmdlet, function, script file, or operable program.
-//    Check the spelling of the name, or if a path was included, verify that the path is correct and try again.\n   at System.Management.Automation.ExceptionHandlingOps.CheckActionPreference(FunctionContext funcContext, Exception exception)\n   at System.Management.Automation.Interpreter.ActionCallInstruction`2.Run(InterpretedFrame frame)\n   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)\n   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)\n   at System.Management.Automation.Interpreter.Interpreter.Run(InterpretedFrame frame)\n   at System.Management.Automation.Interpreter.LightLambda.RunVoid1[T0](T0 arg0)\n   at System.Management.Automation.ScriptBlock.InvokeWithPipeImpl(ScriptBlockClauseToInvoke clauseToInvoke, Boolean createLocalScope, Dictionary`2 functionsToDefine, List`1 variablesToDefine, ErrorHandlingBehavior errorHandlingBehavior, Object dollarUnder, Object input, Object scriptThis, Pipe outputPipe, InvocationInfo invocationInfo, Object[] args)\n   at System.Management.Automation.ScriptBlock.InvokeWithPipeImpl(Boolean createLocalScope, Dictionary`2 functionsToDefine, List`1 variablesToDefine, ErrorHandlingBehavior errorHandlingBehavior, Object dollarUnder, Object input, Object scriptThis, Pipe outputPipe, InvocationInfo invocationInfo, Object[] args)\n   at System.Management.Automation.ScriptBlock.InvokeWithPipe(Boolean useLocalScope, ErrorHandlingBehavior errorHandlingBehavior, Object dollarUnder, Object input, Object scriptThis, Pipe outputPipe, InvocationInfo invocationInfo, Boolean propagateAllExceptionsToTop, List`1 variablesToDefine, Dictionary`2 functionsToDefine, Object[] args)\n   at System.Management.Automation.ScriptBlock.InvokeUsingCmdlet(Cmdlet contextCmdlet, Boolean useLocalScope, ErrorHandlingBehavior errorHandlingBehavior, Object dollarUnder, Object input, Object scriptThis, Object[] args)\n   at Microsoft.PowerShell.Commands.InvokeExpressionCommand.ProcessRecord()\n   at System.Management.Automation.Cmdlet.DoProcessRecord()\n   at System.Management.Automation.CommandProcessor.ProcessRecord()\r\nat <ScriptBlock>, /mnt/azscripts/azscriptinput/userscript.ps1: line 4\r\nat <ScriptBlock>, <No file>: line 1\r\nat <ScriptBlock>, /mnt/azscripts/azscriptinput/DeploymentScript.ps1: line 295. Please refer to https://aka.ms/DeploymentScriptsTroubleshoot for more deployment script information."
+//    Check the spelling of the name, or if a path was included, verify that the path is correct and try again....
+//    Please refer to https://aka.ms/DeploymentScriptsTroubleshoot for more deployment script information.
 //
-// See: https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-script-template?tabs=CLI#debug-deployment-scripts
 // --------------------------------------------------------------------------------
 resource addSecretIfNotExists 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   name: 'addSecretIfNotExists'
