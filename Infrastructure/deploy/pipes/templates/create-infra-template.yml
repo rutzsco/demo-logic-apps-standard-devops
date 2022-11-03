@@ -3,7 +3,7 @@
 # ----------------------------------------------------------------------------------------------------
 parameters: 
 - name: variableGroupName
-  default: 'myVariableGroup'
+  default: ''
 - name: environmentName
   default: 'DEV'
 - name: templateFolderName

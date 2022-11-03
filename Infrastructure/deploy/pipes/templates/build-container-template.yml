@@ -1,0 +1,60 @@
+# ----------------------------------------------------------------------------------------------------
+# Template to build logic app standard artifacts
+# ----------------------------------------------------------------------------------------------------
+parameters: 
+- name: variableGroupName
+  default:  'myVariableGroup'
+- name: environmentName
+  default:  'DEV'
+
+# ------------------------------------------------------------------------------------------------------------------------
+jobs:
+- deployment: Build${{ parameters.environmentName }}Application
+  displayName: Initialize ${{ parameters.environmentName }}Build App
+  environment: ${{ parameters.environmentName }}
+
+- job: Build${{ parameters.environmentName }}LogicApp
+  displayName: Build ${{ parameters.environmentName }} Application
+
+  variables:
+    - group: ${{ parameters.variableGroupName }}
+    - name: artifactFolderName
+      value: 'App'
+    - name: logicAppContainerName
+      value: 'eventprocessorla'
+    - name: acrName
+      value: 'rutzscolabcr'
+  steps:
+  - task: CmdLine@2
+    inputs:
+      script: |
+        echo "solution=$(solution)"
+        echo "artifactFolderName=$(artifactFolderName)"
+        echo "artifactName=$(artifactName)"
+        echo "Directory of System.DefaultWorkingDirectory:"
+        tree $(System.DefaultWorkingDirectory)
+    displayName: 'Display Variables'
+    continueOnError: true
+
+  - task: Bash@3
+    displayName: 'Swap local settings files with Azure versions'
+    inputs:
+      targetType: 'inline'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+      script: |
+        mv azure.parameters.json parameters.json
+        mv azure.connections.json connections.json
+
+  - task: AzureCLI@2
+    displayName: 'Build & Push Logic App Image'
+    inputs:
+      azureSubscription: $(azureSubscription)
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        az acr build \
+        -r $(acrName) \
+        -t $(eventprocessorla):$(Build.BuildId) \
+        -t $(eventprocessorla):latest \
+        .
+      workingDirectory: $(System.DefaultWorkingDirectory)
