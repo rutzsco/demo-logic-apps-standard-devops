@@ -13,17 +13,7 @@ stages:
 - stage: BuildApplication
   displayName: Build Application
   jobs:
-  - template: templates/build-logicstd-template.yml
+  - template: templates/build-container-template.yml
     parameters:
       variableGroupName: ${{ parameters.variableGroupName }}
       environmentName: 'DEV'
-
-# ----------------------------------------------------------------------------------------------------
-- ${{ each environmentName in parameters.environments }} :
-  - stage: DeployApp${{ environmentName }}
-    displayName: Deploy ${{ environmentName }} Application
-    jobs:
-    - template: templates/deploy-logicstd-template.yml
-      parameters:
-        variableGroupName: ${{ parameters.variableGroupName }}
-        environmentName: ${{ environmentName }}
