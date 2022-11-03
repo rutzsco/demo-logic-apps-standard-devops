@@ -37,7 +37,7 @@ jobs:
       appPrefixLower=$(echo "$(appPrefix)" | tr '[:upper:]' '[:lower:]')
       echo "##vso[task.setvariable variable=appPrefixLower]$appPrefixLower"
 
-      resourceGroupName=$(echo "$(appPrefix)-$(longAppName)-$(environmentNameLower)" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
+      resourceGroupName=$(echo "$(appPrefix)-$(longAppName)-$(environmentNameLower)" | tr '[:upper:]' '[:lower:]')
       echo "resourceGroupName=$resourceGroupName"
       echo "##vso[task.setvariable variable=resourceGroupName]$resourceGroupName"
       
