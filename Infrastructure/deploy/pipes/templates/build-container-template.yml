@@ -40,7 +40,7 @@ jobs:
     displayName: 'Swap local settings files with Azure versions'
     inputs:
       targetType: 'inline'
-      workingDirectory: '$(System.DefaultWorkingDirectory)'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/Workflows'
       script: |
         mv azure.parameters.json parameters.json
         mv azure.connections.json connections.json
